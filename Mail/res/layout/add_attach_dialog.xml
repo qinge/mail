@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/dialog_bg"
+     >
+    
+    <LinearLayout 
+    style="@style/dialog_wrap"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+     >
+
+    <LinearLayout 
+        style="@style/dialog_title_wrap" 
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/add_attach_dialog_title"
+            style="@style/dialog_title" 
+            android:text="@string/add_attachment_title"/>
+    </LinearLayout> 
+
+    <LinearLayout style="@style/dialog_bottom_wrap" >
+
+        <Button
+            android:id="@+id/compose_add_attach_dialog_camera_tv"
+            style="@style/dialog_onlytext_item"
+            android:text="@string/add_attchement_camera" />
+ 
+        <Button
+            android:id="@+id/compose_add_attach_dialog_album_tv"
+            style="@style/dialog_onlytext_item"
+            android:text="@string/add_attchement_gallery" />
+
+        <Button
+            android:id="@+id/compose_add_attach_dialog_file_tv"
+            style="@style/dialog_onlytext_tail_item"
+            android:text="@string/add_attchement_file" />
+
+        <ImageView style="@style/dialog_bottom_line" />
+    </LinearLayout>
+
+</LinearLayout>
+
+</RelativeLayout>
+     

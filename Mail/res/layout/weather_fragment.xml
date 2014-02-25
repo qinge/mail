@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/weather_fragment_bg"
+     >
+    
+    <include layout="@layout/general_head_bar"/>
+
+    <LinearLayout 
+         android:layout_width="match_parent"   
+   		 android:layout_height="180dp" 
+   		 android:layout_marginTop="10dp"
+   		 android:layout_marginBottom="20dp"
+   		 android:layout_marginLeft="15dp" 
+    	 android:layout_marginRight="15dp"  
+    	 android:orientation="vertical"
+   		 android:background="@drawable/weather_fragment_top" 
+   		 >
+        <TextView  
+             android:layout_width="match_parent"
+   		 	android:layout_height="0dp"
+   		 	 android:textColor="#FFFFFF"
+             android:layout_gravity="center"
+             android:gravity="center"
+   		 	android:textSize="18sp"
+   		 	android:text="13年-11月-20日"
+   		 	android:layout_weight="1"/>
+        <View 
+             android:layout_width="match_parent"
+   		 	android:layout_height="1dp"
+   		 	android:layout_marginRight="65dp"
+   		 	android:layout_marginLeft="65dp"
+   		 	android:background="#FFFFFF"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" >
+
+            <ImageView
+                android:id="@+id/weather_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="83dp"
+                android:src="@drawable/weather_fragment_weather_flag" />
+
+            <TextView
+                android:id="@+id/weather_fragment_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/weather_flag"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="18°C"
+                android:textColor="#FFFFFF"
+                android:textSize="42sp"
+                android:textStyle="bold|italic" />
+
+        </RelativeLayout>
+        
+        <TextView 
+             android:layout_width="wrap_content"
+             android:textSize="20sp"
+             android:textColor="#FFFFFF"
+             android:layout_gravity="center"
+             android:gravity="top"
+             android:text="Water 20°C" 
+   		 	android:layout_height="0dp"
+   		 	android:layout_weight="1"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+         android:layout_width="match_parent"
+   		 android:layout_height="match_parent"
+   		 android:layout_marginTop="10dp"
+   		 android:layout_marginBottom="10dp"
+         android:layout_marginLeft="15dp"
+    	 android:layout_marginRight="15dp"
+    	 android:orientation="vertical"
+   		 android:background="@drawable/weather_fragment_bottom" >
+        
+         <TextView  
+             android:layout_width="match_parent"
+   		 	android:layout_height="0dp"
+   		 	android:layout_weight="1"
+   		 	 android:textColor="#FFFFFF"
+             android:layout_gravity="center"
+             android:gravity="center"
+   		 	android:textSize="18sp"
+   		 	android:text=" cheng du "
+   		 	/>
+        <View 
+             android:layout_width="match_parent"
+   		 	android:layout_height="1dp"
+   		 	android:layout_marginRight="65dp"
+   		 	android:layout_marginLeft="65dp"
+   		 	android:background="#FFFFFF"/>
+        <FrameLayout 
+            android:layout_width="match_parent"
+   		 	android:layout_height="0dp" 
+   		 	android:layout_weight="4" 
+   		 	android:gravity="center">
+            
+            <ImageView 
+            android:layout_width="145dp"
+   		 	android:layout_height="145dp" 
+   		 	android:layout_gravity="center"
+   		 	android:background="@drawable/weather_fragment_bootm_flag_bg"/>
+            <ImageView 
+            android:layout_width="140dp"
+   		 	android:layout_height="140dp" 
+   		 	android:layout_gravity="center"
+   		 	android:background="@drawable/weather_logo"/>
+        </FrameLayout>
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+   		 	android:layout_height="0dp" 
+   		 	android:layout_weight="1"
+   		 	android:background="@drawable/weather_fragment_bootm_button_bg">
+            
+            <LinearLayout 
+                 android:layout_width="0dp"
+   		 		 android:layout_height="match_parent" 
+   		 		 android:layout_weight="1"
+   		 		 android:orientation="vertical"
+   		 		 android:layout_gravity="center">
+                
+                <TextView 
+                     android:layout_width="wrap_content"
+   		 		     android:layout_height="wrap_content"
+   		 		      android:textColor="#353A40"
+		             android:layout_gravity="center"
+		             android:text="PM"
+		             android:gravity="center"
+		   		 	android:textSize="18sp" />
+                
+                <TextView 
+                     android:layout_width="wrap_content"
+   		 		     android:layout_height="wrap_content"
+   		 		      android:textColor="#353A40"
+		             android:layout_gravity="center"
+		             android:text="2.5"
+		             android:gravity="center"
+		   		 	android:textSize="14sp" />
+            </LinearLayout>
+            <View
+                 android:layout_width="1dp"
+   		 		 android:layout_height="match_parent" 
+   		 		 android:paddingTop="10dp"
+   		 		 android:paddingBottom="10dp"
+   		 		 android:background="#CCCCCC" />
+            
+            <LinearLayout 
+                 android:layout_width="0dp"
+   		 		 android:layout_height="match_parent" 
+   		 		 android:layout_weight="1"
+   		 		 android:orientation="vertical">
+                
+                    <TextView 
+                     android:layout_width="wrap_content"
+   		 		     android:layout_height="wrap_content"
+   		 		      android:textColor="#353A40"
+		             android:layout_gravity="center"
+		             android:text="紫外线"
+		             android:gravity="center"
+		   		 	android:textSize="18sp" />
+                
+                <TextView 
+                     android:layout_width="wrap_content"
+   		 		     android:layout_height="wrap_content"
+   		 		      android:textColor="#353A40"
+		             android:layout_gravity="center"
+		             android:text="2.5"
+		             android:gravity="center"
+		   		 	android:textSize="14sp" />
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sendmail_dialog"
+    style="@style/dialog_wrap"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dialogtitlewrap"
+        style="@style/dialog_title_wrap"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dialogtitle"
+            style="@style/dialog_title" />  
+    </LinearLayout>
+
+    <LinearLayout style="@style/dialog_bottom_wrap" >
+
+        <TextView
+            android:id="@+id/sendmail_longclick_delete"
+            style="@style/dialog_onlytext_tail_item"
+            android:text="delete" />
+
+        <TextView
+            android:id="@+id/sendmail_longclick_resend"
+            style="@style/dialog_onlytext_item"
+            android:onClick="onClickMarkStar"
+            android:text="resend" />
+
+        <TextView
+            android:id="@+id/sendmail_longclick_reedit"
+            style="@style/dialog_onlytext_item"
+            android:onClick="onClickTag"
+            android:text="reedit" />
+        
+        <TextView
+            android:id="@+id/sendmail_longclick_star"
+            style="@style/dialog_onlytext_item"
+            android:onClick="onClickTag"
+            android:text="star" />
+
+        <ImageView style="@style/dialog_bottom_line" />
+    </LinearLayout>
+
+</LinearLayout>

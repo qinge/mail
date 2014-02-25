@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+	<item android:id="@+id/context_menu_contacts_remove"
+	    android:orderInCategory="1"
+	    android:title="删除联系人"
+	    android:showAsAction="never"
+	    />
+	<item android:id="@+id/context_menu_contacts_send_mail"
+	     android:orderInCategory="3"
+	    android:title="发送邮件"
+	    android:showAsAction="never"
+	    />
+	<item android:id="@+id/context_menu_contacts_edit"
+	    android:title="修改信息"
+	     android:orderInCategory="2"
+	    android:showAsAction="never"
+	    />
+</menu>

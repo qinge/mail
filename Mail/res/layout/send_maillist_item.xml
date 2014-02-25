@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/maillist_item_warp"
+    android:baselineAligned="false"
+    android:minHeight="82.0dip"
+    android:tag="@string/sendmail_list_view" >
+
+
+    <ImageView  
+        android:id="@+id/sendmaillist_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_alignParentLeft="true" 
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6.0dip"
+        android:background="@drawable/s_icon_status_error"
+        android:contentDescription="@string/app_name"
+        android:duplicateParentState="true" />
+
+    <TextView
+        android:id="@+id/sendmaillist_date"
+        style="@style/list_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+         />
+
+    <ImageView
+        android:id="@+id/sendmaillist_attach"
+        style="@style/mail_list_attach"
+        android:layout_toLeftOf="@id/sendmaillist_date"
+        android:contentDescription="@string/app_name" />
+    
+    <ImageView
+        android:id="@+id/sendmaillist_is_read"
+        style="@style/mail_list_attach"
+        android:layout_toLeftOf="@id/sendmaillist_attach"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:id="@+id/sendmaillist_to"
+        style="@style/content_page_large_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/sendmaillist_attach"
+        android:layout_toRightOf="@id/sendmaillist_status"
+        android:textColor="@color/c_black_to_white" />
+
+    <TextView
+        android:id="@+id/sendmaillist_subject"
+        style="@style/mail_list_item_middleline_text"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginLeft="0.0dip"
+        android:layout_marginTop="2.0dip"
+        android:layout_toRightOf="@id/sendmaillist_status" />
+
+    <TextView
+        android:id="@+id/sendmaillist_abstract"
+        style="@style/content_page_red_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/sendmaillist_status" />
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <color name="dialog_bg">#6a000000</color>
+    <color name="color_hei">#ff000000</color>
+    <color name="transparent">#00000000</color>
+    
+    <color name="allnote_title_color">#ffeeeeee</color>
+    <color name="allnote_title_shadow_color">#00d1ccbc</color>
+    <color name="white">#ffffffff</color>
+    
+    <color name="background_app">#dedede</color>
+
+    <color name="background_list_back">#e3e3e3</color>
+    <color name="background_list_front">#ffffff</color>
+    <color name="text_title">#444444</color>
+    <color name="text_description">#7e7e7e</color>
+
+    <color name="line">#ffbcbcbc</color>
+
+    <color name="background_new_tag">#ff0000</color>
+    <color name="text_new_tag">#ffffff</color>
+    
+    <!-- \\*************      阅读邮件    *******************\\ -->
+    <color name="windowBackground">#fff9f9f9</color>
+    <color name="gray_tip">#ff808080</color>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 阅读邮件时候的底部菜单回复按钮 -->
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@drawable/icon_reply_disable" />
+    <item android:state_selected="true" android:drawable="@drawable/icon_reply_active" />
+    <item android:drawable="@drawable/icon_reply" />
+</selector>

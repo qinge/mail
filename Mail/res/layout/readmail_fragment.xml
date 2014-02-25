@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/windowBackground" >
+
+    <FrameLayout
+        android:id="@+id/readmail_foot_bar"
+        style="@style/nav_bot"
+        android:layout_gravity="bottom" >
+
+        <ImageButton 
+            android:id="@+id/delete_mail"  
+            style="@style/btn_botbar_ope" 
+            android:layout_gravity="left|center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/s_icon_delete_selected" />
+ 
+
+        <ImageButton
+            android:id="@+id/send_read_mail"
+            style="@style/btn_botbar_ope"
+            android:layout_gravity="right|center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/s_icon_reply_selected" />
+    </FrameLayout>
+
+    <include layout="@layout/readmail_content" />
+
+    <LinearLayout
+        android:id="@+id/progressbar_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/footbar_height"
+        android:layout_marginTop="@dimen/topbar_height"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <View
+            android:id="@+id/progressbar_fill"
+            android:layout_width="10.0dip"
+            android:layout_height="10.0dip" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ProgressBar
+                style="@style/icon_loading"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/error_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/footbar_height"
+        android:layout_marginTop="@dimen/topbar_height"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <View
+            android:id="@+id/error_fill"
+            android:layout_width="10.0dip"
+            android:layout_height="10.0dip" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <LinearLayout
+                android:id="@+id/readmail_reload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/list_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="readmail_reload_tips" />
+
+                <Button
+                    style="@style/btn_reload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20.0dip"
+                    android:onClick="onClickReload"
+                    android:text="reload" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/animation_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="top"
+        android:layout_marginBottom="@dimen/footbar_height"
+        android:layout_marginTop="@dimen/topbar_height"
+        android:scaleType="fitXY"
+        android:visibility="gone" />
+
+      <include layout="@layout/general_head_bar" />
+
+</FrameLayout>

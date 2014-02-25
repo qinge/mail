@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inbox_main_area"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/bg_s_2"
+    >
+ 
+    <include layout="@layout/general_head_bar" />
+    
+   <!--   <idv.qin.view.RefreshableView 
+        android:id="@+id/refreshable_view"  
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"
+        > 
+         
+    <ListView
+        android:id="@+id/inbox_refresh_listview"   
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent" 
+        android:layout_gravity="top" 
+        android:fadingEdge="none" />  
+     </idv.qin.view.RefreshableView>  -->
+     
+     <idv.qin.view.PullToRefreshListView
+        android:id="@+id/pull_refresh_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+          
+         
+     </idv.qin.view.PullToRefreshListView>
+
+
+</LinearLayout>
