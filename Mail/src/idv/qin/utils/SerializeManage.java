@@ -33,13 +33,13 @@ public class SerializeManage {
 				OutputStream output = null;
 				ObjectOutputStream objectOutputStream = null;
 				try {
-					if(!dir.exists()){
-						dir.mkdirs();
-					}
 					if(subNameManager != null ){
 						file = new File(dir,file_name+"."+subNameManager.toLowerCase());
 					}else{
 						file = new File(dir,file_name);
+					}
+					if(!file.getParentFile().exists()){
+						file.getParentFile().mkdirs();
 					}
 					output = new FileOutputStream(file);
 					objectOutputStream= new ObjectOutputStream(output);

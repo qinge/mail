@@ -1,12 +1,17 @@
 package idv.qin.doamin;
 
+import java.io.Serializable;
+
 /**
- * ¸½¼þ bean
  * @author qinge
  *
  */
-public class AttachBean {
+public class AttachBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String path;
 	public String name;
 	public ExtraType extraType;
