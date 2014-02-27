@@ -1,13 +1,11 @@
 package idv.qin.mail;
 
 import idv.qin.mail.R;
-import idv.qin.mail.R.id;
-import idv.qin.mail.R.layout;
 import idv.qin.mail.fragmet.HomeFragment;
 import idv.qin.mail.fragmet.InboxFragment;
 import idv.qin.mail.fragmet.SendBoxFragment;
 import idv.qin.mail.fragmet.StartFragment;
-import idv.qin.mail.fragmet.dialog.ValidateDialogFragment;
+import idv.qin.utils.VersionManager;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -43,6 +40,19 @@ public class MainActivity extends Activity {
 	
 	public Handler getHandler(){
 		return handler;
+	}
+
+	
+	/**
+	 * this can resolve exception :  can not perform this action after onsaveinstancestate
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		if(VersionManager.getCurrentVersion() > 11){
+			// do nothing 
+		}else{
+			super.onSaveInstanceState(outState);
+		}
 	}
 
 	@Override

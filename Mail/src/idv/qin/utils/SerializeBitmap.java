@@ -7,13 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
@@ -40,7 +37,7 @@ public class SerializeBitmap {
 		if(!imageCacheDir.exists() ){
 			imageCacheDir.mkdirs();
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss"); // 年月日时分秒
+		SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()); // 年月日时分秒
 		String fileName = format.format(new Date())+".jpg";
 		File file = new File(imageCacheDir, fileName);
 		if(!file.exists()){

@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -20,15 +19,10 @@ public class SerializeManage {
 
 	private SerializeManage(){}
 	/**
-	 * ������󵽴���  ���������߳���
-	 * @param  Object 
-	 *				 obj ���� .
-	 * @param File 
-	 *  			dir ����Ŀ¼ .
-	 * @param String 
- 	 *				file_name �ļ����.
-	 * @param SubNameManager 
-	 * 			   sub_name �����ļ���׺��.
+	 * @param   obj 
+	 * @param  dir
+	 * @param file_name 
+	 * @param   sub_name 
 	 */
 	public static void serializeObject(final Object obj, final File dir, final String file_name, final SubNameManager subNameManager){
 		new Thread(){
@@ -39,6 +33,9 @@ public class SerializeManage {
 				OutputStream output = null;
 				ObjectOutputStream objectOutputStream = null;
 				try {
+					if(!dir.exists()){
+						dir.mkdirs();
+					}
 					if(subNameManager != null ){
 						file = new File(dir,file_name+"."+subNameManager.toLowerCase());
 					}else{
@@ -98,7 +95,6 @@ public class SerializeManage {
 		}
 	}
 
-	/** ��������ļ�ʱ���׺��  */
 	public static enum SubNameManager{
 		BIN {
 			@Override

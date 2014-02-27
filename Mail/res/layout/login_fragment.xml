@@ -59,6 +59,7 @@
                         android:background="#00000000"
                         android:hint="@string/user_name"
                         android:inputType="textEmailAddress"
+                        android:text="http://wenku.baidu.com/view/d185c72458fb770bf78a55ce.html"
                         android:maxLines="1" />
 
                     <Button
@@ -125,13 +126,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
-            android:layout_alignLeft="@id/login_relative"
-            android:layout_alignRight="@id/login_relative"
             android:paddingLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginLeft="2dp"
             android:background="#CCCCCC"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
     <LinearLayout

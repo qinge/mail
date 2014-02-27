@@ -1,7 +1,6 @@
 package idv.qin.refresh;
 
 import android.view.View;
-import android.widget.ImageView;
 
 /**
  * Interface that allows PullToRefreshBase to hijack the call to

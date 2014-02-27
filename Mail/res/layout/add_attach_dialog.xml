@@ -8,6 +8,7 @@
     
     <LinearLayout 
     style="@style/dialog_wrap"
+    
     android:layout_centerInParent="true"
     android:orientation="vertical"
      >
