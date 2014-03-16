@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- /***    联系人编辑界面           *****/ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_edit_main_area"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/general_head_bar" />
+
+
+        <LinearLayout
+            style="@style/layout_margin_style"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/login_input"
+            android:layout_height="50dp" >
+
+            <TextView
+                style="@style/contacts_edit_base_stytle"
+                android:layout_weight=".7"
+                android:text="name : " />
+
+            <EditText
+                android:id="@+id/contacts_edit_name_text"
+                style="@style/contacts_edit_base_stytle"
+                android:layout_weight="2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@null"
+                android:hint="name"
+                android:imeOptions="actionNext"
+                android:gravity="left|center_vertical"
+                android:layout_marginBottom="0dp"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/layout_margin_style"
+            android:layout_width="match_parent"
+            android:background="@drawable/login_input"
+            android:layout_marginTop="20dp"
+            android:layout_height="50dp" >
+
+            <TextView
+                style="@style/contacts_edit_base_stytle"
+                android:layout_weight=".7"
+                android:text="name : " />
+
+            <EditText
+                android:id="@+id/contacts_edit_address_text"
+                style="@style/contacts_edit_base_stytle"
+                android:layout_weight="2"
+                android:paddingLeft="5dp"
+                android:background="@null"
+                android:hint="email address"
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionDone"
+                android:gravity="left|center_vertical"
+                
+                android:paddingRight="5dp" />
+        </LinearLayout>
+        
+        
+        <LinearLayout
+            style="@style/layout_margin_style"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_height="50dp" >
+
+            
+            <Button
+                android:id="@+id/contacts_edit_save_button"
+                style="@style/contacts_edit_base_stytle"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/edit_result_button_selector"
+                android:textSize="17sp"
+                android:text="保存" />
+
+            <Button
+                android:id="@+id/contacts_edit_reset_button"
+                style="@style/contacts_edit_base_stytle"
+                 android:layout_marginLeft="5dp"
+                android:text="重置"
+                android:textSize="17sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/edit_result_button_selector"
+                android:layout_weight="1"
+                 />
+        </LinearLayout>
+
+</LinearLayout>

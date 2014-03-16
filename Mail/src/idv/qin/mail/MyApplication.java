@@ -1,5 +1,6 @@
 package idv.qin.mail;
 
+import idv.qin.db.DBHelperManager;
 import idv.qin.utils.CacheManager;
 import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.OutAnimationUtil;
@@ -25,6 +26,8 @@ import android.app.Application;
  */
 public class MyApplication extends Application {
 
+	private static DBHelperManager dbHelperManager;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -32,12 +35,23 @@ public class MyApplication extends Application {
 		loadOutAnimation();
 		acceptInputMethodManager();
 		initCacheFilePath();
+		initDataBase();
 	}
 
 	
+	private void initDataBase() {
+		// TODO Auto-generated method stub
+		dbHelperManager = new DBHelperManager(getApplicationContext());
+	}
 
-	
 
+	/**
+	 * 获取数据库操作管理实例 可直接调用该对象存储或修改数据
+	 * @return
+	 */
+	public static DBHelperManager getDbHelperManager() {
+		return dbHelperManager;
+	}
 
 
 	private void initImageLoaderConfiguration() {

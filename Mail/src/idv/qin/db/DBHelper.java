@@ -6,7 +6,8 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * 这里并没有对数据库加密 数据有可能会泄露 。如果需要加密请参考 
+ * 不需要手动创建该实例 创建 {@link DBHelperManager } 的时候会创建 
+ * 这里并没有对数据库加密 数据有可能会泄露 。如果需要加密请参考 <br>
  * 	{@linkplain http://blog.csdn.net/guolin_blog/article/details/11952409}
  * @author qin
  *

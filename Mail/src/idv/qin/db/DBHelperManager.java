@@ -2,14 +2,22 @@ package idv.qin.db;
 
 import java.util.List;
 
-import idv.qin.doamin.Contacts;
+import idv.qin.doamin.ContactsBean;
+import idv.qin.mail.MyApplication;
+import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.utils.MyLog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DBHelperManager <T>{
+/**
+ * 数据库操作实例类 创建该对象时候会创建一个 {@link DBHelper } <br>
+ * 该对象到创建由 {@link MyApplication} 创建 由 {@link BaseFragment} 中获取 并由其子类调用
+ * @author qinge
+ *
+ */
+public class DBHelperManager {
 
 	private DBHelper dbHelper;
 	private SQLiteDatabase database = null;
@@ -18,12 +26,13 @@ public class DBHelperManager <T>{
 		dbHelper = new DBHelper(context);
 	}
 	
+	
 	/**
 	 * 
 	 * @param contacts
 	 * @return
 	 */
-	public boolean insert(Contacts contacts){
+	public boolean insert(ContactsBean contacts){
 		if(contacts == null ){
 			return false;
 		}
@@ -54,7 +63,7 @@ public class DBHelperManager <T>{
 	 * @param contacts 联系人 .
 	 * @param contentValues 
 	 */
-	private void inflateContentValue(Contacts contacts,
+	private void inflateContentValue(ContactsBean contacts,
 			ContentValues contentValues) {
 		contentValues.put("name", contacts.name);
 		contentValues.put("mail_address", contacts.mail_address);
@@ -86,7 +95,7 @@ public class DBHelperManager <T>{
 	 * @param contacts
 	 * @return
 	 */
-	public boolean update(Contacts contacts){
+	public boolean update(ContactsBean contacts){
 		try {
 			database = dbHelper.getWritableDatabase();
 			database.execSQL("update user set name = ? , mail_address = ? where _id = ? ",
@@ -109,17 +118,17 @@ public class DBHelperManager <T>{
 	 * @param id
 	 * @return T
 	 */
-	public T find(int id){
+	public ContactsBean find(int id){
 		try {
 			database = dbHelper.getReadableDatabase();
 			Cursor cursor = database.rawQuery("select * from user u where u._id=?", new String [] {id+""});
 			if(cursor.moveToFirst()){
-				Contacts contacts = new Contacts();
+				ContactsBean contacts = new ContactsBean();
 				contacts.id = cursor.getInt(cursor.getColumnIndex("_id"));
 				contacts.name = cursor.getString(cursor.getColumnIndex("name"));
 				contacts.mail_address = cursor.getString(cursor.getColumnIndex("mail_address"));
 				cursor.close();
-				return (T) contacts;
+				return contacts;
 			}
 		} catch (Exception e) {
 			MyLog.e("DBHelperManager-->find(~)",e.getMessage());
@@ -152,10 +161,10 @@ public class DBHelperManager <T>{
 	 * @param offset
 	 * @param maxResult
 	 */
-	public void getScrollDataAndInflateCollection(List<Contacts> ts , int offset,int maxResult){
+	public void getScrollDataAndInflateCollection(List<ContactsBean> ts , int offset,int maxResult){
 		Cursor cursor = this.getScrollData(offset, maxResult);
 		while(cursor.moveToNext()){
-			Contacts contacts = new Contacts();
+			ContactsBean contacts = new ContactsBean();
 			contacts.id = cursor.getInt(cursor.getColumnIndex("_id"));
 			contacts.name = cursor.getString(cursor.getColumnIndex("name"));
 			contacts.mail_address = cursor.getString(cursor.getColumnIndex("mail_address"));

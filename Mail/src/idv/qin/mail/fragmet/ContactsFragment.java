@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,19 +26,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ContactsFragment extends BaseFragment {
+public class ContactsFragment extends BaseFragment implements OnClickListener{
 
 	
 	public static final String CONTACTS_FRAGMENT_TAG = "ContactsFragment";
+	private Button backButton;
+	private Button editButton;
+	
 	private ListView sortListView;
 	private SideBar sideBar;
 	/** 
@@ -89,13 +95,18 @@ public class ContactsFragment extends BaseFragment {
 	
 
 	private void initViews() {
-		 //实例化汉字转拼音类  
-       characterParser = CharacterParser.getInstance();  
-       pinyinComparator = new PinyinComparator();  
+		backButton = (Button) currentView.findViewById(R.id.head_bar_back);
+		backButton.setOnClickListener(this);
+		editButton = (Button) currentView.findViewById(R.id.head_bar_ok);
+		editButton.setOnClickListener(this);
+		
+		//实例化汉字转拼音类  
+		characterParser = CharacterParser.getInstance();  
+		pinyinComparator = new PinyinComparator();  
        
-       sideBar = (SideBar) currentView.findViewById(R.id.sidrbar);  
-       dialog = (TextView) currentView.findViewById(R.id.dialog);  
-       sideBar.setTextView(dialog);  
+	    sideBar = (SideBar) currentView.findViewById(R.id.sidrbar);  
+	    dialog = (TextView) currentView.findViewById(R.id.dialog);  
+	    sideBar.setTextView(dialog);  
        
        //设置右侧触摸监听  
        sideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
@@ -245,6 +256,34 @@ public class ContactsFragment extends BaseFragment {
 		 // 根据a-z进行排序  
        Collections.sort(filterDateList, pinyinComparator);  
        adapter.updateListView(filterDateList); 
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.head_bar_back:
+			backPrevPage(R.id.contacts_main_area);
+			break;
+		case R.id.head_bar_ok:
+			startAddContacts();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	/**
+	 * 添加联系人
+	 */
+	private void startAddContacts() {
+		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		ContactsEditFragment fragment = new ContactsEditFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.add(MainActivity.MAIN_AREA, fragment,ContactsEditFragment.CONTACTS_EDIT_FRAGMENT_TAG);
+		transaction.addToBackStack(ContactsEditFragment.CONTACTS_EDIT_FRAGMENT_TAG);
+		transaction.commit();
 	}
 
 	

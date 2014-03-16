@@ -5,7 +5,7 @@ import java.util.List;
 
 import idv.qin.db.DBHelper;
 import idv.qin.db.DBHelperManager;
-import idv.qin.doamin.Contacts;
+import idv.qin.doamin.ContactsBean;
 import android.test.AndroidTestCase;
 
 public class ContactsTest extends AndroidTestCase {
@@ -17,7 +17,7 @@ public class ContactsTest extends AndroidTestCase {
 	
 	public void testAdd() throws Exception{
 		for(int i=0; i < 20 ; i++){
-			Contacts contacts = new Contacts();
+			ContactsBean contacts = new ContactsBean();
 			contacts.name = "xiao名_"+i;
 			contacts.mail_address = "fdfs@sina.com";
 			DBHelperManager dbHelperManager = new DBHelperManager(getContext());
@@ -26,33 +26,33 @@ public class ContactsTest extends AndroidTestCase {
 	}
 	
 	public void testFind() throws Exception{
-		DBHelperManager<Contacts> dbHelperManager = new DBHelperManager<Contacts>(getContext());
-		Contacts contacts = dbHelperManager.find(1);
+		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
+		ContactsBean contacts = dbHelperManager.find(1);
 		System.out.println(contacts);
 	}
 	
 	public void testUpdate() throws Exception{
-		DBHelperManager<Contacts> dbHelperManager = new DBHelperManager<Contacts>(getContext());
-		Contacts contacts = dbHelperManager.find(1);
+		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
+		ContactsBean contacts = dbHelperManager.find(1);
 		contacts.name = "uuuu";
 		dbHelperManager.update(contacts);
 	}
 	
 	
 	public void testDelete() throws Exception{
-		DBHelperManager<Contacts> dbHelperManager = new DBHelperManager<Contacts>(getContext());
+		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
 		dbHelperManager.delete(1);
 	}
 	
 	public void testGetCount() throws Exception{
-		DBHelperManager<Contacts> dbHelperManager = new DBHelperManager<Contacts>(getContext());
+		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
 		System.out.println("---------------->>>>>> " + dbHelperManager.getCount());
 	}
 	
 	
 	public void testScrollData() throws Exception{
-		DBHelperManager<Contacts> dbHelperManager = new DBHelperManager<Contacts>(getContext());
-		List<Contacts> contacts = new ArrayList<Contacts>();
+		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
+		List contacts = new ArrayList();
 		dbHelperManager.getScrollDataAndInflateCollection(contacts, 6, 14);
 		System.out.println("---------------->>>>>> " + contacts);
 	}

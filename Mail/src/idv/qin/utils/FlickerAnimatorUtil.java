@@ -6,12 +6,21 @@ import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
+/**
+ * 图标点击闪动工具类
+ * @author qinge
+ *
+ */
 public class FlickerAnimatorUtil {
 	private static final int ANIMATOR_DURATION = 500;
 
 	private FlickerAnimatorUtil(){}
 	
-	
+	/**
+	 * 闪动 view 
+	 * @param view
+	 * @param flickerAnimatorStateListener 可为 null 
+	 */
 	public static void flickerView(final View view, final FlickerAnimatorStateListener flickerAnimatorStateListener){
 		if(view == null){
 			return ;
@@ -69,6 +78,11 @@ public class FlickerAnimatorUtil {
 		void flickerAnimatorEnd();
 	}
 	
+	/**
+	 * 闪动监听到适配器类 
+	 * @author qinge
+	 *
+	 */
 	public static class FlickerAnimatorStateAdapter implements FlickerAnimatorStateListener{
 
 		@Override

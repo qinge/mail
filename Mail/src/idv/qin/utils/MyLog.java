@@ -2,6 +2,11 @@ package idv.qin.utils;
 
 import android.util.Log;
 
+/**
+ * 自定义 log 类
+ * @author qinge
+ *
+ */
 public class MyLog {
 
 	public static void i(String tag, String message){

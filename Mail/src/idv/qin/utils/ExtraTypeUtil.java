@@ -2,6 +2,11 @@ package idv.qin.utils;
 
 import idv.qin.doamin.ExtraType;
 
+/**
+ * 解析邮件中附件到类型
+ * @author qinge
+ *
+ */
 public class ExtraTypeUtil {
 	
 	private ExtraTypeUtil(){}

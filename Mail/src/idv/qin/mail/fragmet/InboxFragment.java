@@ -8,7 +8,7 @@ import idv.qin.doamin.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
-import idv.qin.utils.HandlerUtil;
+import idv.qin.utils.CustomHandler;
 import idv.qin.utils.OutAnimationUtil;
 import idv.qin.view.PullToRefreshListView;
 import android.app.FragmentTransaction;
@@ -29,8 +29,8 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
 	private ListView listView;
 	private PullToRefreshListView mPullRefreshListView;
-	private Button button_ok;
-	private Button button_back;
+	private Button buttonOk;
+	private Button buttonBack;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,10 +72,10 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	private void initComponent() {
 		mPullRefreshListView = (PullToRefreshListView)currentView.findViewById(R.id.pull_refresh_list);
-		button_ok = (Button) currentView.findViewById(R.id.head_bar_ok);
-		button_ok.setOnClickListener(this);
-		button_back = (Button) currentView.findViewById(R.id.head_bar_back);
-		button_back.setOnClickListener(this);
+		buttonOk = (Button) currentView.findViewById(R.id.head_bar_ok);
+		buttonOk.setOnClickListener(this);
+		buttonBack = (Button) currentView.findViewById(R.id.head_bar_back);
+		buttonBack.setOnClickListener(this);
 	}
 	
 	private void processRefreshAction() {
@@ -135,10 +135,10 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	}
 	
 
-	private class ReceiverHandler extends HandlerUtil{
+	private class ReceiverHandler extends CustomHandler{
 
 		@Override
-		public void hookSuccess(Message msg) {
+		public void success(Message msg) {
 			if(msg == null){
 				return ;
 			}
@@ -152,7 +152,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		}
 
 		@Override
-		public void hookFail(Message msg) {
+		public void fail(Message msg) {
 			
 		}
 

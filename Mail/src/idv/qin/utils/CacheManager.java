@@ -3,6 +3,7 @@ package idv.qin.utils;
 import java.io.File;
 
 /**
+ * 缓存的文件夹目录
  * @author qinge
  *
  */

@@ -1,7 +1,10 @@
 package idv.qin.mail.fragmet;
 
+import idv.qin.db.DBHelperManager;
 import idv.qin.mail.MainActivity;
+import idv.qin.mail.MyApplication;
 import idv.qin.mail.R;
+import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.OutAnimationUtil;
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -17,6 +20,7 @@ public class BaseFragment extends Fragment {
 
 	protected MainActivity mainActivity;
 	protected View currentView;
+	protected DBHelperManager dbHelperManager = MyApplication.getDbHelperManager();
 	protected DisplayMetrics displayMetrics = new DisplayMetrics();
 	
 	protected static ImageLoader imageLoader = ImageLoader.getInstance();
@@ -27,12 +31,14 @@ public class BaseFragment extends Fragment {
 			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
 
 	/**
+	 * 查找 fragment 中根 view 然后添加滑出动画 然后弹出堆栈
 	 * use super method 
 	 */
 	public void backPrevPage(int mainAreaId) {
 
 		View view = currentView.findViewById(mainAreaId);
 		if (view != null) {
+			InputMethodUtil.HideInputMethod(view);
 			Animation animation = OutAnimationUtil.getOutAnimation();
 			animation.setAnimationListener(new AnimationListener() {
 
