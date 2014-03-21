@@ -1,6 +1,7 @@
 package idv.qin.mail.fragmet;
 
 import idv.qin.adapter.SortAdapter;
+import idv.qin.doamin.ContactsBean;
 import idv.qin.doamin.SortModel;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.FragmentTransaction;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -57,7 +59,8 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
      * 汉字转换成拼音的类 
      */  
     private CharacterParser characterParser;  
-    private List<SortModel> SourceDateList;  
+//    private List<SortModel> SourceDateList;  
+    private List<ContactsBean> SourceDateList;  
     
     /** 
      * 根据拼音来排列ListView里面的数据类 
@@ -98,6 +101,9 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 		backButton = (Button) currentView.findViewById(R.id.head_bar_back);
 		backButton.setOnClickListener(this);
 		editButton = (Button) currentView.findViewById(R.id.head_bar_ok);
+		editButton.setText(mainActivity.getResources().
+				getString(R.string.contacts_button_edit_text)
+			);
 		editButton.setOnClickListener(this);
 		
 		//实例化汉字转拼音类  
@@ -128,12 +134,13 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
            public void onItemClick(AdapterView<?> parent, View view,  
                    int position, long id) {  
                //这里要利用adapter.getItem(position)来获取当前position所对应的对象  
-               Toast.makeText(mainActivity, ((SortModel)adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();  
+               Toast.makeText(mainActivity, ((ContactsBean)adapter.getItem(position)).toString(), Toast.LENGTH_SHORT).show();  
            }  
        });  
        
-       SourceDateList = filledData(getResources().getStringArray(R.array.date));
-       
+//       SourceDateList = filledData(getResources().getStringArray(R.array.date));
+       addTestData(getResources().getStringArray(R.array.date));
+       SourceDateList = fetchData();
        // 根据a-z进行排序源数据  
        Collections.sort(SourceDateList, pinyinComparator);
        adapter = new SortAdapter(SourceDateList, mainActivity);
@@ -181,16 +188,16 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		SortModel model = (SortModel) adapter.getItem(info.position);
+		ContactsBean model = (ContactsBean) adapter.getItem(info.position);
 	    switch (item.getItemId()) {
 	        case R.id.context_menu_contacts_remove:
-	        	Toast.makeText(mainActivity, "remove " + model.getName(), 0).show();
+	        	Toast.makeText(mainActivity, "remove " + model.name, 0).show();
 	            return true;
 	        case R.id.context_menu_contacts_edit:
-	        	Toast.makeText(mainActivity, "edit"+ model.getName(), 0).show();
+	        	Toast.makeText(mainActivity, "edit"+ model.name, 0).show();
 	        	return true;
 	        case R.id.context_menu_contacts_send_mail:
-	        	Toast.makeText(mainActivity, "send"+ model.getName(), 0).show();
+	        	Toast.makeText(mainActivity, "send"+ model.name, 0).show();
 	            return true;
 	        default:
 	            return super.onContextItemSelected(item);
@@ -239,14 +246,14 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
     * @param filterStr 
     */  
 	private void filterData(String filterStr) {
-		List<SortModel> filterDateList = new ArrayList<SortModel>();
+		List<ContactsBean> filterDateList = new ArrayList<ContactsBean>();
 		
 		if(TextUtils.isEmpty(filterStr)){
 			filterDateList = SourceDateList;
 		}else{
 			filterDateList.clear();
-			for( SortModel sortModel : SourceDateList){
-				String name = sortModel.getName();
+			for( ContactsBean sortModel : SourceDateList){
+				String name = sortModel.name;
 				if(name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1
 						|| characterParser.getSelling(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())){
 					filterDateList.add(sortModel);
@@ -265,7 +272,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 			backPrevPage(R.id.contacts_main_area);
 			break;
 		case R.id.head_bar_ok:
-			startAddContacts();
+			startAddContactsEditFragment();
 			break;
 
 		default:
@@ -275,15 +282,57 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	}
 
 	/**
-	 * 添加联系人
+	 * 跳转到添加联系人界面
 	 */
-	private void startAddContacts() {
+	private void startAddContactsEditFragment() {
 		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
 		ContactsEditFragment fragment = new ContactsEditFragment();
 		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
 		transaction.add(MainActivity.MAIN_AREA, fragment,ContactsEditFragment.CONTACTS_EDIT_FRAGMENT_TAG);
 		transaction.addToBackStack(ContactsEditFragment.CONTACTS_EDIT_FRAGMENT_TAG);
 		transaction.commit();
+	}
+	
+	
+	/**
+	 * 添加测试数据
+	 */
+	private void addTestData(String[] data){
+		if(dbHelperManager.getCount() > 0){
+			return ;
+		}
+		for(int i=0; i< data.length; i++){
+			ContactsBean contacts = new ContactsBean();
+			contacts.name = data[i];
+			contacts.mail_address = "1241303415@qq.com";
+			dbHelperManager.insert(contacts);
+		}
+	}
+	
+	
+	private List<ContactsBean> fetchData(){
+		List<ContactsBean> contactsBeans = new ArrayList<ContactsBean>();
+		Cursor cursor = dbHelperManager.getScrollData(0, 300);
+		while (cursor.moveToNext()) {
+			ContactsBean contactsBean = new ContactsBean();
+			contactsBean.id = cursor.getInt(cursor.getColumnIndex("_id"));
+			contactsBean.name = cursor.getString(cursor.getColumnIndex("name"));
+			contactsBean.mail_address = cursor.getString(cursor.getColumnIndex("mail_address"));
+			// 汉字转换成拼音  
+			String pinyin = characterParser.getSelling(contactsBean.name);
+			String sortString = pinyin.substring(0, 1).toUpperCase();
+			
+			// 正则表达式，判断首字母是否是英文字母  
+	       if(sortString.matches("[A-Z]")){  
+	    	   contactsBean.sortLetters = (sortString.toUpperCase());  
+	       }else{  
+	    	   contactsBean.sortLetters = "#";  
+	       }  
+	       
+	       contactsBeans.add(contactsBean);
+		}
+		cursor.close();
+		return contactsBeans;
 	}
 
 	

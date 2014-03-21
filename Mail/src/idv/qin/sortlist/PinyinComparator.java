@@ -1,20 +1,20 @@
 package idv.qin.sortlist;
 
-import idv.qin.doamin.SortModel;
+import idv.qin.doamin.ContactsBean;
 
 import java.util.Comparator;
 
-public class PinyinComparator implements Comparator<SortModel> {
+public class PinyinComparator implements Comparator<ContactsBean> {
 
 	@Override
-	public int compare(SortModel o1, SortModel o2) {
+	public int compare(ContactsBean bean_1, ContactsBean bean_2) {
 		//这里主要是用来对ListView里面的数据根据ABCDEFG...来排序  
-		if(o2.getSortLetters().equals("#")){
+		if(bean_2.sortLetters.equals("#")){
 			return -1;
-		}else if(o1.getSortLetters().equals("#")){
+		}else if(bean_1.sortLetters.equals("#")){
 			return 1;
 		}else{
-			return o1.getSortLetters().compareTo(o2.getSortLetters());
+			return bean_1.sortLetters.compareTo(bean_2.sortLetters);
 		}
 	}
 

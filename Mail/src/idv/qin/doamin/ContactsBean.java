@@ -8,12 +8,15 @@ public class ContactsBean {
 	
 	public String name;
 	public String mail_address;
+	/** 用于排序的关键字段*/
+	public String sortLetters;
 	
 	@Override
 	public String toString() {
-		return "Contacts [id=" + id + ", name=" + name + ", mail_address="
-				+ mail_address + "]";
+		return "ContactsBean [id=" + id + ", name=" + name + ", mail_address="
+				+ mail_address + ", sortLetters=" + sortLetters + "]";
 	}
+	
 	
 	
 }

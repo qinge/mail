@@ -1,6 +1,6 @@
 package idv.qin.adapter;
 
-import idv.qin.doamin.SortModel;
+import idv.qin.doamin.ContactsBean;
 import idv.qin.mail.R;
 
 import java.util.List;
@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 public class SortAdapter extends BaseAdapter implements SectionIndexer {
 
-	private List<SortModel> list = null;
+	private List<ContactsBean> list = null;
 	private Context context;
 	private LayoutInflater inflater;
 	
 	
-	public SortAdapter(List<SortModel> list, Context context) {
+	public SortAdapter(List<ContactsBean> list, Context context) {
 		this.list = list;
 		this.context = context;
 		if(this.context != null){
@@ -32,7 +32,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
      * 当ListView数据发生变化时,调用此方法来更新ListView 
      * @param list 
      */  
-    public void updateListView(List<SortModel> list){  
+    public void updateListView(List<ContactsBean> list){  
         this.list = list;  
         notifyDataSetChanged();  
     }  
@@ -58,7 +58,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
 			return null;
 		}
 		ViewHolder viewHolder = null;  
-        final SortModel mContent = list.get(position);  
+        final ContactsBean mContent = list.get(position);  
         if (convertView == null) {  
             viewHolder = new ViewHolder();  
             convertView = inflater.inflate(R.layout.sort_list_item, null);  
@@ -75,12 +75,12 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         // 如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现  
         if(position == getPositionForSection(section)){
         	viewHolder.tvLetter.setVisibility(View.VISIBLE);  
-            viewHolder.tvLetter.setText(mContent.getSortLetters());  
+            viewHolder.tvLetter.setText(mContent.sortLetters);  
         }else{  
             viewHolder.tvLetter.setVisibility(View.GONE);  
         }  
         
-        viewHolder.tvTitle.setText(this.list.get(position).getName()); 
+        viewHolder.tvTitle.setText(this.list.get(position).name); 
         
 		return convertView;
 	}
@@ -101,7 +101,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
 	@Override
 	public int getPositionForSection(int section) {
 		for(int i = 0 ; i < getCount() ; i++){
-			String sortStr = list.get(i).getSortLetters();
+			String sortStr = list.get(i).sortLetters;
 			char firstChar = sortStr.toUpperCase().charAt(0);
 			if(firstChar == section){
 				return i;
@@ -115,7 +115,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
      */ 
 	@Override
 	public int getSectionForPosition(int position) {
-		return list.get(position).getSortLetters().charAt(0);
+		return list.get(position).sortLetters.charAt(0);
 	}
 
 }

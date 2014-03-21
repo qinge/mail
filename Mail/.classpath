@@ -9,6 +9,5 @@
 	<classpathentry kind="lib" path="libs/additionnal.jar"/>
 	<classpathentry kind="lib" path="libs/mail.jar"/>
 	<classpathentry kind="src" path="/mail_lib_swipelistview"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

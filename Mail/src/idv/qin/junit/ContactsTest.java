@@ -6,6 +6,7 @@ import java.util.List;
 import idv.qin.db.DBHelper;
 import idv.qin.db.DBHelperManager;
 import idv.qin.doamin.ContactsBean;
+import idv.qin.utils.MyLog;
 import android.test.AndroidTestCase;
 
 public class ContactsTest extends AndroidTestCase {
@@ -29,6 +30,7 @@ public class ContactsTest extends AndroidTestCase {
 		DBHelperManager dbHelperManager = new DBHelperManager(getContext());
 		ContactsBean contacts = dbHelperManager.find(1);
 		System.out.println(contacts);
+		MyLog.e("------test---", contacts.toString());
 	}
 	
 	public void testUpdate() throws Exception{

@@ -22,7 +22,7 @@
             <TextView
                 style="@style/contacts_edit_base_stytle"
                 android:layout_weight=".7"
-                android:text="name : " />
+                android:text="@string/contactsedit_text_name_title" />
 
             <EditText
                 android:id="@+id/contacts_edit_name_text"
@@ -32,6 +32,7 @@
                 android:paddingRight="5dp"
                 android:background="@null"
                 android:hint="name"
+                android:singleLine="true"
                 android:imeOptions="actionNext"
                 android:gravity="left|center_vertical"
                 android:layout_marginBottom="0dp"
@@ -48,7 +49,7 @@
             <TextView
                 style="@style/contacts_edit_base_stytle"
                 android:layout_weight=".7"
-                android:text="name : " />
+                android:text="@string/contactsedit_text_mail_title" />
 
             <EditText
                 android:id="@+id/contacts_edit_address_text"
@@ -56,6 +57,7 @@
                 android:layout_weight="2"
                 android:paddingLeft="5dp"
                 android:background="@null"
+                 android:singleLine="true"
                 android:hint="email address"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionDone"
