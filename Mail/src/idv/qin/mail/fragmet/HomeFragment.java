@@ -130,7 +130,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		case R.id.draft_box_icon: //草稿箱
 			FlickerAnimatorUtil.flickerView(draft_box_icon, null);
 			break;
-		case R.id.contacts_icon:
+		case R.id.contacts_icon:  // 联系人
 			FlickerAnimatorUtil.flickerView(contacts_icon, null);
 			startContactsFragment();
 			break;

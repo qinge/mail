@@ -16,6 +16,10 @@ import android.view.animation.Animation.AnimationListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+/**
+ * 基本的 Fragment 如果需要刷新前一个 Fragment 中数据时候可以 调用并覆盖<br> 
+ * {@link refreshPrePage() }
+ */
 public class BaseFragment extends Fragment {
 
 	protected MainActivity mainActivity;
@@ -59,5 +63,14 @@ public class BaseFragment extends Fragment {
 				view.startAnimation(OutAnimationUtil.getOutAnimation());
 		}
 	}
+	
+	/**
+	 *  如果需要刷新数据则覆盖该方法
+	 */
+	public void refreshPrePage() {
+	}
+
+
+
 
 }

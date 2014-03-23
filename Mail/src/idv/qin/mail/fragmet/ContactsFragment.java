@@ -5,7 +5,7 @@ import idv.qin.doamin.ContactsBean;
 import idv.qin.doamin.SortModel;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
-import idv.qin.sortlist.CharacterParser;
+ import idv.qin.sortlist.CharacterParser;
 import idv.qin.sortlist.PinyinComparator;
 import idv.qin.view.ClearEditText;
 import idv.qin.view.SideBar;
@@ -40,8 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ContactsFragment extends BaseFragment implements OnClickListener{
-
-	
 	public static final String CONTACTS_FRAGMENT_TAG = "ContactsFragment";
 	private Button backButton;
 	private Button editButton;
@@ -191,12 +189,15 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 		ContactsBean model = (ContactsBean) adapter.getItem(info.position);
 	    switch (item.getItemId()) {
 	        case R.id.context_menu_contacts_remove:
+	        	processRemoveEvent();
 	        	Toast.makeText(mainActivity, "remove " + model.name, 0).show();
 	            return true;
 	        case R.id.context_menu_contacts_edit:
+	        	processEditEvent();
 	        	Toast.makeText(mainActivity, "edit"+ model.name, 0).show();
 	        	return true;
 	        case R.id.context_menu_contacts_send_mail:
+	        	processSendMailEvent();
 	        	Toast.makeText(mainActivity, "send"+ model.name, 0).show();
 	            return true;
 	        default:
@@ -204,6 +205,22 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	    }
 	}
 
+
+	private void processRemoveEvent() {
+		
+	}
+	
+
+	private void processEditEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void processSendMailEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void processTouchEvent() {
 		currentView.setOnTouchListener(new OnTouchListener() {
 			
@@ -335,5 +352,14 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 		return contactsBeans;
 	}
 
+	@Override
+	public void refreshPrePage() {
+		if(adapter != null){
+			 SourceDateList = fetchData();
+		       // 根据a-z进行排序源数据  
+		       Collections.sort(SourceDateList, pinyinComparator);
+			adapter.updateListView(SourceDateList);
+		}
+	}
 	
 }

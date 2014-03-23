@@ -32,8 +32,11 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
      * 当ListView数据发生变化时,调用此方法来更新ListView 
      * @param list 
      */  
-    public void updateListView(List<ContactsBean> list){  
-        this.list = list;  
+    public void updateListView(List<ContactsBean> list){ 
+    	if(this.list != null && list != null){
+    		this.list.clear();
+    		this.list.addAll(list);
+    	}
         notifyDataSetChanged();  
     }  
 
