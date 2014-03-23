@@ -1,4 +1,4 @@
-package idv.qin.mail.fragmet.dialog;
+package idv.qin.view;
 
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;

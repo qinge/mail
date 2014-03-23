@@ -1,4 +1,4 @@
-package idv.qin.doamin;
+package idv.qin.domain;
 
 /** 联系人实体类  */
 public class ContactsBean {

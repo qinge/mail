@@ -2,16 +2,16 @@ package idv.qin.mail.fragmet;
 
 import idv.qin.adapter.NewMailExtraAdapter;
 import idv.qin.core.SendMailService;
-import idv.qin.doamin.AttachBean;
-import idv.qin.doamin.ExtraType;
-import idv.qin.doamin.SendMessageBean;
+import idv.qin.domain.AttachBean;
+import idv.qin.domain.ExtraType;
+import idv.qin.domain.SendMessageBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
-import idv.qin.mail.fragmet.dialog.AttachFragment;
-import idv.qin.mail.fragmet.dialog.AttachFragment.ExtraedListener;
 import idv.qin.utils.ExtraTypeUtil;
 import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.MyBuildConfig;
+import idv.qin.view.AttachFragment;
+import idv.qin.view.AttachFragment.ExtraedListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,8 +56,8 @@ public class WriteMailFragment extends BaseFragment implements View.OnClickListe
 	private GridView gridView;
 	private BaseAdapter adapter;
 	
-	private List<AttachBean> attachBeans;  //¸½¼þ
-	private List<AttachBean> innerAttachBeans; // ÄÚÇ¶×ÊÔ´
+	private List<AttachBean> attachBeans;  //ï¿½ï¿½ï¿½ï¿½
+	private List<AttachBean> innerAttachBeans; // ï¿½ï¿½Ç¶ï¿½ï¿½Ô´
 	
 	
 	

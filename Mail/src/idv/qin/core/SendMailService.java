@@ -1,6 +1,6 @@
 package idv.qin.core;
 
-import idv.qin.doamin.SendMessageBean;
+import idv.qin.domain.SendMessageBean;
 import idv.qin.utils.AuthUtil;
 import idv.qin.utils.CacheManager;
 import idv.qin.utils.MyBuildConfig;

@@ -1,7 +1,7 @@
 package idv.qin.core;
 
-import idv.qin.doamin.MailMessageBean;
-import idv.qin.doamin.MailMessageBean.MailHeadBean;
+import idv.qin.domain.MailMessageBean;
+import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;

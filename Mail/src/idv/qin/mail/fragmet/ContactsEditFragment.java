@@ -1,6 +1,6 @@
 package idv.qin.mail.fragmet;
 
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.utils.CommonUtil;
@@ -121,6 +121,11 @@ public class ContactsEditFragment extends BaseFragment implements OnClickListene
 				upDateContacts();
 			}else{
 				saveContacts();
+			}
+			ContactsFragment contactsFragment = (ContactsFragment) mainActivity.
+					getFragmentManager().findFragmentByTag(ContactsFragment.CONTACTS_FRAGMENT_TAG);
+			if(contactsFragment != null){
+				contactsFragment.refreshPageData();
 			}
 			backPrevPage(R.id.contacts_edit_main_area);
 			break;

@@ -1,6 +1,6 @@
 package idv.qin.utils;
 
-import idv.qin.doamin.SendMessageBean;
+import idv.qin.domain.SendMessageBean;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -2,7 +2,7 @@ package idv.qin.db;
 
 import java.util.List;
 
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 import idv.qin.mail.MyApplication;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.utils.MyLog;

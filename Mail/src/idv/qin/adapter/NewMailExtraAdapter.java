@@ -1,7 +1,7 @@
 package idv.qin.adapter;
 
-import idv.qin.doamin.AttachBean;
-import idv.qin.doamin.ExtraType;
+import idv.qin.domain.AttachBean;
+import idv.qin.domain.ExtraType;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 

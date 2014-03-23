@@ -1,4 +1,4 @@
-package idv.qin.mail.fragmet.dialog;
+package idv.qin.view;
 
 import java.io.File;
 import java.io.IOException;

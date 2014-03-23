@@ -2,9 +2,9 @@ package idv.qin.mail.fragmet;
 
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
-import idv.qin.mail.fragmet.dialog.ValidateDialogFragment;
 import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.RoundBitmapUtil;
+import idv.qin.view.ValidateDialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Resources;

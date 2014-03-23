@@ -1,6 +1,6 @@
 package idv.qin.utils;
 
-import idv.qin.doamin.ExtraType;
+import idv.qin.domain.ExtraType;
 
 /**
  * 解析邮件中附件到类型

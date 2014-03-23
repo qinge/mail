@@ -1,7 +1,7 @@
 package idv.qin.mail.fragmet;
 
 import idv.qin.adapter.PackageAdapter;
-import idv.qin.doamin.PackageItem;
+import idv.qin.domain.PackageItem;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.utils.OutAnimationUtil;

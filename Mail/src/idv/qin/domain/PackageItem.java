@@ -16,7 +16,7 @@
  *  limitations under the License.
  */
 
-package idv.qin.doamin;
+package idv.qin.domain;
 
 import android.graphics.drawable.Drawable;
 
