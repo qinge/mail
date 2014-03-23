@@ -125,7 +125,7 @@ public class ContactsEditFragment extends BaseFragment implements OnClickListene
 			ContactsFragment contactsFragment = (ContactsFragment) mainActivity.
 					getFragmentManager().findFragmentByTag(ContactsFragment.CONTACTS_FRAGMENT_TAG);
 			if(contactsFragment != null){
-				contactsFragment.refreshPrePage();
+				contactsFragment.refreshPageData();
 			}
 			backPrevPage(R.id.contacts_edit_main_area);
 			break;

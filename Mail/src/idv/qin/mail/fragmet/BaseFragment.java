@@ -18,12 +18,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 基本的 Fragment 如果需要刷新前一个 Fragment 中数据时候可以 调用并覆盖<br> 
- * {@link refreshPrePage() }
+ * {@link refreshPageData }
  */
 public class BaseFragment extends Fragment {
 
 	protected MainActivity mainActivity;
 	protected View currentView;
+	/** 用于操作数据 可直接调用其 crud 方法*/
 	protected DBHelperManager dbHelperManager = MyApplication.getDbHelperManager();
 	protected DisplayMetrics displayMetrics = new DisplayMetrics();
 	
@@ -67,7 +68,7 @@ public class BaseFragment extends Fragment {
 	/**
 	 *  如果需要刷新数据则覆盖该方法
 	 */
-	public void refreshPrePage() {
+	public void refreshPageData() {
 	}
 
 

@@ -189,15 +189,15 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 		ContactsBean model = (ContactsBean) adapter.getItem(info.position);
 	    switch (item.getItemId()) {
 	        case R.id.context_menu_contacts_remove:
-	        	processRemoveEvent();
+	        	processRemoveEvent(model);
 	        	Toast.makeText(mainActivity, "remove " + model.name, 0).show();
 	            return true;
 	        case R.id.context_menu_contacts_edit:
-	        	processEditEvent();
+	        	processEditEvent(model);
 	        	Toast.makeText(mainActivity, "edit"+ model.name, 0).show();
 	        	return true;
 	        case R.id.context_menu_contacts_send_mail:
-	        	processSendMailEvent();
+	        	processSendMailEvent(model);
 	        	Toast.makeText(mainActivity, "send"+ model.name, 0).show();
 	            return true;
 	        default:
@@ -206,17 +206,18 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	}
 
 
-	private void processRemoveEvent() {
-		
+	private void processRemoveEvent(ContactsBean bean) {
+		dbHelperManager.delete(bean.id);
+		refreshPageData();
 	}
 	
 
-	private void processEditEvent() {
+	private void processEditEvent(ContactsBean bean) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void processSendMailEvent() {
+	private void processSendMailEvent(ContactsBean bean) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -353,7 +354,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	}
 
 	@Override
-	public void refreshPrePage() {
+	public void refreshPageData() {
 		if(adapter != null){
 			 SourceDateList = fetchData();
 		       // 根据a-z进行排序源数据  
