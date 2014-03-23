@@ -1,11 +1,11 @@
 package idv.qin.mail.fragmet;
 
 import idv.qin.adapter.SortAdapter;
-import idv.qin.doamin.ContactsBean;
-import idv.qin.doamin.SortModel;
+import idv.qin.domain.ContactsBean;
+import idv.qin.domain.SortModel;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
- import idv.qin.sortlist.CharacterParser;
+import idv.qin.sortlist.CharacterParser;
 import idv.qin.sortlist.PinyinComparator;
 import idv.qin.view.ClearEditText;
 import idv.qin.view.SideBar;

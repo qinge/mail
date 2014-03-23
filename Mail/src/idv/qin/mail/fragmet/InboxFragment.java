@@ -3,8 +3,8 @@ package idv.qin.mail.fragmet;
 import java.util.List;
 
 import idv.qin.core.ReceiveMailService;
-import idv.qin.doamin.MailMessageBean;
-import idv.qin.doamin.MailMessageBean.MailHeadBean;
+import idv.qin.domain.MailMessageBean;
+import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;

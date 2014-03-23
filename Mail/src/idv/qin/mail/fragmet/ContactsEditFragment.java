@@ -1,6 +1,6 @@
 package idv.qin.mail.fragmet;
 
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.utils.CommonUtil;

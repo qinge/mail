@@ -5,7 +5,7 @@ import java.util.List;
 
 import idv.qin.db.DBHelper;
 import idv.qin.db.DBHelperManager;
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 import idv.qin.utils.MyLog;
 import android.test.AndroidTestCase;
 

@@ -18,7 +18,7 @@
 
 package idv.qin.adapter;
 
-import idv.qin.doamin.PackageItem;
+import idv.qin.domain.PackageItem;
 import idv.qin.mail.R;
 
 import java.util.List;

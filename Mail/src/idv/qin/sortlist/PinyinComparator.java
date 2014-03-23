@@ -1,6 +1,6 @@
 package idv.qin.sortlist;
 
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 
 import java.util.Comparator;
 

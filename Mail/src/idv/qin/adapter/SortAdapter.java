@@ -1,6 +1,6 @@
 package idv.qin.adapter;
 
-import idv.qin.doamin.ContactsBean;
+import idv.qin.domain.ContactsBean;
 import idv.qin.mail.R;
 
 import java.util.List;
