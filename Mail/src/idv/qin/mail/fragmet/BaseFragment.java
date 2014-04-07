@@ -8,7 +8,9 @@ import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.OutAnimationUtil;
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -24,6 +26,8 @@ public class BaseFragment extends Fragment {
 
 	protected MainActivity mainActivity;
 	protected View currentView;
+	protected String TAG;
+	protected BaseFragment preFragment;
 	/** 用于操作数据 可直接调用其 crud 方法*/
 	protected DBHelperManager dbHelperManager = MyApplication.getDbHelperManager();
 	protected DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -35,6 +39,16 @@ public class BaseFragment extends Fragment {
 			.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
 
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mainActivity = (MainActivity) getActivity();
+		mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		TAG = this.getClass().getSimpleName();
+	}
+
 	/**
 	 * 查找 fragment 中根 view 然后添加滑出动画 然后弹出堆栈
 	 * use super method 
@@ -43,7 +57,7 @@ public class BaseFragment extends Fragment {
 
 		View view = currentView.findViewById(mainAreaId);
 		if (view != null) {
-			InputMethodUtil.HideInputMethod(view);
+			InputMethodUtil.hideInputMethod(view);
 			Animation animation = OutAnimationUtil.getOutAnimation();
 			animation.setAnimationListener(new AnimationListener() {
 
@@ -71,7 +85,17 @@ public class BaseFragment extends Fragment {
 	public void refreshPageData() {
 	}
 
+	/**
+	 * 设置前一个页面的 Fragment 用于更新数据
+	 * @param fragment
+	 */
+	public void setPrgFragment(BaseFragment fragment){
+		preFragment = fragment;
+	}
 
-
+	
+	public boolean customOnKeyDown(int keyCode, KeyEvent event){
+		return false;
+	}
 
 }

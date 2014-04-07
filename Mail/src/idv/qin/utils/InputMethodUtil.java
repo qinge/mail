@@ -25,7 +25,7 @@ public class InputMethodUtil {
 	 * 隐藏输入法
 	 * @param v 随意传入一个 view 既可
 	 */
-	public static void HideInputMethod(View v){
+	public static void hideInputMethod(View v){
 		if(mInputMethodManager != null){
 			mInputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		}

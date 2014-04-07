@@ -1,8 +1,12 @@
 package idv.qin.mail.fragmet;
 
-import idv.qin.core.ReceiveMailService;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
+import idv.qin.mail.fragmet.contacts.ContactsFragment;
+import idv.qin.mail.fragmet.inbox.InboxFragment;
+import idv.qin.mail.fragmet.sendbox.SendBoxFragment;
+import idv.qin.mail.fragmet.weather.WeatherFragment;
+import idv.qin.mail.fragmet.write.WriteMailFragment;
 import idv.qin.utils.FlickerAnimatorUtil;
 import idv.qin.utils.RoundBitmapUtil;
 import idv.qin.widget.SlideHolder;
@@ -10,17 +14,12 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 

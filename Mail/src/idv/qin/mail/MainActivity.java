@@ -2,9 +2,9 @@ package idv.qin.mail;
 
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.HomeFragment;
-import idv.qin.mail.fragmet.InboxFragment;
-import idv.qin.mail.fragmet.SendBoxFragment;
 import idv.qin.mail.fragmet.StartFragment;
+import idv.qin.mail.fragmet.inbox.InboxFragment;
+import idv.qin.mail.fragmet.sendbox.SendBoxFragment;
 import idv.qin.utils.VersionManager;
 import android.app.Activity;
 import android.app.FragmentTransaction;

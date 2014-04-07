@@ -106,9 +106,15 @@ public class ReceiveMailService {
 						"-->doInBackground()");
 			}finally{
 				try {
-					pop3Folder.close(false);
-					folder.close(false);
-					store.close();
+					if(pop3Folder != null){
+						pop3Folder.close(false);
+					}
+					if(folder != null){
+						folder.close(false);
+					}
+					if(store != null){
+						store.close();
+					}
 				} catch (MessagingException e) {
 				} // 不删除打了删除标记的有邮件
 			}

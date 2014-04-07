@@ -3,28 +3,29 @@
     android:id="@+id/write_mail_main_area"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:orientation="vertical"
-    android:scrollbars="vertical" 
-    android:background="@drawable/bg">
+    android:scrollbars="vertical" >
 
-    <include android:layout_width="wrap_content"
+    <include
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/general_head_bar"/>
+        layout="@layout/general_head_bar" />
 
     <FrameLayout
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" > 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-        <ScrollView 
-            android:layout_width="fill_parent" 
-            android:layout_height="fill_parent"  
-              android:fadingEdge="none"
-	        android:fadingEdgeLength="0dp"
-	        android:overScrollMode="never">
- 
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never" >
+
             <LinearLayout
-                android:layout_width="fill_parent" 
-                android:layout_height="fill_parent" 
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -57,8 +58,8 @@
                             android:layout_toRightOf="@id/write_mail_receive_address_text"
                             android:background="@null"
                             android:minEms="15"
-                            android:text="378144946@qq.com"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:text="378144946@qq.com" />
 
                         <ImageButton
                             android:id="@+id/write_mail_receive_address_button"
@@ -79,12 +80,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                     android:id="@+id/cc_layout"
+                    android:id="@+id/cc_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="51dp"
                     android:gravity="center"
-                     android:visibility="gone"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -105,7 +106,7 @@
                             android:id="@+id/write_mail_cc_receive_address"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                             android:layout_marginLeft="4dp"
+                            android:layout_marginLeft="4dp"
                             android:layout_toLeftOf="@+id/write_cc_address_select"
                             android:layout_toRightOf="@id/write_mail_cc_receive_address_text"
                             android:background="@null"
@@ -120,8 +121,8 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:background="@null"
-                            android:visibility="invisible"
-                            android:src="@drawable/button_add_selector" />
+                            android:src="@drawable/button_add_selector"
+                            android:visibility="invisible" />
                     </RelativeLayout>
 
                     <View
@@ -131,7 +132,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                     android:id="@+id/bcc_layout"
+                    android:id="@+id/bcc_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="51dp"
                     android:gravity="center"
@@ -172,8 +173,8 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:background="@null"
-                            android:visibility="invisible"
-                            android:src="@drawable/button_add_selector" />
+                            android:src="@drawable/button_add_selector"
+                            android:visibility="invisible" />
                     </RelativeLayout>
 
                     <View
@@ -207,16 +208,16 @@
                             android:id="@+id/write_mail_send_address"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginLeft="4dp"
                             android:layout_marginRight="15dp"
                             android:layout_toRightOf="@id/write_mail_sender_address"
                             android:background="@null"
-                            android:layout_marginLeft="4dp"
-                            android:minEms="15"
-                            android:editable="false"
                             android:clickable="true"
+                            android:editable="false"
                             android:focusable="true"
-                            android:text="1241304515@qq.com"
-                            android:singleLine="true" />
+                            android:minEms="15"
+                            android:singleLine="true"
+                            android:text="1241304515@qq.com" />
                     </RelativeLayout>
 
                     <View
@@ -250,8 +251,8 @@
                             android:id="@+id/write_mail_theme"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="15dp"
                             android:layout_marginLeft="4dp"
+                            android:layout_marginRight="15dp"
                             android:layout_toRightOf="@id/write_mail_theme_text"
                             android:background="@null"
                             android:minEms="15"
@@ -268,51 +269,53 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
 
-                    <!--  <idv.qin.view.LinedEditText -->
+                    <!-- <idv.qin.view.LinedEditText -->
+
                     <EditText
                         android:id="@+id/write_mail_content"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:layout_margin="5dp"
                         android:background="@null"
                         android:gravity="start"
+                        android:minLines="10"
                         android:text=" content 测试"
-                        android:minLines="10" />
+                        android:textSize="18sp" />
 
-                    <View 
+                    <View
                         android:id="@+id/write_mail_content_extra_halving_line"
-                         android:layout_width="fill_parent"
-                          android:layout_height="1dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/write_mail_content"
                         android:layout_marginBottom="10dp"
-                          android:layout_below="@id/write_mail_content"
-                          android:background="@drawable/home_content_cell_division_horizontal"
-                          />
-                      <GridView
-                          android:id="@+id/write_mail_extras_gridview"
-                          android:layout_width="fill_parent"
-                          android:layout_height="200dp"
-                          android:layout_alignParentBottom="true"
-                          android:layout_below="@id/write_mail_content_extra_halving_line"
-                          android:gravity="center"
-                          android:horizontalSpacing="10dp"
-                          android:listSelector="@null"
-                          android:numColumns="3"
-                          android:paddingLeft="3dp"
-                          android:paddingRight="3dp"
-                          android:paddingTop="10dp"
-                          android:focusableInTouchMode="false"
-                          android:stretchMode="columnWidth"
-                          android:verticalSpacing="15dp"
-                         />
-                          <!-- <RelativeLayout 
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/home_content_cell_division_horizontal" />
+
+                    <GridView
+                        android:id="@+id/write_mail_extras_gridview"
+                        android:layout_width="fill_parent"
+                        android:layout_height="200dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@id/write_mail_content_extra_halving_line"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center"
+                        android:horizontalSpacing="10dp"
+                        android:listSelector="@null"
+                        android:numColumns="3"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="10dp"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="15dp" />
+                    <!--
+                          <RelativeLayout 
                           android:id="@+id/write_mail_extras_layout"
                           android:layout_width="fill_parent"
                           android:layout_height="wrap_content"
                           android:layout_alignParentBottom="true"
                           android:layout_below="@id/write_mail_content"
-                          android:gravity="center" /> -->
+                          android:gravity="center" />
+                    -->
 
                 </RelativeLayout>
             </LinearLayout>

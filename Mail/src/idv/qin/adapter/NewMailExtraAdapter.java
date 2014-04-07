@@ -75,6 +75,7 @@ public class NewMailExtraAdapter extends CustomBaseAdapter {
 		if(attachBean.extraType == ExtraType.IMAGE){
 			//imageLoader.displayImage(Uri.fromFile(new File(attachBean.path)).toString(), holder.imageView, options);
 			loadBitmap(attachBean.path, holder.imageView, 100, 100);
+//			ImageLoader.getInstance().displayImage(uri, holder.imageView);
 		}else if(attachBean.extraType == ExtraType.AUDIO){
 			holder.imageView.setImageResource(R.drawable.icon_attach_audio_small);
 		}else if(attachBean.extraType == ExtraType.ZIP){
@@ -91,5 +92,19 @@ public class NewMailExtraAdapter extends CustomBaseAdapter {
 	private final class ViewHolder{
 		public ImageView imageView;
 		public TextView textView;
+	}
+	
+	/**
+	 * 对外提供的数据更新的方法
+	 * @param newbeans
+	 */
+	public void refreshData(List<AttachBean> newbeans){
+		if(beans != null){
+			beans.clear();
+			if(newbeans != null && newbeans.size() > 0){
+				beans.addAll(newbeans);
+			}
+			this.notifyDataSetChanged();
+		}
 	}
 }
