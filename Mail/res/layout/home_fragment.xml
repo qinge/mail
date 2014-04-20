@@ -31,7 +31,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="11.0dip"
-                    android:text="feature" />
+                    android:text="常用设置" />
             </RelativeLayout>
 
             <LinearLayout
@@ -75,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10.0dip"
-                            android:text="yncronize"
+                            android:text="退出程序"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
                     </LinearLayout>
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="11.0dip"
-                    android:text="view_type"
+                    android:text="显示模式"
                     android:textSize="15.0dip" />
             </RelativeLayout>
 
@@ -136,7 +136,7 @@
                             android:freezesText="false"
                             android:gravity="left|center"
                             android:paddingLeft="40.0dip"
-                            android:text="grid_mode"
+                            android:text="网格模式"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
 
@@ -171,7 +171,7 @@
                             android:freezesText="false"
                             android:gravity="left|center"
                             android:paddingLeft="40.0dip"
-                            android:text="list_mode"
+                            android:text="列表模式"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
 
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="11.0dip"
-                    android:text="option"
+                    android:text="其他选项"
                     android:textSize="15.0dip" />
             </RelativeLayout>
 
@@ -248,7 +248,7 @@
                             android:freezesText="false"
                             android:gravity="left|center"
                             android:paddingLeft="40.0dip"
-                            android:text="setting"
+                            android:text="设置"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
                     </RelativeLayout>
@@ -282,7 +282,7 @@
                             android:freezesText="false"
                             android:gravity="left|center"
                             android:paddingLeft="40.0dip"
-                            android:text="title_activity_main"
+                            android:text="应用商店"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
                     </RelativeLayout>
@@ -291,6 +291,7 @@
                         android:id="@+id/app_wall_divider"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:background="@drawable/menu_divider" />
                 </LinearLayout>
             </RelativeLayout>
@@ -356,7 +357,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:src="@drawable/aa" />
+                android:src="@drawable/login_default_avatar" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -422,20 +423,21 @@
                      android:layout_alignLeft="@+id/user_email_address" >
 
                     <ProgressBar
-                        android:layout_width="140dp"
+                        android:layout_width="match_parent"
                     	android:layout_height="wrap_content"
+                    	android:layout_marginRight="15dp"
                         android:id="@+id/rectangleProgressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        mce_style="?android:attr/progressBarStyleHorizontal" />
+                        style="?android:attr/progressBarStyleHorizontal" />
 
                     <TextView
                         android:id="@+id/power_get"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
                         android:text="300/450" />
 
-                    <ImageView
+                  <!--   <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/power_get"
@@ -449,7 +451,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
-                        android:text="15" />
+                        android:text="15" /> -->
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -542,13 +544,6 @@
             android:layout_height="1dp"
             android:background="#CCCCCC" />
 
-        <!--
-         <View 
-         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#CCCCCC"
-         android:layout_marginTop="10dp"/>
-        -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -713,7 +708,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/inbox_icon"
                     android:layout_centerInParent="true"
                     android:text="......"
                     android:textSize="20sp" />

@@ -20,7 +20,13 @@ package idv.qin.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
+/**
+ * 用于安全的(添加类加解密)保存临时数据 preference 文件 保存的数据
+ * @author 
+ *
+ */
 public class PreferencesManager {
 
     public static final String SHARED_PREFERENCES_NAME = "SWIPE_LIST_VIEW_SAMPLE_PREFERENCES";
@@ -66,5 +72,17 @@ public class PreferencesManager {
         return sharedPreferences.getBoolean(SHARED_PREFERENCES_SHOW_ABOUT, true);
     }
 
+    public void saveValue(String key, String value){
+    	 SharedPreferences.Editor editor = sharedPreferences.edit();
+         editor.putString(key, new String(Base64.encode(value.getBytes(),
+        		 Base64.DEFAULT)));
+         editor.commit();
+    }
+    
+    public String getValue(String key){
+    	return new String( Base64.decode(sharedPreferences.getString(key, "").getBytes(), 
+    			Base64.DEFAULT));
+   }
+    
 
 }

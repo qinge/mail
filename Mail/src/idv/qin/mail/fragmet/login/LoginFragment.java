@@ -7,17 +7,17 @@ import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.RoundBitmapUtil;
 import idv.qin.view.ValidateDialogFragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,9 +56,9 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 	
 	private void initComponent(){
 		headImage = (ImageView) currentView.findViewById(R.id.login_user_head_image);
-		Resources res = getResources();
+		/*Resources res = getResources();
 		Bitmap bmp = RoundBitmapUtil.toRoundBitmap(BitmapFactory.decodeResource(res, R.drawable.aa));
-		headImage.setImageBitmap(bmp);
+		headImage.setImageBitmap(bmp);*/
 		
 		userName = (EditText) currentView.findViewById(R.id.login_username);
 		userName.setOnClickListener(this);
@@ -104,6 +104,9 @@ private static int lockClickCount = 1;
 			break;
 			
 		case R.id.login_register:
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent .setData(Uri.parse("http://zc.qq.com/chs/index.html"));
+			mainActivity.startActivity(intent);
 			break;
 		}
 	}

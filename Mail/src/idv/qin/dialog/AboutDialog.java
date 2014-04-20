@@ -21,7 +21,6 @@ package idv.qin.dialog;
 import idv.qin.utils.PreferencesManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;

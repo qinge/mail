@@ -314,19 +314,19 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.head_bar_back:
-			if(type == 0){
-				backPrevPage(R.id.contacts_main_area);
-			}else{
-				mainActivity.getFragmentManager().popBackStack();
-			}
-			break;
-		case R.id.head_bar_ok:
-			startAddContactsEditFragment(null);
-			break;
-
-		default:
-			break;
+			case R.id.head_bar_back:
+				if(type == 0){
+					backPrevPage(R.id.contacts_main_area);
+				}else{
+					mainActivity.getFragmentManager().popBackStack();
+				}
+				break;
+			case R.id.head_bar_ok:
+				startAddContactsEditFragment(null);
+				break;
+	
+			default:
+				break;
 		}
 		
 	}

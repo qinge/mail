@@ -33,10 +33,11 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
      * @param list 
      */  
     public void updateListView(List<ContactsBean> list){ 
-    	if(this.list != null && list != null){
+    	/*if(this.list != null && list != null){
     		this.list.clear();
     		this.list.addAll(list);
-    	}
+    	}*/
+    	this.list = list;
         notifyDataSetChanged();  
     }  
 
