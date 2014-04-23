@@ -105,6 +105,12 @@ public class MyApplication extends Application {
 		}
 		cacheManager.setExtras_folder(extras_folder);
 		
+		File user_info_folder = new File(StorageUtils.getCacheDirectory(getApplicationContext()), "/user_info");
+		if(!user_info_folder.exists()){
+			user_info_folder.mkdirs();
+		}
+		cacheManager.setUser_info_dir(user_info_folder);
+		
 		cacheManager.setCache_dir(StorageUtils.getCacheDirectory(getApplicationContext()));
 	}
 	

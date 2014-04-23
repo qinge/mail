@@ -36,7 +36,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mainActivity = (MainActivity) getActivity();
 		
 	}
 

@@ -3,7 +3,7 @@ package idv.qin.utils;
 import java.io.File;
 
 /**
- * 缓存的文件夹目录
+ * 缓存的文件夹目录 在application 类中实例化并 设置各个文件夹缓存目录 其他类中直接得到该类实例后直接获取文件目录
  * @author qinge
  *
  */
@@ -19,6 +19,9 @@ public class CacheManager {
 	
 	/** 缓存目录 */
 	private File cache_dir = null;
+	
+	/** 用户信息缓存目录 */
+	private File user_info_dir = null;
 	
 	private static CacheManager cacheManager;
 	
@@ -64,5 +67,14 @@ public class CacheManager {
 		this.cache_dir = cache_dir;
 	}
 
+	public File getUser_info_dir() {
+		return user_info_dir;
+	}
+
+	public void setUser_info_dir(File user_info_dir) {
+		this.user_info_dir = user_info_dir;
+	}
+
+	
 	
 }
