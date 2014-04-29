@@ -1,5 +1,6 @@
 package idv.qin.mail.fragmet.inbox;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import idv.qin.core.ReceiveMailService;
@@ -15,16 +16,24 @@ import idv.qin.view.PullToRefreshListView;
 import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 每次打开应用时候都需要先去请求网络更新本地数据， 打开收件箱时候直接从本地缓存目录读取
+ * @author qinge
+ *
+ */
 public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
@@ -32,10 +41,26 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private PullToRefreshListView mPullRefreshListView;
 	private Button buttonOk;
 	private Button buttonBack;
+	private LayoutInflater inflater;
+	
+	private LinkedList<MailMessageBean> beans;
+	private BaseAdapter adapter;
+	
+	private Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			adapter = new CustomAdapter();
+			listView.setAdapter(adapter);
+		}
+		
+	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		inflater = mainActivity.getLayoutInflater();
 		
 	}
 
@@ -43,10 +68,13 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		currentView = inflater.inflate(R.layout.inbox_fragment, container, false);
+		
 		initComponent();
 		
 		// Set a listener to be invoked when the list should be refreshed.
 		processRefreshAction();
+		
+		new LocalMessageHeadLoader().execute();
 		
 		return currentView;
 	}
@@ -56,12 +84,12 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
+		/*ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
 		try {
 			service.getHeadMessage(0, 10);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override
@@ -72,6 +100,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	private void initComponent() {
 		mPullRefreshListView = (PullToRefreshListView)currentView.findViewById(R.id.pull_refresh_list);
+		listView = mPullRefreshListView.getRefreshableView();
 		buttonOk = (Button) currentView.findViewById(R.id.head_bar_ok);
 		buttonOk.setOnClickListener(this);
 		buttonBack = (Button) currentView.findViewById(R.id.head_bar_back);
@@ -88,6 +117,8 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 
 			@Override
 			public void onLoading() {}
+			
+			
 		});
 	}
 
@@ -157,4 +188,69 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		}
 
 	}
+	
+	/**
+	 * 加载数据为 {@link beans} 赋值 
+	 * @author qinge
+	 *
+	 */
+	private final class LocalMessageHeadLoader extends AsyncTask<Void, Integer, LinkedList<MailMessageBean>>{
+
+		@Override
+		protected LinkedList<MailMessageBean> doInBackground(Void... params) {
+			return ReceiveMailService.loadLocalMessageHeads();
+		}
+
+		@Override
+		protected void onPostExecute(LinkedList<MailMessageBean> result) {
+			beans = result;
+			handler.sendEmptyMessage(200);
+		}
+	}
+	
+	
+	private final class CustomAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return beans != null ? beans.size() : 0;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return beans != null ? beans.get(position) : null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if(convertView == null){
+				holder = new ViewHolder();
+				convertView = inflater.inflate(R.layout.inbox_item_layout, null);
+				holder.sutjectView = (TextView) convertView.findViewById(R.id.inbox_item_subject_view);
+				convertView.setTag(holder);
+			}else{
+				holder = (ViewHolder) convertView.getTag();
+			}
+			inflateViewData(beans.get(position), holder);
+			return convertView;
+		}
+
+	}
+	
+	
+	private void inflateViewData(MailMessageBean mailMessageBean, ViewHolder holder) {
+		holder.sutjectView.setText(mailMessageBean.mailHead.subject);
+	}
+	
+	private class ViewHolder{
+		public TextView sutjectView;
+	}
+	
+	
 }

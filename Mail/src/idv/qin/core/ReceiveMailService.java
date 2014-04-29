@@ -3,12 +3,15 @@ package idv.qin.core;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
+import idv.qin.utils.CacheManager;
 import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -100,7 +103,7 @@ public class ReceiveMailService {
 					beans.addLast(bean);
 				}
 				handler.obtainMessage(200, beans).sendToTarget();
-				new Thread(new ReceiveMailService.SaveMessage2Disk(beans)).start();
+				new Thread(new ReceiveMailService.SaveMessageHead2Disk(beans)).start();
 			} catch (Exception e) {
 				MyLog.d(RECEIVEMAIL_SERVICE_FLAG, e != null ? e.getMessage()+"" : "ReceiveMailService-->ReceiverMailManager" +
 						"-->doInBackground()");
@@ -136,7 +139,9 @@ public class ReceiveMailService {
 			if(pop3Folder== null || message == null){
 				return null;
 			}
-			
+			if(!pop3Folder.isOpen()){
+				pop3Folder.open(Folder.READ_ONLY);
+			}
 			MailMessageBean.MailHeadBean headBean = new MailMessageBean.MailHeadBean();
 			headBean.from = MimeUtility.decodeText(message.getFrom()[0].toString());
 			headBean.sendDate = message.getSentDate();
@@ -148,25 +153,28 @@ public class ReceiveMailService {
 		
 	}
 	
-	
-	private final class SaveMessage2Disk implements Runnable{
+	/**
+	 * 保存邮件消息头字段到磁盘 保存路径为 收件箱/head/...
+	 * @author qinge
+	 *
+	 */
+	private final class SaveMessageHead2Disk implements Runnable{
 		LinkedList<MailMessageBean> beans;
-		public SaveMessage2Disk(LinkedList<MailMessageBean> beans) {
+		public SaveMessageHead2Disk(LinkedList<MailMessageBean> beans) {
 			this.beans = beans;
 		}
 
 		@Override
 		public void run() {
-			File fileDir = StorageUtils.getCacheDirectory(mainActivity);
-			File imageCacheDir = new File(fileDir, "cache/data");
-			if(!imageCacheDir.exists() ){
-				imageCacheDir.mkdirs();
-			}
 			if(beans == null || beans.size() <=0 ){
 				return ;
 			}
+			File fileDir = new File(CacheManager.getDefalutInstance().getReceiver_mail_folder(), "head");
+			if(!fileDir.exists()){
+				fileDir.mkdirs();
+			}
 			for(int i=beans.size()-1 ; i>=0; i-- ){
-				File file = new File(imageCacheDir, beans.get(i).mailHead.uid);
+				File file = new File(fileDir, beans.get(i).mailHead.uid);
 				OutputStream outputStream;
 				ObjectOutputStream objectOutputStream = null;
 				try {
@@ -187,4 +195,44 @@ public class ReceiveMailService {
 		}
 		
 	}
+	
+	/**
+	 * 加载本地缓存 消息头字段
+	 * @return
+	 */
+	public static LinkedList<MailMessageBean> loadLocalMessageHeads(){
+		File fileDir = new File(CacheManager.getDefalutInstance().getReceiver_mail_folder(), "head");
+		if(!fileDir.exists()){
+			fileDir.mkdirs();
+		}
+		File [] files = fileDir.listFiles();
+		if(files != null && files.length >0){
+			LinkedList<MailMessageBean> mailMessageBeans = new LinkedList<MailMessageBean>();
+			for(File file : files){
+				if(file.isDirectory()){
+					continue ;
+				}else{
+					ObjectInputStream objectInputStream  = null;
+					try {
+						FileInputStream inputStream = new FileInputStream(file);
+						objectInputStream = new ObjectInputStream(inputStream);
+						MailMessageBean bean = (MailMessageBean) objectInputStream.readObject();
+						mailMessageBeans.add(bean);
+					} catch (Exception e) {
+					}finally{
+						try {
+							if(objectInputStream != null){
+								objectInputStream.close();
+							}
+						} catch (Exception e2) {
+						}
+					}
+				}
+			}
+			return mailMessageBeans;
+		}
+		return null;
+	}
+	
+	
 }

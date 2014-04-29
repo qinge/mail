@@ -27,8 +27,12 @@ public class MailMessageBean implements Serializable{
 	 * @author qinge
 	 *
 	 */
-	public static class MailHeadBean  {
+	public static class MailHeadBean implements Serializable {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public String uid; // 发件人
 		public String from; // 发件人
 		public String subject; // 主题
@@ -56,7 +60,11 @@ public class MailMessageBean implements Serializable{
 	 * @author qinge
 	 *
 	 */
-	public static class MailContentBean{
+	public static class MailContentBean implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		/**   邮件内容  */
 		public String content;
 		/** 邮件附件  */
