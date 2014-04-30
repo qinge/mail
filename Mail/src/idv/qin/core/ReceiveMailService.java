@@ -234,5 +234,6 @@ public class ReceiveMailService {
 		return null;
 	}
 	
+	// 测试 Mac 上传消息
 	
 }
