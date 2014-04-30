@@ -1,19 +1,18 @@
 package idv.qin.mail.fragmet.inbox;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import idv.qin.core.ReceiveMailService;
 import idv.qin.domain.MailMessageBean;
-import idv.qin.domain.MailMessageBean.MailHeadBean;
-import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
 import idv.qin.utils.CustomHandler;
-import idv.qin.utils.OutAnimationUtil;
 import idv.qin.view.PullToRefreshListView;
-import android.app.FragmentTransaction;
+import idv.qin.view.PullToRefreshListView.OnDismissCallback;
+import idv.qin.view.PullToRefreshListView.SwipeDismissListView;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,11 +20,8 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +33,8 @@ import android.widget.Toast;
 public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
-	private ListView listView;
+//	private ListView listView;
+	private SwipeDismissListView listView;
 	private PullToRefreshListView mPullRefreshListView;
 	private Button buttonOk;
 	private Button buttonBack;
@@ -53,6 +50,15 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 			super.handleMessage(msg);
 			adapter = new CustomAdapter();
 			listView.setAdapter(adapter);
+			listView.setOnDismissCallback(new OnDismissCallback() {
+				
+				@Override
+				public void onDismiss(int dismissPosition) {
+					beans.remove(adapter.getItem(dismissPosition));
+					adapter.notifyDataSetChanged();
+				}
+			});
+			
 		}
 		
 	};
@@ -84,12 +90,12 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		/*ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
-		try {
-			service.getHeadMessage(0, 10);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+//		ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
+//		try {
+//			service.getHeadMessage(0, 10);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -100,7 +106,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	private void initComponent() {
 		mPullRefreshListView = (PullToRefreshListView)currentView.findViewById(R.id.pull_refresh_list);
-		listView = mPullRefreshListView.getRefreshableView();
+		listView = (SwipeDismissListView) mPullRefreshListView.getRefreshableView();
 		buttonOk = (Button) currentView.findViewById(R.id.head_bar_ok);
 		buttonOk.setOnClickListener(this);
 		buttonBack = (Button) currentView.findViewById(R.id.head_bar_back);
