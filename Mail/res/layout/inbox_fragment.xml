@@ -26,7 +26,12 @@
      <idv.qin.view.PullToRefreshListView
         android:id="@+id/pull_refresh_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:footerDividersEnabled="true"
+        android:divider="#CCCCCC"  
+        android:cacheColorHint="@android:color/transparent"
+    	android:dividerHeight="1dp"
+         >
           
          
      </idv.qin.view.PullToRefreshListView>

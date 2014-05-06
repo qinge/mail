@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,12 +92,12 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-//		ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
-//		try {
-//			service.getHeadMessage(0, 10);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		ReceiveMailService service = new ReceiveMailService(mainActivity, new ReceiverHandler());
+		try {
+			service.getHeadMessage(0, 10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -238,7 +240,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 			if(convertView == null){
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.inbox_item_layout, null);
-				holder.sutjectView = (TextView) convertView.findViewById(R.id.inbox_item_subject_view);
+				holder.subjectView = (TextView) convertView.findViewById(R.id.inbox_item_subject_view);
 				convertView.setTag(holder);
 			}else{
 				holder = (ViewHolder) convertView.getTag();
@@ -251,11 +253,33 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	
 	private void inflateViewData(MailMessageBean mailMessageBean, ViewHolder holder) {
-		holder.sutjectView.setText(mailMessageBean.mailHead.subject);
+		holder.subjectView.setText(mailMessageBean.mailHead.subject);
 	}
 	
 	private class ViewHolder{
-		public TextView sutjectView;
+
+		/**
+		 * 发件人 view
+		 */
+		public TextView sendAddressView;
+		
+		/**
+		 * 主题 view
+		 */
+		public TextView subjectView;
+		public ImageView extraView;
+		public TextView receiveTimeView;
+		
+		/**
+		 * 是否阅读过的 rootView
+		 */
+		public Button isReadView;
+		/**
+		 * 编辑模式的 rootView
+		 */
+		public LinearLayout checkboxContiner;
+		public Button inCheckedView; // 选中与否的 view 需要改变背景色
+		
 	}
 	
 	
