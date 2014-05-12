@@ -33,11 +33,16 @@ public class MailMessageBean implements Serializable{
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		public String uid; // 发件人
+		public String uid; // uid
 		public String from; // 发件人
 		public String subject; // 主题
 		public Date sendDate; // 发送时间
 		public Flags flags ; // 标志
+		/**
+		 * 包含附件
+		 */
+		public boolean haveExtras;
+		
 		
 		
 		public MailHeadBean() {

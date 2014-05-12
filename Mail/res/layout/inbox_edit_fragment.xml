@@ -8,7 +8,7 @@
         android:layout_gravity="bottom"
         layout="@layout/general_foot_bar" />
 
-    <com.fortysevendeg.swipelistview.SwipeListView 
+   <!--  <com.fortysevendeg.swipelistview.SwipeListView 
         xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/example_lv_list"
         android:layout_width="fill_parent"
@@ -21,7 +21,7 @@
         swipe:swipeDrawableChecked="@drawable/choice_selected"
         swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
         swipe:swipeFrontView="@+id/front"
-        swipe:swipeMode="both" />
+        swipe:swipeMode="both" /> -->
 
     <include layout="@layout/general_head_bar" />
 

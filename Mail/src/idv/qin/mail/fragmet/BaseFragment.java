@@ -7,6 +7,7 @@ import idv.qin.mail.R;
 import idv.qin.utils.InputMethodUtil;
 import idv.qin.utils.OutAnimationUtil;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -31,6 +32,7 @@ public class BaseFragment extends Fragment {
 	/** 用于操作数据 可直接调用其 crud 方法*/
 	protected DBHelperManager dbHelperManager = MyApplication.getDbHelperManager();
 	protected DisplayMetrics displayMetrics = new DisplayMetrics();
+	protected ProgressDialog progressDialog = null;
 	
 	protected static ImageLoader imageLoader = ImageLoader.getInstance();
 	protected static DisplayImageOptions displayOptions = new DisplayImageOptions.Builder()
@@ -47,6 +49,8 @@ public class BaseFragment extends Fragment {
 		mainActivity = (MainActivity) getActivity();
 		mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		TAG = this.getClass().getSimpleName();
+		progressDialog = new ProgressDialog(mainActivity);
+		progressDialog.setMessage("please wait ...");
 	}
 
 	/**
