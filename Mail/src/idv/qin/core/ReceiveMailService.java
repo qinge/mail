@@ -78,6 +78,7 @@ public class ReceiveMailService {
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
+				Thread.currentThread().sleep(3000);
 				store = session.getStore();
 				store.connect("pop.qq.com", "1241304515@qq.com", "005440054400");
 				folder = store.getFolder("inbox");

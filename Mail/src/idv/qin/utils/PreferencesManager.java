@@ -23,7 +23,8 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 
 /**
- * 用于安全的(添加类加解密)保存临时数据 preference 文件 保存的数据
+ * 用于安全的(添加类 Base64 加解密)保存临时数据 preference 文件 保存的数据<br>
+ * 使用方法 PreferencesManager.getInstance().saveValue(key, value)  getValue(key);
  * @author 
  *
  */

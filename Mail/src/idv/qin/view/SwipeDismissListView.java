@@ -1,7 +1,5 @@
 package idv.qin.view;
 
-import static com.nineoldandroids.view.ViewHelper.setAlpha;
-import static com.nineoldandroids.view.ViewHelper.setTranslationX;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;

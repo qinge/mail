@@ -25,6 +25,11 @@
  	 <string name="rightOffset">Right Offset (%1$s dp)</string>
     <string name="leftOffset">Left Offset (%1$s dp)</string>
  	
+ 	<!--\\************************ 收件箱 ***************************\\-->
+ 	
+    <string name="inbox_okbutton_text">编辑</string>
+ 	
+ 	
  	<!--\\************************ 发件箱 ***************************\\-->
  	
  	<string name="sendmail_list_view">sendmail_list_view</string>
