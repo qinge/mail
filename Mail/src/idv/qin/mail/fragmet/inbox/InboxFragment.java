@@ -1,11 +1,11 @@
 package idv.qin.mail.fragmet.inbox;
 
 import idv.qin.core.ReceiveMailService;
+import idv.qin.core.ReceiveMailService.SaveMessageHead2Disk;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
-import idv.qin.utils.CustomHandler;
 import idv.qin.utils.PreferencesManager;
 import idv.qin.view.PullToRefreshListView;
 import idv.qin.view.PullToRefreshListView.OnDismissCallback;
@@ -14,6 +14,7 @@ import idv.qin.view.PullToRefreshListView.SwipeDismissListView;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +22,13 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 该类的设计思路 打开后直接从指定的文件夹中读取数据显示。 下拉刷新时候跟新文件夹中数据 然后重新加载。程序首次进入该页面的时候需要自动去加载一次
@@ -47,29 +49,60 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private BaseAdapter adapter;
 	
 	private ReceiveMailService service;
+	/** 模式字段 代表是否编辑 */
+	private boolean isEditMode = false; 
+	private boolean isRefreshing = false;
 	
-	private Handler handler = new Handler(){
+	public static final byte REMOTE_LOAD_SUCCESS = 1;
+	public static final byte LOCAL_LOAD_SUCCESS = 2;
+	
+	private Handler handler = new ReceiverHandler();
+	
+	/**
+	 * 数据处理回调 handler 类
+	 * @author qinge
+	 *
+	 */
+	@SuppressLint("HandlerLeak")
+	private class ReceiverHandler extends Handler{
 
+		
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			if(msg.what == 200){
-				progressDialog.cancel();
+			switch (msg.what) {
+				case REMOTE_LOAD_SUCCESS:
+					if(isRefreshing){
+						mPullRefreshListView.onRefreshComplete();
+						isRefreshing = false;
+					}
+					@SuppressWarnings("unchecked")
+					LinkedList<MailMessageBean> messageBeans = (LinkedList<MailMessageBean>) msg.obj;
+					if(messageBeans == null || messageBeans.size() <= 0){
+						return ;
+					}else{
+						if(beans == null){
+							beans = messageBeans;
+							progressDialog.cancel();
+							bindListViewAdapter();
+						}else{
+							// 将数据写回到缓存文件夹中 并通知数据改变刷新界面数据
+							new Thread(new  SaveMessageHead2Disk(beans)).start();
+							beans.clear();
+							new LocalMessageHeadLoader().execute();// 重新加载本地数据
+						}
+					}
+					break;
+				case LOCAL_LOAD_SUCCESS:
+					progressDialog.cancel();
+					bindListViewAdapter();
+					break;
+	
+				default:
+					break;
 			}
-			adapter = new CustomAdapter();
-			listView.setAdapter(adapter);
-			listView.setOnDismissCallback(new OnDismissCallback() {
-				
-				@Override
-				public void onDismiss(int dismissPosition) {
-					beans.remove(adapter.getItem(dismissPosition));
-					adapter.notifyDataSetChanged();
-				}
-			});
-			
 		}
-		
-	};
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,8 +121,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		// Set a listener to be invoked when the list should be refreshed.
 		processRefreshAction();
 		
-		new LocalMessageHeadLoader().execute();
-		
 		return currentView;
 	}
 	
@@ -98,13 +129,16 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		service = new ReceiveMailService(mainActivity, new ReceiverHandler());
+		service = new ReceiveMailService(mainActivity, handler);
 		try {
+			progressDialog.show();
 			if(PreferencesManager.getInstance(mainActivity).getValue("isFirst").equalsIgnoreCase("true")
 					|| "".equals(PreferencesManager.getInstance(mainActivity).getValue("isFirst"))){
-				progressDialog.show();
 				service.getHeadMessage(0, 20);
 				PreferencesManager.getInstance(mainActivity).saveValue("isFirst", "false");
+			}else{
+				// 从本地加载数据
+				new LocalMessageHeadLoader().execute();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,6 +154,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private void initComponent() {
 		mPullRefreshListView = (PullToRefreshListView)currentView.findViewById(R.id.pull_refresh_list);
 		listView = (SwipeDismissListView) mPullRefreshListView.getRefreshableView();
+		listView.setOnItemClickListener(new MyItemClickListener());
 		buttonOk = (Button) currentView.findViewById(R.id.head_bar_ok);
 		buttonOk.setText(getResources().getString(R.string.inbox_okbutton_text));
 		buttonOk.setOnClickListener(this);
@@ -132,9 +167,10 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 			@Override
 			public void onRefresh() {
 				// Do work to refresh the list here.
-				new GetDataTask().execute();
+//				new GetDataTask().execute();
 				if(service != null){
 					try {
+						isRefreshing = true;
 						service.getHeadMessage(0, 20);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -168,7 +204,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		@Override
 		protected void onPostExecute(Void result) {
 			// Call onRefreshComplete when the list has been refreshed.
-			mPullRefreshListView.onRefreshComplete();
+			
 
 			super.onPostExecute(result);
 		}
@@ -178,14 +214,19 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.head_bar_ok:
-			
-			break;
-		case R.id.head_bar_back:
-			backPrevPage(R.id.inbox_main_area);
-			break;
-		}
-		
+			case R.id.head_bar_ok:
+				if(isEditMode){
+					isEditMode = false;
+					// hide check box
+				}else{
+					isEditMode = true;
+					// show check box
+				}
+				break;
+			case R.id.head_bar_back:
+				backPrevPage(R.id.inbox_main_area);
+				break;
+			}
 	}
 
 	public void backPrevPage(){
@@ -193,29 +234,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	}
 	
 
-	private class ReceiverHandler extends CustomHandler{
-
-		@Override
-		public void success(Message msg) {
-			if(msg == null){
-				return ;
-			}
-			List<MailMessageBean> messageBeans = (List<MailMessageBean>) msg.obj;
-			if(messageBeans == null || messageBeans.size() <= 0){
-				return ;
-			}
-			Toast.makeText(mainActivity, messageBeans.get(0).mailHead.uid, Toast.LENGTH_SHORT).show();
-		
-			
-		}
-
-		@Override
-		public void fail(Message msg) {
-			
-		}
-
-	}
-	
 	/**
 	 * 加载数据为 {@link beans} 赋值 
 	 * @author qinge
@@ -231,10 +249,25 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		@Override
 		protected void onPostExecute(LinkedList<MailMessageBean> result) {
 			beans = result;
-			handler.sendEmptyMessage(200);
+			handler.sendEmptyMessage(LOCAL_LOAD_SUCCESS);
 		}
 	}
 	
+	/**
+	 * 为 listviw 绑定 adapter
+	 */
+	private void bindListViewAdapter(){
+		adapter = new CustomAdapter();
+		listView.setAdapter(adapter);
+		listView.setOnDismissCallback(new OnDismissCallback() {
+			
+			@Override
+			public void onDismiss(int dismissPosition) {
+				beans.remove(adapter.getItem(dismissPosition));
+				adapter.notifyDataSetChanged();
+			}
+		});
+	}
 	
 	private final class CustomAdapter extends BaseAdapter{
 
@@ -301,5 +334,17 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		
 	}
 	
-	
+	private final class MyItemClickListener implements OnItemClickListener{
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			if(isEditMode){
+				// 勾选条目并且
+			}else{
+				// 跳转到邮件详细界面
+			}
+		}
+		
+	}
 }
