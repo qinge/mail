@@ -28,6 +28,7 @@ public class MyApplication extends Application {
 
 	private static DBHelperManager dbHelperManager;
 	
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();

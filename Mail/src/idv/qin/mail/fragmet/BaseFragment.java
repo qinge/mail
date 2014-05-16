@@ -5,6 +5,8 @@ import idv.qin.mail.MainActivity;
 import idv.qin.mail.MyApplication;
 import idv.qin.mail.R;
 import idv.qin.utils.InputMethodUtil;
+import idv.qin.utils.MyBuildConfig;
+import idv.qin.utils.MyLog;
 import idv.qin.utils.OutAnimationUtil;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -12,7 +14,9 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
@@ -41,7 +45,7 @@ public class BaseFragment extends Fragment {
 			.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
 
-	
+	protected final static MyTouchManager touchManager = new MyTouchManager();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,21 @@ public class BaseFragment extends Fragment {
 		progressDialog = new ProgressDialog(mainActivity);
 		progressDialog.setMessage("please wait ...");
 	}
+	
+	
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if(currentView != null){
+			if (MyBuildConfig.DEBUG) {
+				MyLog.e(TAG, "currentView.setOnTouchListener(touchManager)");
+			}
+			currentView.setOnTouchListener(touchManager);
+		}
+	}
+
+
 
 	/**
 	 * 查找 fragment 中根 view 然后添加滑出动画 然后弹出堆栈
@@ -102,4 +121,18 @@ public class BaseFragment extends Fragment {
 		return false;
 	}
 
+	/**
+	 * fragment 中 rootView touch 事件处理类 子类中既可以不用每个 rootview 都设置 ontouch 监听
+	 * @author qinge
+	 *
+	 */
+	private final static class MyTouchManager implements OnTouchListener{
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			// TODO Auto-generated method stub
+			return true;
+		}
+		
+	}
 }

@@ -3,6 +3,7 @@ package idv.qin.core;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
+import idv.qin.mail.fragmet.inbox.InboxFragment;
 import idv.qin.utils.CacheManager;
 import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;
@@ -101,9 +102,9 @@ public class ReceiveMailService {
 				for(int i= 0; i< messages.length ;i++){
 					MailMessageBean bean = new MailMessageBean();
 					bean.mailHead = parseMessageHead(pop3Folder, (MimeMessage)messages[i]);
-					beans.addLast(bean);
+					beans.addFirst(bean);
 				}
-				handler.obtainMessage(200, beans).sendToTarget();
+				handler.obtainMessage(InboxFragment.REMOTE_LOAD_SUCCESS, beans).sendToTarget();
 				new Thread(new ReceiveMailService.SaveMessageHead2Disk(beans)).start();
 			} catch (Exception e) {
 				MyLog.d(RECEIVEMAIL_SERVICE_FLAG, e != null ? e.getMessage()+"" : "ReceiveMailService-->ReceiverMailManager" +
@@ -159,7 +160,7 @@ public class ReceiveMailService {
 	 * @author qinge
 	 *
 	 */
-	private final class SaveMessageHead2Disk implements Runnable{
+	public static final class SaveMessageHead2Disk implements Runnable{
 		LinkedList<MailMessageBean> beans;
 		public SaveMessageHead2Disk(LinkedList<MailMessageBean> beans) {
 			this.beans = beans;
@@ -176,6 +177,9 @@ public class ReceiveMailService {
 			}
 			for(int i=beans.size()-1 ; i>=0; i-- ){
 				File file = new File(fileDir, beans.get(i).mailHead.uid);
+				if(file.exists()){
+					continue;
+				}
 				OutputStream outputStream;
 				ObjectOutputStream objectOutputStream = null;
 				try {
