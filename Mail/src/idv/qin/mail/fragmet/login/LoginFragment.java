@@ -22,6 +22,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,13 +54,22 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 	private List<UserInfo> userInfos = new ArrayList<UserInfo>();
 	private UserInfoAdapter adapter;
 	private LayoutInflater inflater;
+	private final static int SUCCESS = 200;
 	
+	private Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			if(msg.what == SUCCESS){
+				
+			}
+		}
+		
+	};
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mainActivity = (MainActivity) getActivity();
 		inflater = mainActivity.getLayoutInflater();
-		inflateUserInfo();
 	}
 
 
@@ -75,6 +86,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 			}
 		});
 		initComponent();
+		inflateUserInfo();
 		return currentView;
 	}
 
@@ -134,6 +146,7 @@ private static int lockClickCount = 1;
 			break;
 			
 		case R.id.login_action:
+			InputMethodUtil.hideInputMethod(v);
 			UserInfo user = new UserInfo();
 			user.name = userName.getText().toString();
 			user.password = userPassword.getText().toString();
@@ -222,29 +235,37 @@ private static int lockClickCount = 1;
 	 * 从缓存文件夹中读取用户信息到集合中
 	 */
 	private void inflateUserInfo() {
-		File userInfoDir = CacheManager.getDefalutInstance().getUser_info_dir();
-		for(File file : userInfoDir.listFiles()){
-			UserInfo userInfo = new UserInfo();
-			InputStream input = null;
-			ObjectInputStream objectInputStream = null;
-			try {
-				input = new FileInputStream(file);
-				objectInputStream = new ObjectInputStream(input);
-				userInfo = (UserInfo) objectInputStream.readObject();
-				userInfos.add(userInfo);
-			} catch (Exception e) {
-			}finally{
-				try {
-					if(objectInputStream != null){
-						objectInputStream.close();
+		new Thread(){
+
+			@Override
+			public void run() {
+				File userInfoDir = CacheManager.getDefalutInstance().getUser_info_dir();
+				for(File file : userInfoDir.listFiles()){
+					UserInfo userInfo = new UserInfo();
+					InputStream input = null;
+					ObjectInputStream objectInputStream = null;
+					try {
+						input = new FileInputStream(file);
+						objectInputStream = new ObjectInputStream(input);
+						userInfo = (UserInfo) objectInputStream.readObject();
+						userInfos.add(userInfo);
+						handler.sendEmptyMessage(SUCCESS);
+					} catch (Exception e) {
+					}finally{
+						try {
+							if(objectInputStream != null){
+								objectInputStream.close();
+							}
+							if(input != null){
+								input.close();
+							}
+						} catch (Exception e2) {
+						}
 					}
-					if(input != null){
-						input.close();
-					}
-				} catch (Exception e2) {
 				}
 			}
-		}
+			
+		}.start();
 	}
 	
 	/**

@@ -21,7 +21,6 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 
 	public static final String SENDBOX_FRAGMENT_TAG = "SendBoxFragment";
 	private static final int REQUEST_CODE_SETTINGS = 0;
-    private List<PackageItem> data;
     private SwipeDismissListView dismissListView;
     private ProgressDialog progressDialog;
     private Button button_ok;
@@ -30,7 +29,6 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 data = new ArrayList<PackageItem>();
 	}
 
 	@Override
