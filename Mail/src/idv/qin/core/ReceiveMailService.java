@@ -5,6 +5,7 @@ import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.fragmet.inbox.InboxFragment;
 import idv.qin.utils.CacheManager;
+import idv.qin.utils.CustomComparator;
 import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;
 
@@ -16,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -79,7 +81,6 @@ public class ReceiveMailService {
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
-				Thread.currentThread().sleep(3000);
 				store = session.getStore();
 				store.connect("pop.qq.com", "1241304515@qq.com", "005440054400");
 				folder = store.getFolder("inbox");
@@ -104,6 +105,7 @@ public class ReceiveMailService {
 					bean.mailHead = parseMessageHead(pop3Folder, (MimeMessage)messages[i]);
 					beans.addFirst(bean);
 				}
+				Collections.sort(beans, new CustomComparator());
 				handler.obtainMessage(InboxFragment.REMOTE_LOAD_SUCCESS, beans).sendToTarget();
 				new Thread(new ReceiveMailService.SaveMessageHead2Disk(beans)).start();
 			} catch (Exception e) {
@@ -175,7 +177,7 @@ public class ReceiveMailService {
 			if(!fileDir.exists()){
 				fileDir.mkdirs();
 			}
-			for(int i=beans.size()-1 ; i>=0; i-- ){
+			for(int i=0  ; i< beans.size(); i++ ){
 				File file = new File(fileDir, beans.get(i).mailHead.uid);
 				if(file.exists()){
 					continue;
@@ -222,7 +224,7 @@ public class ReceiveMailService {
 						FileInputStream inputStream = new FileInputStream(file);
 						objectInputStream = new ObjectInputStream(inputStream);
 						MailMessageBean bean = (MailMessageBean) objectInputStream.readObject();
-						mailMessageBeans.add(bean);
+						mailMessageBeans.addLast(bean);
 					} catch (Exception e) {
 					}finally{
 						try {
@@ -234,6 +236,7 @@ public class ReceiveMailService {
 					}
 				}
 			}
+			Collections.sort(mailMessageBeans, new CustomComparator());
 			return mailMessageBeans;
 		}
 		return null;

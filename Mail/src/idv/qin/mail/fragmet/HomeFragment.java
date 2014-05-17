@@ -49,6 +49,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		currentView = inflater
 				.inflate(R.layout.home_fragment, container, false);
 		mSlideHolder = (SlideHolder) currentView.findViewById(R.id.slideHolder);
+		mSlideHolder.setDisplayMetrics(displayMetrics);
 		initComponent();
 		return currentView;
 	}

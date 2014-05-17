@@ -6,13 +6,21 @@ import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
+import idv.qin.utils.CommonUtil;
+import idv.qin.utils.MyBuildConfig;
+import idv.qin.utils.MyLog;
 import idv.qin.utils.PreferencesManager;
 import idv.qin.view.PullToRefreshListView;
 import idv.qin.view.PullToRefreshListView.OnDismissCallback;
 import idv.qin.view.PullToRefreshListView.SwipeDismissListView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -26,7 +34,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,13 +44,17 @@ import android.widget.TextView;
  */
 public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
-	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
+	public static final int ONES_LADE_COUNT = 20;
 //	private ListView listView;
 	private SwipeDismissListView listView;
 	private PullToRefreshListView mPullRefreshListView;
 	private Button buttonOk;
 	private Button buttonBack;
 	private LayoutInflater inflater;
+	
+	private LinearLayout editContainer;
+	private Button selectAllButton;
+	private Button deleteButton;
 	
 	private LinkedList<MailMessageBean> beans;
 	private BaseAdapter adapter;
@@ -55,6 +66,12 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	public static final byte REMOTE_LOAD_SUCCESS = 1;
 	public static final byte LOCAL_LOAD_SUCCESS = 2;
+	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale(System.getProperty("user.language", "en")));
+	private boolean [] ids = null; // 当适配器生成后初始化 new boolean [adapter.getCount]
+	private boolean refreshLocal = false; // 编辑模式下局部刷新数据(编辑按钮点击时候改变状态)
+	private int clickedPosition = -1; // 编辑模式下点击的条目位置
+	
 	
 	private Handler handler = new ReceiverHandler();
 	
@@ -134,7 +151,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 			progressDialog.show();
 			if(PreferencesManager.getInstance(mainActivity).getValue("isFirst").equalsIgnoreCase("true")
 					|| "".equals(PreferencesManager.getInstance(mainActivity).getValue("isFirst"))){
-				service.getHeadMessage(0, 20);
+				service.getHeadMessage(0, ONES_LADE_COUNT);
 				PreferencesManager.getInstance(mainActivity).saveValue("isFirst", "false");
 			}else{
 				// 从本地加载数据
@@ -160,18 +177,29 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		buttonOk.setOnClickListener(this);
 		buttonBack = (Button) currentView.findViewById(R.id.head_bar_back);
 		buttonBack.setOnClickListener(this);
+		
+		editContainer = (LinearLayout) currentView.findViewById(R.id.inbox_edit_container);
+		selectAllButton = (Button) currentView.findViewById(R.id.inbox_edit_select_all_button);
+		selectAllButton.setOnClickListener(this);
+		deleteButton = (Button) currentView.findViewById(R.id.inbox_edit_delete_button);
+		deleteButton.setOnClickListener(this);
 	}
 	
 	private void processRefreshAction() {
 		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				if(isEditMode){
+					// 在编辑模式下下拉刷新直接返回
+					mPullRefreshListView.onRefreshComplete();
+					return ; 
+				}
 				// Do work to refresh the list here.
 //				new GetDataTask().execute();
 				if(service != null){
 					try {
 						isRefreshing = true;
-						service.getHeadMessage(0, 20);
+						service.getHeadMessage(0, ONES_LADE_COUNT);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -216,17 +244,60 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		switch (v.getId()) {
 			case R.id.head_bar_ok:
 				if(isEditMode){
+					// 退出编辑模式
+					editContainer.setVisibility(View.GONE);
+					buttonOk.setText(getResources().getString(R.string.inbox_okbutton_text));
 					isEditMode = false;
-					// hide check box
+					if(adapter != null){
+						adapter.notifyDataSetChanged();
+					}
+					//需要再界面改变后改变 refreshLocal
+					refreshLocal = false;
+					resetIds();
 				}else{
+					// 进入编辑模式
+					editContainer.setVisibility(View.VISIBLE);
+					buttonOk.setText(getResources().getString(R.string.inbox_okbutton_text_cancel));
 					isEditMode = true;
-					// show check box
+					if(adapter != null){
+						adapter.notifyDataSetChanged();
+					}
 				}
 				break;
 			case R.id.head_bar_back:
 				backPrevPage(R.id.inbox_main_area);
 				break;
-			}
+			case R.id.inbox_edit_select_all_button:
+				selectAllItem();
+				break;
+			case R.id.inbox_edit_delete_button:
+				deleteSelectedItem();
+				break;
+		}
+	}
+
+
+	private void deleteSelectedItem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void selectAllItem() {
+		refreshLocal = false;
+		clickedPosition = -1;
+		for(int i =0 ; i < ids.length; i++){
+			ids[i] = true;
+		}
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}
+	}
+	
+	private void resetIds() {
+		for(int i =0 ; i < ids.length ;i++){
+			if(ids[i])
+				ids[i] = false;
+		}
 	}
 
 	public void backPrevPage(){
@@ -267,10 +338,12 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 				adapter.notifyDataSetChanged();
 			}
 		});
+		
+		ids = new boolean [adapter.getCount()];
 	}
 	
 	private final class CustomAdapter extends BaseAdapter{
-
+		
 		@Override
 		public int getCount() {
 			return beans != null ? beans.size() : 0;
@@ -289,23 +362,60 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
+			boolean refresh = true;// 初始值为 true 保证getview正确加载数据
 			if(convertView == null){
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.inbox_item_layout, null);
+				
+				holder.checkboxContiner = (LinearLayout) convertView.findViewById(R.id.inbox_item_edit_view);
+				holder.inCheckedView = (Button) convertView.findViewById(R.id.inbox_item_checked_view);
+				holder.isReadView =  convertView.findViewById(R.id.inbox_item_isread_flag);
 				holder.subjectView = (TextView) convertView.findViewById(R.id.inbox_item_subject_view);
+				holder.sendAddressView = (TextView) convertView.findViewById(R.id.inbox_item_send_address);
+				holder.extraView = (LinearLayout) convertView.findViewById(R.id.inbox_item_extra_view);
+				holder.receiveTimeView = (TextView) convertView.findViewById(R.id.inbox_item_receive_time_view);
+				
 				convertView.setTag(holder);
 			}else{
 				holder = (ViewHolder) convertView.getTag();
 			}
-			inflateViewData(beans.get(position), holder);
+			if(refreshLocal){
+				refresh = clickedPosition == position ? true : false; // 编辑模式点击条目 position 不匹配的不用改变状态直接返回convertView
+			}
+			if(refresh){
+				inflateViewData(beans.get(position), holder,position);
+			}
 			return convertView;
 		}
 
 	}
 	
 	
-	private void inflateViewData(MailMessageBean mailMessageBean, ViewHolder holder) {
-		holder.subjectView.setText(mailMessageBean.mailHead.subject);
+	private void inflateViewData(MailMessageBean mailMessageBean, ViewHolder holder, int position) {
+		if(CommonUtil.isEmpty(mailMessageBean.mailHead.subject)){
+			holder.subjectView.setText(getResources().getString(R.string.inbox_nosubject_text));
+		}else{
+			holder.subjectView.setText(mailMessageBean.mailHead.subject);
+		}
+		
+		holder.sendAddressView.setText(mailMessageBean.mailHead.from);
+		
+		if(mailMessageBean.mailHead.haveExtras){
+			holder.extraView.setVisibility(View.VISIBLE);
+		}else{
+			holder.extraView.setVisibility(View.INVISIBLE);
+		}
+		holder.receiveTimeView.setText(dateFormat.format(mailMessageBean.mailHead.sendDate));
+		if(isEditMode){
+			holder.checkboxContiner.setVisibility(View.VISIBLE);
+			if(ids[position]){
+				holder.inCheckedView.setBackgroundResource(R.drawable.checkbox_checked_red);
+			}else{
+				holder.inCheckedView.setBackgroundResource(R.drawable.checkbox);
+			}
+		}else{
+			holder.checkboxContiner.setVisibility(View.GONE);
+		}
 	}
 	
 	private class ViewHolder{
@@ -319,13 +429,13 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		 * 主题 view
 		 */
 		public TextView subjectView;
-		public ImageView extraView;
+		public LinearLayout extraView;
 		public TextView receiveTimeView;
 		
 		/**
 		 * 是否阅读过的 rootView
 		 */
-		public Button isReadView;
+		public View isReadView;
 		/**
 		 * 编辑模式的 rootView
 		 */
@@ -339,8 +449,22 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if(MyBuildConfig.DEBUG)
+				MyLog.e(TAG, "position= "+position);
 			if(isEditMode){
+				//需要再界面改变后改变 refreshLocal
+				refreshLocal = true;
+				clickedPosition = position;
 				// 勾选条目并且
+				if(ids[position]){
+					ids[position] = false;
+				}else{
+					ids[position] = true;
+				}
+				if(adapter != null){
+					adapter.notifyDataSetChanged();
+				}
+				refreshLocal = false; // 该次的点击事件界面刷新完成后一定要设置 refreshLocal = false; 否则滚动时候数据错乱
 			}else{
 				// 跳转到邮件详细界面
 			}

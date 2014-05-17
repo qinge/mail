@@ -28,6 +28,10 @@
  	<!--\\************************ 收件箱 ***************************\\-->
  	
     <string name="inbox_okbutton_text">&#160;编辑&#160;</string>
+    <string name="inbox_okbutton_text_cancel">&#160;取消&#160;</string>
+    <string name="inbox_nosubject_text">&#160;无主题&#160;</string>
+    <string name="inbox_edit_selectall">&#160;全选&#160;</string>
+    <string name="inbox_edit_delete">&#160;删除&#160;</string>
  	
  	
  	<!--\\************************ 发件箱 ***************************\\-->

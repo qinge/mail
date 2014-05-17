@@ -29,6 +29,7 @@ import android.graphics.Rect;
 import android.graphics.Region.Op;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -61,6 +62,10 @@ public class SlideHolder extends FrameLayout {
 	private boolean mInterceptTouch = true;
 	private boolean mAlwaysOpened = false;
 	private boolean mDispatchWhenOpened = false;
+	
+	
+	// *********** //
+	private DisplayMetrics displayMetrics = null;
 	
 	private Queue<Runnable> mWhenReady = new LinkedList<Runnable>();
 	
@@ -692,7 +697,7 @@ public class SlideHolder extends FrameLayout {
 			
 			setInterpolator(new DecelerateInterpolator());
 
-			float duration = Math.abs(mEnd - mStart) / SPEED;
+			float duration = Math.abs(mEnd - mStart) / SPEED / getDisplayMetrics().density;
 			setDuration((long) duration);
 		}
 		
@@ -712,4 +717,14 @@ public class SlideHolder extends FrameLayout {
 		public void onSlideCompleted(boolean opened);
 	}
 
+	public DisplayMetrics getDisplayMetrics() {
+		return displayMetrics;
+	}
+
+	public void setDisplayMetrics(DisplayMetrics displayMetrics) {
+		this.displayMetrics = displayMetrics;
+	}
+
+	
+	
 }

@@ -25,16 +25,41 @@
      
      <idv.qin.view.PullToRefreshListView
         android:id="@+id/pull_refresh_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
         android:footerDividersEnabled="true"
         android:divider="#CCCCCC"  
         android:cacheColorHint="@android:color/transparent"
     	android:dividerHeight="1dp"
-         >
-          
-         
-     </idv.qin.view.PullToRefreshListView>
+         />
 
+     <LinearLayout 
+         android:id="@+id/inbox_edit_container"
+        android:layout_width="match_parent"
+         android:layout_height="50dp"
+         android:orientation="horizontal"
+         android:gravity="center"
+         android:background="#CCCCCC"
+         android:padding="5dp"
+         android:visibility="visible">
+         <Button 
+             android:id="@+id/inbox_edit_select_all_button"
+	         android:layout_width="0dp"
+	         android:layout_height="match_parent"
+	         android:text="@string/inbox_edit_selectall"
+	          android:background="@drawable/select_item_selector"
+	          android:layout_marginRight="5dp"
+	         android:layout_weight="1"/>
+         <Button 
+             android:id="@+id/inbox_edit_delete_button"
+	         android:layout_width="0dp"
+	         android:layout_height="match_parent"
+	         android:text="@string/inbox_edit_delete"
+	         android:background="@drawable/delete_button_selector"
+	         android:layout_marginLeft="5dp"
+	         android:textColor="#FFFFFF"
+	         android:layout_weight="1"/>
+     </LinearLayout>
 
 </LinearLayout>
