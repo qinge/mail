@@ -11,12 +11,12 @@ import idv.qin.utils.MyLog;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,13 +33,12 @@ import javax.mail.internet.MimeUtility;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.sun.mail.pop3.POP3Folder;
 
 public class ReceiveMailService {
 	
 	public static final String RECEIVEMAIL_SERVICE_FLAG  = "ReceiveMailService";
-	private LinkedList<MailMessageBean> beans = new LinkedList<MailMessageBean>();
+	private List<MailMessageBean> beans = new ArrayList<MailMessageBean>();
 	private MainActivity mainActivity;
 	private Handler handler;
 	
@@ -103,7 +102,7 @@ public class ReceiveMailService {
 				for(int i= 0; i< messages.length ;i++){
 					MailMessageBean bean = new MailMessageBean();
 					bean.mailHead = parseMessageHead(pop3Folder, (MimeMessage)messages[i]);
-					beans.addFirst(bean);
+					beans.add(bean);
 				}
 				Collections.sort(beans, new CustomComparator());
 				handler.obtainMessage(InboxFragment.REMOTE_LOAD_SUCCESS, beans).sendToTarget();
@@ -163,8 +162,8 @@ public class ReceiveMailService {
 	 *
 	 */
 	public static final class SaveMessageHead2Disk implements Runnable{
-		LinkedList<MailMessageBean> beans;
-		public SaveMessageHead2Disk(LinkedList<MailMessageBean> beans) {
+		List<MailMessageBean> beans;
+		public SaveMessageHead2Disk(List<MailMessageBean> beans) {
 			this.beans = beans;
 		}
 
@@ -173,7 +172,7 @@ public class ReceiveMailService {
 			if(beans == null || beans.size() <=0 ){
 				return ;
 			}
-			File fileDir = new File(CacheManager.getDefalutInstance().getReceiver_mail_folder(), "head");
+			File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
 			if(!fileDir.exists()){
 				fileDir.mkdirs();
 			}
@@ -208,7 +207,7 @@ public class ReceiveMailService {
 	 * @return
 	 */
 	public static LinkedList<MailMessageBean> loadLocalMessageHeads(){
-		File fileDir = new File(CacheManager.getDefalutInstance().getReceiver_mail_folder(), "head");
+		File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
 		if(!fileDir.exists()){
 			fileDir.mkdirs();
 		}
@@ -243,5 +242,20 @@ public class ReceiveMailService {
 	}
 	
 	// 测试 Mac 上传消息
+	
+	public boolean deleteLocalData(List<MailMessageBean> beans){
+		try {
+			File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
+			for(int i =0 ; i < beans.size() ; i++){
+				File file = new File(fileDir, beans.get(i).mailHead.uid);
+				if(file.exists()){
+					file.delete();
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	
 }

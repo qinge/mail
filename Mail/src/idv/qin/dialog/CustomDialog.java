@@ -29,13 +29,13 @@ public class CustomDialog {
 	 * @param layoutId  自定义view 布局 id 如果为 0 使用默认自定义 view
 	 */
 	public void onpenDialog(String positiveTitle, String negativeTitle, int layoutId){
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.Theme_dialog);
 //		builder.setTitle("title");
 		builder.setCancelable(false);
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View dialogView = inflater.inflate(layoutId != 0 ? layoutId : R.layout.dialog_layout,null);
 		builder.setView(dialogView);
-		builder.setPositiveButton(positiveTitle !=null && !"".equals(positiveTitle) ? positiveTitle : "Ok", new OnClickListener() {
+		/*builder.setPositiveButton(positiveTitle !=null && !"".equals(positiveTitle) ? positiveTitle : "Ok", new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -54,7 +54,7 @@ public class CustomDialog {
 				}
 				dialog.dismiss();
 			}
-		});
+		});*/
 		builder.create().show();
 	}
 	

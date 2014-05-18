@@ -2,6 +2,7 @@ package idv.qin.mail.fragmet.inbox;
 
 import idv.qin.core.ReceiveMailService;
 import idv.qin.core.ReceiveMailService.SaveMessageHead2Disk;
+import idv.qin.dialog.CustomDialog;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
@@ -16,11 +17,8 @@ import idv.qin.view.PullToRefreshListView.SwipeDismissListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -56,7 +54,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private Button selectAllButton;
 	private Button deleteButton;
 	
-	private LinkedList<MailMessageBean> beans;
+	private List<MailMessageBean> beans;
 	private BaseAdapter adapter;
 	
 	private ReceiveMailService service;
@@ -71,7 +69,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private boolean [] ids = null; // 当适配器生成后初始化 new boolean [adapter.getCount]
 	private boolean refreshLocal = false; // 编辑模式下局部刷新数据(编辑按钮点击时候改变状态)
 	private int clickedPosition = -1; // 编辑模式下点击的条目位置
-	
+	private boolean isAllSelected = false; // 是否已经全选 如果是 再次点击全选取消选择
 	
 	private Handler handler = new ReceiverHandler();
 	
@@ -94,19 +92,20 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 						isRefreshing = false;
 					}
 					@SuppressWarnings("unchecked")
-					LinkedList<MailMessageBean> messageBeans = (LinkedList<MailMessageBean>) msg.obj;
+					List<MailMessageBean> messageBeans = (ArrayList<MailMessageBean>) msg.obj;
 					if(messageBeans == null || messageBeans.size() <= 0){
 						return ;
 					}else{
-						if(beans == null){
+						if(beans == null || beans.size() <= 0 && adapter== null){
 							beans = messageBeans;
 							progressDialog.cancel();
 							bindListViewAdapter();
 						}else{
+							/** 这里应该使用缓冲队列 否则可能数据还没写入完成就要去读取 造成数据不全*/
 							// 将数据写回到缓存文件夹中 并通知数据改变刷新界面数据
 							new Thread(new  SaveMessageHead2Disk(beans)).start();
 							beans.clear();
-							new LocalMessageHeadLoader().execute();// 重新加载本地数据
+							new LocalMessageHeadLoader().execute();// 重新加载本地数据 
 						}
 					}
 					break;
@@ -246,8 +245,10 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 				if(isEditMode){
 					// 退出编辑模式
 					editContainer.setVisibility(View.GONE);
+					selectAllButton.setText(getResources().getString(R.string.inbox_edit_selectall));
 					buttonOk.setText(getResources().getString(R.string.inbox_okbutton_text));
 					isEditMode = false;
+					isAllSelected = false;
 					if(adapter != null){
 						adapter.notifyDataSetChanged();
 					}
@@ -268,25 +269,67 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 				backPrevPage(R.id.inbox_main_area);
 				break;
 			case R.id.inbox_edit_select_all_button:
-				selectAllItem();
+				if(isAllSelected){
+					isAllSelected = false;
+					processAllSelectButtonClick(false);
+					selectAllButton.setText(getResources().getString(R.string.inbox_edit_selectall));
+				}else{
+					isAllSelected = true;
+					processAllSelectButtonClick(true);
+					selectAllButton.setText(getResources().getString(R.string.inbox_edit_cancle_selectall));
+				}
 				break;
 			case R.id.inbox_edit_delete_button:
+				isAllSelected = false;
 				deleteSelectedItem();
 				break;
 		}
 	}
 
 
+
 	private void deleteSelectedItem() {
-		// TODO Auto-generated method stub
+		refreshLocal = false;
+		clickedPosition = -1;
+		List<MailMessageBean> tempList = new ArrayList<MailMessageBean>();
+		// 1 将集合中的数据删除
+		for(int i =0 ; i < ids.length ; i++){
+			if(ids[i]){
+				tempList.add(beans.get(i));
+			}
+		}
 		
+		// 2 重置 ids = new boolean [collection.size()];
+		for(int i =0 ;i < tempList.size(); i++){
+			beans.remove(tempList.get(i));
+		}
+		
+		ids = null;
+		ids = new boolean [beans.size()];
+		if(MyBuildConfig.DEBUG){
+			MyLog.e(TAG, "beans.size= "+beans.size());
+		}
+						
+		
+		// 3 刷新界面
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}
+		
+		
+		// 4 删除本地数据
+		if(service != null && tempList.size() > 0){
+			service.deleteLocalData(tempList);
+		}
+		// 5 删除服务器数据
 	}
 
-	private void selectAllItem() {
+	
+	private void processAllSelectButtonClick(boolean b ) {
 		refreshLocal = false;
 		clickedPosition = -1;
 		for(int i =0 ; i < ids.length; i++){
-			ids[i] = true;
+			ids[i] = b;
 		}
 		if(adapter != null){
 			adapter.notifyDataSetChanged();
@@ -310,15 +353,15 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	 * @author qinge
 	 *
 	 */
-	private final class LocalMessageHeadLoader extends AsyncTask<Void, Integer, LinkedList<MailMessageBean>>{
+	private final class LocalMessageHeadLoader extends AsyncTask<Void, Integer, List<MailMessageBean>>{
 
 		@Override
-		protected LinkedList<MailMessageBean> doInBackground(Void... params) {
+		protected List<MailMessageBean> doInBackground(Void... params) {
 			return ReceiveMailService.loadLocalMessageHeads();
 		}
 
 		@Override
-		protected void onPostExecute(LinkedList<MailMessageBean> result) {
+		protected void onPostExecute(List<MailMessageBean> result) {
 			beans = result;
 			handler.sendEmptyMessage(LOCAL_LOAD_SUCCESS);
 		}
