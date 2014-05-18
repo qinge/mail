@@ -106,7 +106,8 @@ public class ReceiveMailService {
 				}
 				Collections.sort(beans, new CustomComparator());
 				handler.obtainMessage(InboxFragment.REMOTE_LOAD_SUCCESS, beans).sendToTarget();
-				new Thread(new ReceiveMailService.SaveMessageHead2Disk(beans)).start();
+				File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
+				MessageManager.saveMailMessageBean(beans, fileDir);
 			} catch (Exception e) {
 				MyLog.d(RECEIVEMAIL_SERVICE_FLAG, e != null ? e.getMessage()+"" : "ReceiveMailService-->ReceiverMailManager" +
 						"-->doInBackground()");
@@ -156,102 +157,39 @@ public class ReceiveMailService {
 		
 	}
 	
-	/**
-	 * 保存邮件消息头字段到磁盘 保存路径为 收件箱/head/...
-	 * @author qinge
-	 *
-	 */
-	public static final class SaveMessageHead2Disk implements Runnable{
-		List<MailMessageBean> beans;
-		public SaveMessageHead2Disk(List<MailMessageBean> beans) {
-			this.beans = beans;
+	public List<MailMessageBean> loadLocalMailMessageBeans(){
+		File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
+		List<MailMessageBean> mailMessageBeans = MessageManager.loadLocalMailMessageBean(fileDir);
+		if(mailMessageBeans != null){
+			Collections.sort(mailMessageBeans, new CustomComparator());
 		}
-
-		@Override
-		public void run() {
-			if(beans == null || beans.size() <=0 ){
-				return ;
-			}
-			File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
-			if(!fileDir.exists()){
-				fileDir.mkdirs();
-			}
-			for(int i=0  ; i< beans.size(); i++ ){
-				File file = new File(fileDir, beans.get(i).mailHead.uid);
-				if(file.exists()){
-					continue;
-				}
-				OutputStream outputStream;
-				ObjectOutputStream objectOutputStream = null;
-				try {
-					outputStream = new FileOutputStream(file);
-					objectOutputStream = new ObjectOutputStream(outputStream);
-					objectOutputStream.writeObject(beans.get(i));
-				} catch (Exception e) {
-				}finally{
-					try {
-						if(objectOutputStream != null)
-							objectOutputStream.close();
-					} catch (Exception e2) {
-						MyLog.e(RECEIVEMAIL_SERVICE_FLAG, "ReceiveMailService -- > SaveMessage2Disk --> run()");
-					}
-				}
-			}
-			System.gc();
-		}
-		
+		return mailMessageBeans;
 	}
 	
-	/**
-	 * 加载本地缓存 消息头字段
-	 * @return
-	 */
-	public static LinkedList<MailMessageBean> loadLocalMessageHeads(){
+	public void saveMailMessageBeans(List<MailMessageBean> mailMessageBeans){
 		File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
-		if(!fileDir.exists()){
-			fileDir.mkdirs();
-		}
-		File [] files = fileDir.listFiles();
-		if(files != null && files.length >0){
-			LinkedList<MailMessageBean> mailMessageBeans = new LinkedList<MailMessageBean>();
-			for(File file : files){
-				if(file.isDirectory()){
-					continue ;
-				}else{
-					ObjectInputStream objectInputStream  = null;
-					try {
-						FileInputStream inputStream = new FileInputStream(file);
-						objectInputStream = new ObjectInputStream(inputStream);
-						MailMessageBean bean = (MailMessageBean) objectInputStream.readObject();
-						mailMessageBeans.addLast(bean);
-					} catch (Exception e) {
-					}finally{
-						try {
-							if(objectInputStream != null){
-								objectInputStream.close();
-							}
-						} catch (Exception e2) {
-						}
-					}
-				}
-			}
-			Collections.sort(mailMessageBeans, new CustomComparator());
-			return mailMessageBeans;
-		}
-		return null;
+		MessageManager.saveMailMessageBean(mailMessageBeans, fileDir);
 	}
 	
 	// 测试 Mac 上传消息
 	
-	public boolean deleteLocalData(List<MailMessageBean> beans){
+	public boolean deleteLocalData(final List<MailMessageBean> beans){
+		
 		try {
-			File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
-			for(int i =0 ; i < beans.size() ; i++){
-				File file = new File(fileDir, beans.get(i).mailHead.uid);
-				if(file.exists()){
-					file.delete();
+			new Thread(){
+
+				@Override
+				public void run() {
+					File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
+					for(int i =0 ; i < beans.size() ; i++){
+						File file = new File(fileDir, beans.get(i).mailHead.uid);
+						if(file.exists()){
+							file.delete();
+						}
+					}
 				}
-			}
+				
+			}.start();
 			return true;
 		} catch (Exception e) {
 			return false;

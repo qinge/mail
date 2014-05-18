@@ -8,12 +8,20 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 public class SideBar extends View {
 	
+	  // @auth qin 改变文字大小 设置 dm
+    private DisplayMetrics displayMetrics;
+    
+    public void setDisplayMetrics(DisplayMetrics displayMetrics) {
+		this.displayMetrics = displayMetrics;
+	}  
+    
 	// 26个字母  
     public static String[] b = { "A", "B", "C", "D", "E", "F", "G", "H", "I",  
             "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",  
@@ -71,7 +79,7 @@ public class SideBar extends View {
 			paint.setColor(Color.rgb(33, 65, 98));
 			paint.setTypeface(Typeface.DEFAULT_BOLD);
 			paint.setAntiAlias(true);
-			paint.setTextSize(20);
+			paint.setTextSize(20 * (int)(displayMetrics != null ? (displayMetrics.density / 1.5) : 1));
 			 
 			// 选中的状态
 			if(i == choose){

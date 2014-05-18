@@ -44,16 +44,16 @@ public class StartFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
-		currentView =  inflater.inflate(R.layout.start_welcome_fragment, container, false);
+		rootView =  inflater.inflate(R.layout.start_welcome_fragment, container, false);
 		initComponent();
 		startSchedule();
-		return currentView;
+		return rootView;
 	}
 
 	private void initComponent() {
-		image_1 = (ImageView) currentView.findViewById(R.id.start_state_image_1);
-		image_2 = (ImageView) currentView.findViewById(R.id.start_state_image_2);
-		image_3 = (ImageView) currentView.findViewById(R.id.start_state_image_3);
+		image_1 = (ImageView) rootView.findViewById(R.id.start_state_image_1);
+		image_2 = (ImageView) rootView.findViewById(R.id.start_state_image_2);
+		image_3 = (ImageView) rootView.findViewById(R.id.start_state_image_3);
 	}
 
 	private void startSchedule() {

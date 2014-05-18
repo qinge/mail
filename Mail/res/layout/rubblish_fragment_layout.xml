@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+        <idv.qin.view.SwipeDismissListView
+            android:id="@+id/rubblish_fragment_swip_dismiss_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true"
+            android:listSelector="@android:color/transparent" >
+        </idv.qin.view.SwipeDismissListView>
+
+</RelativeLayout>

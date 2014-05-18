@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
     private SortAdapter adapter;  
     private ClearEditText mClearEditText; 
     
+  
     /** 
      * 汉字转换成拼音的类 
      */  
@@ -85,14 +87,14 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.contacts_fragment_layout, null);
+		rootView = inflater.inflate(R.layout.contacts_fragment_layout, null);
 		
 		initViews();  
 		
 		registerForContextMenu(sortListView);
 		
 		processTouchEvent();
-		return currentView;
+		return rootView;
 	}
 
 	
@@ -107,9 +109,9 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	
 
 	private void initViews() {
-		backButton = (Button) currentView.findViewById(R.id.head_bar_back);
+		backButton = (Button) rootView.findViewById(R.id.head_bar_back);
 		backButton.setOnClickListener(this);
-		editButton = (Button) currentView.findViewById(R.id.head_bar_ok);
+		editButton = (Button) rootView.findViewById(R.id.head_bar_ok);
 		if(type == 0){
 			editButton.setText(mainActivity.getResources().
 					getString(R.string.contacts_button_edit_text)
@@ -123,8 +125,9 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 		characterParser = CharacterParser.getInstance();  
 		pinyinComparator = new PinyinComparator();  
        
-	    sideBar = (SideBar) currentView.findViewById(R.id.sidrbar);  
-	    dialog = (TextView) currentView.findViewById(R.id.dialog);  
+	    sideBar = (SideBar) rootView.findViewById(R.id.sidrbar);  
+	    sideBar.setDisplayMetrics(displayMetrics);
+	    dialog = (TextView) rootView.findViewById(R.id.dialog);  
 	    sideBar.setTextView(dialog);  
        
        //设置右侧触摸监听  
@@ -140,7 +143,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 			}
 		});
        
-       sortListView = (ListView) currentView.findViewById(R.id.country_lvcountry);  
+       sortListView = (ListView) rootView.findViewById(R.id.country_lvcountry);  
        sortListView.setOnItemClickListener(new OnItemClickListener() {  
  
            @Override  
@@ -162,7 +165,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
        adapter = new SortAdapter(SourceDateList, mainActivity);
        sortListView.setAdapter(adapter);
        
-       mClearEditText = (ClearEditText) currentView.findViewById(R.id.filter_edit); 
+       mClearEditText = (ClearEditText) rootView.findViewById(R.id.filter_edit); 
        //根据输入框输入值的改变来过滤搜索  
        mClearEditText.addTextChangedListener(new TextWatcher() {
 			
@@ -251,7 +254,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	}
 	
 	private void processTouchEvent() {
-		currentView.setOnTouchListener(new OnTouchListener() {
+		rootView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -404,7 +407,7 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 	
 	
 	private void gobackPrgPage(ContactsBean item) {
-		InputMethodUtil.hideInputMethod(currentView);
+		InputMethodUtil.hideInputMethod(rootView);
 		if(preFragment != null && preFragment instanceof WriteMailFragment){
 			WriteMailFragment writeMailFragment = (WriteMailFragment) preFragment;
 			if(type == 1){
@@ -419,7 +422,9 @@ public class ContactsFragment extends BaseFragment implements OnClickListener{
 //		transaction.remove(ContactsFragment.this);
 //		transaction.commit();
 		mainActivity.getFragmentManager().popBackStack();
-	}  
+	}
+
+	
 	
 	
 }

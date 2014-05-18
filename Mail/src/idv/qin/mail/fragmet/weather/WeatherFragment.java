@@ -20,8 +20,8 @@ public class WeatherFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.weather_fragment, container, false);
-		return currentView;
+		rootView = inflater.inflate(R.layout.weather_fragment, container, false);
+		return rootView;
 	}
 
 	@Override

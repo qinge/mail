@@ -34,13 +34,13 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.send_box_fragment, container, false);
-		dismissListView = (SwipeDismissListView) currentView.findViewById(R.id.example_lv_list);
-		button_ok = (Button) currentView.findViewById(R.id.head_bar_ok);
+		rootView = inflater.inflate(R.layout.send_box_fragment, container, false);
+		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.example_lv_list);
+		button_ok = (Button) rootView.findViewById(R.id.head_bar_ok);
 		button_ok.setOnClickListener(this);
-		button_back = (Button) currentView.findViewById(R.id.head_bar_back);
+		button_back = (Button) rootView.findViewById(R.id.head_bar_back);
 		button_back.setOnClickListener(this);
-		return currentView;
+		return rootView;
 	}
 
 	@Override

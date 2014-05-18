@@ -102,11 +102,11 @@ public class WriteMailFragment extends BaseFragment implements View.OnClickListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.write_mail_fragment, container, false);
-		initComponent(currentView);
-		processTouchEvent(currentView);
+		rootView = inflater.inflate(R.layout.write_mail_fragment, container, false);
+		initComponent(rootView);
+		processTouchEvent(rootView);
 		initAdapter();
-		return currentView;
+		return rootView;
 	}
 
 
@@ -379,7 +379,7 @@ public class WriteMailFragment extends BaseFragment implements View.OnClickListe
 	 * @param type  1 ： 收件人地址， 2 ： cc 地址，3 : bcc 地址
 	 */
 	private void jumpContactsFragment(int type){
-		InputMethodUtil.hideInputMethod(currentView);
+		InputMethodUtil.hideInputMethod(rootView);
 		ContactsFragment fragment = new ContactsFragment();
 		fragment.setPrgFragment(WriteMailFragment.this);
 		Bundle args = new Bundle();

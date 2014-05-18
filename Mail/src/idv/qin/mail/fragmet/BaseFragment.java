@@ -29,8 +29,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class BaseFragment extends Fragment {
 
+	public static final byte REMOTE_LOAD_SUCCESS = 1;
+	public static final byte LOCAL_LOAD_SUCCESS = 2;
 	protected MainActivity mainActivity;
-	protected View currentView;
+	protected View rootView;
 	protected String TAG;
 	protected BaseFragment preFragment;
 	/** 用于操作数据 可直接调用其 crud 方法*/
@@ -62,11 +64,11 @@ public class BaseFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if(currentView != null){
+		if(rootView != null){
 			if (MyBuildConfig.DEBUG) {
 				MyLog.e(TAG, "currentView.setOnTouchListener(touchManager)");
 			}
-			currentView.setOnTouchListener(touchManager);
+			rootView.setOnTouchListener(touchManager);
 		}
 	}
 
@@ -78,7 +80,7 @@ public class BaseFragment extends Fragment {
 	 */
 	public void backPrevPage(int mainAreaId) {
 
-		View view = currentView.findViewById(mainAreaId);
+		View view = rootView.findViewById(mainAreaId);
 		if (view != null) {
 			InputMethodUtil.hideInputMethod(view);
 			Animation animation = OutAnimationUtil.getOutAnimation();

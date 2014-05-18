@@ -50,13 +50,13 @@ public class AttachFragment extends BaseFragment implements View.OnClickListener
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.add_attach_dialog, container, false);
+		rootView = inflater.inflate(R.layout.add_attach_dialog, container, false);
 		
-		initComponent(currentView);
+		initComponent(rootView);
 		
-		processTouchEvent(currentView);
+		processTouchEvent(rootView);
 		
-		return currentView;
+		return rootView;
 	}
 	
 

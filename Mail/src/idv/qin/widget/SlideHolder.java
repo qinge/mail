@@ -697,7 +697,7 @@ public class SlideHolder extends FrameLayout {
 			
 			setInterpolator(new DecelerateInterpolator());
 
-			float duration = Math.abs(mEnd - mStart) / SPEED / getDisplayMetrics().density;
+			float duration = Math.abs(mEnd - mStart) / SPEED / (displayMetrics!= null? displayMetrics.density : 1);
 			setDuration((long) duration);
 		}
 		
@@ -717,9 +717,6 @@ public class SlideHolder extends FrameLayout {
 		public void onSlideCompleted(boolean opened);
 	}
 
-	public DisplayMetrics getDisplayMetrics() {
-		return displayMetrics;
-	}
 
 	public void setDisplayMetrics(DisplayMetrics displayMetrics) {
 		this.displayMetrics = displayMetrics;

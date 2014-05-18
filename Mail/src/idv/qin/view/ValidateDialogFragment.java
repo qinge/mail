@@ -24,11 +24,11 @@ public class ValidateDialogFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.validate_user_dialog_fragment, container, false);
-		textView = (TextView) currentView.findViewById(R.id.login_validate_dialog_text);
+		rootView = inflater.inflate(R.layout.validate_user_dialog_fragment, container, false);
+		textView = (TextView) rootView.findViewById(R.id.login_validate_dialog_text);
 		textView.setText(R.string.validateing_user);
 		mainActivity.getHandler().postDelayed(new startMenuRunnable(), 2000);
-		return currentView;
+		return rootView;
 		
 	}
 

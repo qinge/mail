@@ -1,8 +1,6 @@
 package idv.qin.mail.fragmet.inbox;
 
 import idv.qin.core.ReceiveMailService;
-import idv.qin.core.ReceiveMailService.SaveMessageHead2Disk;
-import idv.qin.dialog.CustomDialog;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
@@ -12,8 +10,6 @@ import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;
 import idv.qin.utils.PreferencesManager;
 import idv.qin.view.PullToRefreshListView;
-import idv.qin.view.PullToRefreshListView.OnDismissCallback;
-import idv.qin.view.PullToRefreshListView.SwipeDismissListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -43,8 +40,8 @@ import android.widget.TextView;
 public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	public static final int ONES_LADE_COUNT = 20;
-//	private ListView listView;
-	private SwipeDismissListView listView;
+	private ListView listView;
+//	private SwipeDismissListView listView;
 	private PullToRefreshListView mPullRefreshListView;
 	private Button buttonOk;
 	private Button buttonBack;
@@ -62,8 +59,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private boolean isEditMode = false; 
 	private boolean isRefreshing = false;
 	
-	public static final byte REMOTE_LOAD_SUCCESS = 1;
-	public static final byte LOCAL_LOAD_SUCCESS = 2;
 	public static final String INBOX_FRAGMENT_TAG = "InboxFragment";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale(System.getProperty("user.language", "en")));
 	private boolean [] ids = null; // 当适配器生成后初始化 new boolean [adapter.getCount]
@@ -103,7 +98,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 						}else{
 							/** 这里应该使用缓冲队列 否则可能数据还没写入完成就要去读取 造成数据不全*/
 							// 将数据写回到缓存文件夹中 并通知数据改变刷新界面数据
-							new Thread(new  SaveMessageHead2Disk(beans)).start();
+							service.saveMailMessageBeans(beans);
 							beans.clear();
 							new LocalMessageHeadLoader().execute();// 重新加载本地数据 
 						}
@@ -130,14 +125,14 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.inbox_fragment, container, false);
+		rootView = inflater.inflate(R.layout.inbox_fragment, container, false);
 		
 		initComponent();
 		
 		// Set a listener to be invoked when the list should be refreshed.
 		processRefreshAction();
 		
-		return currentView;
+		return rootView;
 	}
 	
 	
@@ -168,19 +163,19 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	}
 	
 	private void initComponent() {
-		mPullRefreshListView = (PullToRefreshListView)currentView.findViewById(R.id.pull_refresh_list);
-		listView = (SwipeDismissListView) mPullRefreshListView.getRefreshableView();
+		mPullRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.pull_refresh_list);
+		listView = (ListView) mPullRefreshListView.getRefreshableView();
 		listView.setOnItemClickListener(new MyItemClickListener());
-		buttonOk = (Button) currentView.findViewById(R.id.head_bar_ok);
+		buttonOk = (Button) rootView.findViewById(R.id.head_bar_ok);
 		buttonOk.setText(getResources().getString(R.string.inbox_okbutton_text));
 		buttonOk.setOnClickListener(this);
-		buttonBack = (Button) currentView.findViewById(R.id.head_bar_back);
+		buttonBack = (Button) rootView.findViewById(R.id.head_bar_back);
 		buttonBack.setOnClickListener(this);
 		
-		editContainer = (LinearLayout) currentView.findViewById(R.id.inbox_edit_container);
-		selectAllButton = (Button) currentView.findViewById(R.id.inbox_edit_select_all_button);
+		editContainer = (LinearLayout) rootView.findViewById(R.id.inbox_edit_container);
+		selectAllButton = (Button) rootView.findViewById(R.id.inbox_edit_select_all_button);
 		selectAllButton.setOnClickListener(this);
-		deleteButton = (Button) currentView.findViewById(R.id.inbox_edit_delete_button);
+		deleteButton = (Button) rootView.findViewById(R.id.inbox_edit_delete_button);
 		deleteButton.setOnClickListener(this);
 	}
 	
@@ -357,7 +352,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 
 		@Override
 		protected List<MailMessageBean> doInBackground(Void... params) {
-			return ReceiveMailService.loadLocalMessageHeads();
+			return service.loadLocalMailMessageBeans();
 		}
 
 		@Override
@@ -373,7 +368,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private void bindListViewAdapter(){
 		adapter = new CustomAdapter();
 		listView.setAdapter(adapter);
-		listView.setOnDismissCallback(new OnDismissCallback() {
+		/*listView.setOnDismissCallback(new OnDismissCallback() {
 			
 			@Override
 			public void onDismiss(int dismissPosition) {
@@ -381,7 +376,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 				adapter.notifyDataSetChanged();
 			}
 		});
-		
+		*/
 		ids = new boolean [adapter.getCount()];
 	}
 	
@@ -514,4 +509,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		}
 		
 	}
+	
+	
 }

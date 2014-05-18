@@ -76,8 +76,8 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView =  inflater.inflate(R.layout.login_fragment, container, false);
-		currentView.setOnTouchListener(new OnTouchListener() {
+		rootView =  inflater.inflate(R.layout.login_fragment, container, false);
+		rootView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -87,7 +87,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 		});
 		initComponent();
 		inflateUserInfo();
-		return currentView;
+		return rootView;
 	}
 
 	@Override
@@ -97,32 +97,32 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 
 	
 	private void initComponent(){
-		headImage = (ImageView) currentView.findViewById(R.id.login_user_head_image);
+		headImage = (ImageView) rootView.findViewById(R.id.login_user_head_image);
 		/*Resources res = getResources();
 		Bitmap bmp = RoundBitmapUtil.toRoundBitmap(BitmapFactory.decodeResource(res, R.drawable.aa));
 		headImage.setImageBitmap(bmp);*/
 		
-		userName = (EditText) currentView.findViewById(R.id.login_username);
+		userName = (EditText) rootView.findViewById(R.id.login_username);
 		userName.setOnClickListener(this);
 		userName.setOnFocusChangeListener(this);
-		userNameSpinner = (Button) currentView.findViewById(R.id.login_spinner_button);
+		userNameSpinner = (Button) rootView.findViewById(R.id.login_spinner_button);
 		userNameSpinner.setOnClickListener(this);
 		
-		userPassword = (EditText) currentView.findViewById(R.id.login_password);
+		userPassword = (EditText) rootView.findViewById(R.id.login_password);
 		userPassword.setOnFocusChangeListener(this);
 		//userPassword.setOnClickListener(this);
-		userPasswordLock = (Button) currentView.findViewById(R.id.login_lock_button);
+		userPasswordLock = (Button) rootView.findViewById(R.id.login_lock_button);
 		userPasswordLock.setOnClickListener(this);
 		
-		loginButton = (Button) currentView.findViewById(R.id.login_action);
+		loginButton = (Button) rootView.findViewById(R.id.login_action);
 		loginButton.setOnClickListener(this);
 		
-		userNameListView = (ListView) currentView.findViewById(R.id.login_accounts_listview);
+		userNameListView = (ListView) rootView.findViewById(R.id.login_accounts_listview);
 		adapter = new UserInfoAdapter();
 		userNameListView.setAdapter(adapter);
 		userNameListView.setOnItemClickListener(new UserInfoItemClickListener());
 		
-		registerButton = (Button) currentView.findViewById(R.id.login_register);
+		registerButton = (Button) rootView.findViewById(R.id.login_register);
 		registerButton.setOnClickListener(this);
 		
 	}

@@ -46,44 +46,44 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater
+		rootView = inflater
 				.inflate(R.layout.home_fragment, container, false);
-		mSlideHolder = (SlideHolder) currentView.findViewById(R.id.slideHolder);
+		mSlideHolder = (SlideHolder) rootView.findViewById(R.id.slideHolder);
 		mSlideHolder.setDisplayMetrics(displayMetrics);
 		initComponent();
-		return currentView;
+		return rootView;
 	}
 
 	private void initComponent() {
-		user_head_ican = (ImageView) currentView
+		user_head_ican = (ImageView) rootView
 				.findViewById(R.id.user_head_ican);
 		Bitmap bm = RoundBitmapUtil.toRoundBitmap(BitmapFactory.decodeResource(
 				getResources(), R.drawable.aa));
 		user_head_ican.setImageBitmap(bm);
-		openMenuButton = (ImageButton) currentView
+		openMenuButton = (ImageButton) rootView
 				.findViewById(R.id.open_menu_ican);
 		openMenuButton.setOnClickListener(this);
-		writeMailButton = (ImageButton) currentView
+		writeMailButton = (ImageButton) rootView
 				.findViewById(R.id.btn_write_mail);
 		writeMailButton.setOnClickListener(this);
-		inbox_ican = (ImageView) currentView.findViewById(R.id.inbox_icon);
+		inbox_ican = (ImageView) rootView.findViewById(R.id.inbox_icon);
 		inbox_ican.setOnClickListener(this);
-		send_mail_ican = (ImageView) currentView
+		send_mail_ican = (ImageView) rootView
 				.findViewById(R.id.send_mail_ican);
 		send_mail_ican.setOnClickListener(this);
-		draft_box_icon = (ImageView) currentView
+		draft_box_icon = (ImageView) rootView
 				.findViewById(R.id.draft_box_icon);
 		draft_box_icon.setOnClickListener(this);
-		contacts_icon = (ImageView) currentView
+		contacts_icon = (ImageView) rootView
 				.findViewById(R.id.contacts_icon);
 		contacts_icon.setOnClickListener(this);
-		weather_icon = (ImageView) currentView.findViewById(R.id.weather_icon);
+		weather_icon = (ImageView) rootView.findViewById(R.id.weather_icon);
 		weather_icon.setOnClickListener(this);
-		rubbish_icon = (ImageView) currentView.findViewById(R.id.rubbish_icon);
+		rubbish_icon = (ImageView) rootView.findViewById(R.id.rubbish_icon);
 		rubbish_icon.setOnClickListener(this);
-		extras_icon = (ImageView) currentView.findViewById(R.id.extras_icon);
+		extras_icon = (ImageView) rootView.findViewById(R.id.extras_icon);
 		extras_icon.setOnClickListener(this);
-		black_list_icon = (ImageView) currentView
+		black_list_icon = (ImageView) rootView
 				.findViewById(R.id.black_list_icon);
 		black_list_icon.setOnClickListener(this);
 	}

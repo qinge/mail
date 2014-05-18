@@ -60,35 +60,35 @@ public class ContactsEditFragment extends BaseFragment implements OnClickListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		currentView = inflater.inflate(R.layout.contacts_edit_fragment_layout, container, false);
+		rootView = inflater.inflate(R.layout.contacts_edit_fragment_layout, container, false);
 		
 		initComponent();
 		
 		processTouchEvent();
 		
-		return currentView;
+		return rootView;
 	}
 	
 	private void initComponent() {
-		backButton = (Button) currentView.findViewById(R.id.head_bar_back);
+		backButton = (Button) rootView.findViewById(R.id.head_bar_back);
 		backButton.setOnClickListener(this);
-		editButton = (Button) currentView.findViewById(R.id.head_bar_ok);
+		editButton = (Button) rootView.findViewById(R.id.head_bar_ok);
 		editButton.setVisibility(View.GONE);
 		
-		nameText = (EditText) currentView.findViewById(R.id.contacts_edit_name_text);
+		nameText = (EditText) rootView.findViewById(R.id.contacts_edit_name_text);
 		nameText.setOnFocusChangeListener(this);
 		if(!CommonUtil.isEmpty(name)){
 			nameText.setText(name);
 		}
-		mailText = (EditText) currentView.findViewById(R.id.contacts_edit_address_text);
+		mailText = (EditText) rootView.findViewById(R.id.contacts_edit_address_text);
 		mailText.setOnFocusChangeListener(this);
 		if(!CommonUtil.isEmpty(address)){
 			mailText.setText(address);
 		}
 		
-		saveButton = (Button) currentView.findViewById(R.id.contacts_edit_save_button);
+		saveButton = (Button) rootView.findViewById(R.id.contacts_edit_save_button);
 		saveButton.setOnClickListener(this);
-		resetButton = (Button) currentView.findViewById(R.id.contacts_edit_reset_button);
+		resetButton = (Button) rootView.findViewById(R.id.contacts_edit_reset_button);
 		resetButton.setOnClickListener(this);
 		
 	}
@@ -98,7 +98,7 @@ public class ContactsEditFragment extends BaseFragment implements OnClickListene
 	}
 	
 	private void processTouchEvent() {
-		currentView.setOnTouchListener(new OnTouchListener() {
+		rootView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
