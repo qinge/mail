@@ -40,6 +40,7 @@ import android.widget.TextView;
 public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	public static final int ONES_LADE_COUNT = 20;
+	private int inbox_message_count = 0; // 由 数据提供类赋值 用于分页
 	private ListView listView;
 //	private SwipeDismissListView listView;
 	private PullToRefreshListView mPullRefreshListView;

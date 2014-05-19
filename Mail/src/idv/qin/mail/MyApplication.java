@@ -106,6 +106,18 @@ public class MyApplication extends Application {
 		}
 		cacheManager.setExtras_folder(extras_folder);
 		
+		File temp_folder = new File(StorageUtils.getCacheDirectory(getApplicationContext()), "/temp_folder");
+		if(!temp_folder.exists()){
+			temp_folder.mkdirs();
+		}
+		cacheManager.setTemp_folder(temp_folder);
+		
+		File rubblish_folder = new File(StorageUtils.getCacheDirectory(getApplicationContext()), "/rubblish_folder");
+		if(!rubblish_folder.exists()){
+			rubblish_folder.mkdirs();
+		}
+		cacheManager.setRubblish_folder(rubblish_folder);
+		
 		File user_info_folder = new File(StorageUtils.getCacheDirectory(getApplicationContext()), "/user_info");
 		if(!user_info_folder.exists()){
 			user_info_folder.mkdirs();

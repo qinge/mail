@@ -23,6 +23,12 @@ public class CacheManager {
 	/** 用户信息缓存目录 */
 	private File user_info_dir = null;
 	
+	/** 草稿箱缓存目录 */
+	private File temp_folder = null;
+	
+	/** 垃圾箱缓存目录 */
+	private File rubblish_folder = null;
+	
 	private static CacheManager cacheManager;
 	
 	private CacheManager(){}
@@ -73,6 +79,22 @@ public class CacheManager {
 
 	public void setUser_info_dir(File user_info_dir) {
 		this.user_info_dir = user_info_dir;
+	}
+
+	public File getTemp_folder() {
+		return temp_folder;
+	}
+
+	public void setTemp_folder(File temp_folder) {
+		this.temp_folder = temp_folder;
+	}
+
+	public File getRubblish_folder() {
+		return rubblish_folder;
+	}
+
+	public void setRubblish_folder(File rubblish_folder) {
+		this.rubblish_folder = rubblish_folder;
 	}
 
 	

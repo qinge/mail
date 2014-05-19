@@ -2,12 +2,16 @@ package idv.qin.core;
 
 import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.MainActivity;
+import idv.qin.mail.fragmet.BaseFragment;
+import idv.qin.utils.CacheManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Message;
 
 /**
  * 垃圾箱数据提供类
@@ -44,7 +48,11 @@ public class RubblishBxoService {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			
+			File fileDir = CacheManager.getDefalutInstance().getRubblish_folder();
+			List<MailMessageBean> beans = MessageManager.loadLocalMailMessageBean(fileDir);
+			if(handler != null){
+				Message.obtain(handler, BaseFragment.LOCAL_LOAD_SUCCESS, beans).sendToTarget();
+			}
 			return null;
 		}
 		

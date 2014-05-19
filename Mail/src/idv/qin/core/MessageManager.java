@@ -21,17 +21,22 @@ import java.util.List;
  */
 public class MessageManager {
 
+	/**
+	 * 保存数据到指定文件夹
+	 * @param beans
+	 * @param dir
+	 */
 	public static void saveMailMessageBean(List<MailMessageBean> beans, File dir){
 		new Thread(new SaveMessageHead2Disk(beans, dir)).start();
 	}
 	
 	
 	/**
-	 * 保存邮件消息头字段到磁盘 保存路径为 收件箱
+	 * 保存邮件消息头字段到磁盘 保存路径为
 	 * @author qinge
 	 *
 	 */
-	public static final class SaveMessageHead2Disk implements Runnable{
+	private static final class SaveMessageHead2Disk implements Runnable{
 		private List<MailMessageBean> beans = null;
 		private File fileDir = null;
 		public SaveMessageHead2Disk(List<MailMessageBean> beans, File fileDir) {
@@ -74,7 +79,11 @@ public class MessageManager {
 		
 	}
 	
-	
+	/**
+	 * 从指定文件夹下加载 MailMessageBean 加载的数据已经根据邮件收发时间从晚到早排序过(新邮件会排再前面)
+	 * @param fileDir
+	 * @return
+	 */
 	public static List<MailMessageBean> loadLocalMailMessageBean(File fileDir){
 		if(!fileDir.exists()){
 			fileDir.mkdirs();

@@ -4,6 +4,7 @@ import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.contacts.ContactsFragment;
 import idv.qin.mail.fragmet.inbox.InboxFragment;
+import idv.qin.mail.fragmet.rubbish.RubblishFragment;
 import idv.qin.mail.fragmet.sendbox.SendBoxFragment;
 import idv.qin.mail.fragmet.weather.WeatherFragment;
 import idv.qin.mail.fragmet.write.WriteMailFragment;
@@ -138,7 +139,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			turn2WeatherFragment();
 			break;
 		case R.id.rubbish_icon: 
-
+			turn2RubblishFragment();
 			break;
 		case R.id.extras_icon:
 
@@ -148,7 +149,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			break;
 		}
 	}
-
 
 
 
@@ -205,5 +205,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		transaction.addToBackStack(ContactsFragment.CONTACTS_FRAGMENT_TAG);
 		transaction.commit();
 	}
+	
+	private void turn2RubblishFragment() {
+		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		RubblishFragment fragment = new RubblishFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.replace(MainActivity.MAIN_AREA, fragment,WeatherFragment.WEATHER_FRAGMENT_FLAG);
+		transaction.addToBackStack(RubblishFragment.RUBBLISH_FRAGMENT_FLAG);
+		transaction.commit();
+	}
+
 
 }

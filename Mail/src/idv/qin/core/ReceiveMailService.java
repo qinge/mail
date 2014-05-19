@@ -174,7 +174,10 @@ public class ReceiveMailService {
 	// 测试 Mac 上传消息
 	
 	public boolean deleteLocalData(final List<MailMessageBean> beans){
-		
+		// 1 将数据存入垃圾箱中
+		File dir = CacheManager.getDefalutInstance().getRubblish_folder();
+		MessageManager.saveMailMessageBean(beans, dir);
+		// 2 从收件箱中删除
 		try {
 			new Thread(){
 
