@@ -8,8 +8,9 @@
 
     <include layout="@layout/general_head_bar" />
 
+    
     <idv.qin.view.SwipeDismissListView
-        android:id="@+id/example_lv_list"
+        android:id="@+id/send_box_swip_dismiss_list_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="@android:color/transparent"

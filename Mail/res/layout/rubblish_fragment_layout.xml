@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <include layout="@layout/general_head_bar" />
+
         <idv.qin.view.SwipeDismissListView
             android:id="@+id/rubblish_fragment_swip_dismiss_listview"
             android:layout_width="match_parent"
@@ -13,5 +20,6 @@
             android:footerDividersEnabled="true"
             android:listSelector="@android:color/transparent" >
         </idv.qin.view.SwipeDismissListView>
+    </LinearLayout>
 
 </RelativeLayout>

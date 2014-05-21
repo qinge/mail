@@ -1,5 +1,8 @@
 package idv.qin.mail.fragmet;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import idv.qin.db.DBHelperManager;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.MyApplication;
@@ -47,7 +50,10 @@ public class BaseFragment extends Fragment {
 			.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 			.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
 
+	
 	protected final static MyTouchManager touchManager = new MyTouchManager();
+	
+	protected SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale(System.getProperty("user.language", "en")));
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
