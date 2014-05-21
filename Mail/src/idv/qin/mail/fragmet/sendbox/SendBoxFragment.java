@@ -2,15 +2,13 @@ package idv.qin.mail.fragmet.sendbox;
 
 import idv.qin.core.SendBoxService;
 import idv.qin.domain.MailMessageBean;
-import idv.qin.domain.PackageItem;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
+import idv.qin.utils.CommonUtil;
 import idv.qin.view.SwipeDismissListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,13 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class SendBoxFragment extends BaseFragment implements View.OnClickListener{
 
 	public static final String SENDBOX_FRAGMENT_TAG = "SendBoxFragment";
 	private static final int REQUEST_CODE_SETTINGS = 0;
     private SwipeDismissListView dismissListView;
-    private ProgressDialog progressDialog;
     private Button button_ok;
 	private Button button_back;
 	private SendBoxService service;
@@ -35,6 +34,8 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 	private List<MailMessageBean> beans;
 	private LayoutInflater inflater;
 	private BaseAdapter adapter = null;
+	private int start = 0;
+	private int end = 20; // 默认先抓取20条数据
 	
 	private Handler handler = new Handler(){
 
@@ -73,6 +74,7 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 		button_ok.setOnClickListener(this);
 		button_back = (Button) rootView.findViewById(R.id.head_bar_back);
 		button_back.setOnClickListener(this);
+		service.getPagingData(start, end);
 		return rootView;
 	}
 
@@ -129,27 +131,72 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
-			return 0;
+			return beans != null ? beans.size() : 0;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
+			return beans != null ? beans.get(position) : null;
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
+			return position;
 		}
-
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			return null;
+			ViewHolder holder;
+			boolean refresh = true;// 初始值为 true 保证getview正确加载数据
+			if(convertView == null){
+				holder = new ViewHolder();
+				convertView = inflater.inflate(R.layout.generic_item_layout, null);
+				
+				holder.subjectView = (TextView) convertView.findViewById(R.id.generic_item_subject_view);
+				holder.sendAddressView = (TextView) convertView.findViewById(R.id.generic_item_send_address);
+				holder.extraView = (LinearLayout) convertView.findViewById(R.id.generic_item_extra_view);
+				holder.receiveTimeView = (TextView) convertView.findViewById(R.id.generic_item_receive_time_view);
+				
+				convertView.setTag(holder);
+			}else{
+				holder = (ViewHolder) convertView.getTag();
+			}
+			inflateViewData(beans.get(position), holder,position);
+			return convertView;
 		}
+		
+	}
+	
+	private void inflateViewData(MailMessageBean mailMessageBean, ViewHolder holder, int position) {
+		if(CommonUtil.isEmpty(mailMessageBean.mailHead.subject)){
+			holder.subjectView.setText(getResources().getString(R.string.inbox_nosubject_text));
+		}else{
+			holder.subjectView.setText(mailMessageBean.mailHead.subject);
+		}
+		
+		holder.sendAddressView.setText(mailMessageBean.mailHead.from);
+		
+		if(mailMessageBean.mailHead.haveExtras){
+			holder.extraView.setVisibility(View.VISIBLE);
+		}else{
+			holder.extraView.setVisibility(View.INVISIBLE);
+		}
+		holder.receiveTimeView.setText(dateFormat.format(mailMessageBean.mailHead.sendDate));
+	}
+	
+	private class ViewHolder{
+
+		/**
+		 * 发件人 view
+		 */
+		public TextView sendAddressView;
+		
+		/**
+		 * 主题 view
+		 */
+		public TextView subjectView;
+		public LinearLayout extraView;
+		public TextView receiveTimeView;
 		
 	}
 }

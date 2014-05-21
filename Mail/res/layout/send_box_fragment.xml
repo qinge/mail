@@ -11,8 +11,8 @@
     
     <idv.qin.view.SwipeDismissListView
         android:id="@+id/send_box_swip_dismiss_list_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="#CCCCCC"
         android:dividerHeight="1dp"
