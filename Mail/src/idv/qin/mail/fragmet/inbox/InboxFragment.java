@@ -120,7 +120,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		inflater = mainActivity.getLayoutInflater();
-		
+		service = new ReceiveMailService(mainActivity, handler);
 	}
 
 	@Override
@@ -141,7 +141,6 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		service = new ReceiveMailService(mainActivity, handler);
 		try {
 			progressDialog.show();
 			if(PreferencesManager.getInstance(mainActivity).getValue("isFirst").equalsIgnoreCase("true")

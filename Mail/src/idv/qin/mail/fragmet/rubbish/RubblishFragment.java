@@ -100,8 +100,13 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback 
 	 */
 	@Override
 	public void onDismiss(int dismissPosition) {
-		// TODO Auto-generated method stub
-		
+		if(beans != null && beans.get(dismissPosition) != null){
+			service.deleteMessage(beans.get(dismissPosition));
+			beans.remove(dismissPosition);
+		}
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}
 	}
 	
 	

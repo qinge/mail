@@ -6,6 +6,7 @@ import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.utils.CommonUtil;
 import idv.qin.view.SwipeDismissListView;
+import idv.qin.view.SwipeDismissListView.OnDismissCallback;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SendBoxFragment extends BaseFragment implements View.OnClickListener{
+public class SendBoxFragment extends BaseFragment implements View.OnClickListener, OnDismissCallback {
 
 	public static final String SENDBOX_FRAGMENT_TAG = "SendBoxFragment";
 	private static final int REQUEST_CODE_SETTINGS = 0;
@@ -70,6 +71,7 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.send_box_fragment, container, false);
 		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.send_box_swip_dismiss_list_view);
+		dismissListView.setOnDismissCallback(this);
 		button_ok = (Button) rootView.findViewById(R.id.head_bar_ok);
 		button_ok.setOnClickListener(this);
 		button_back = (Button) rootView.findViewById(R.id.head_bar_back);
@@ -86,6 +88,20 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 	    }
 
 	  
+	/**
+	 * 滑动删除回调方法
+	 */
+	@Override
+	public void onDismiss(int dismissPosition) {
+		// TODO Auto-generated method stub
+		if(beans != null && beans.get(dismissPosition) != null){
+			service.deleteMessage(beans.get(dismissPosition));
+			beans.remove(dismissPosition);
+		}
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}
+	}
 
 	    public int convertDpToPixel(float dp) {
 	        DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -147,7 +163,6 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
-			boolean refresh = true;// 初始值为 true 保证getview正确加载数据
 			if(convertView == null){
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.generic_item_layout, null);

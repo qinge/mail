@@ -19,7 +19,7 @@ import android.os.Message;
  *
  */
 public class SendBoxService {
-
+	private File fileDir = CacheManager.getDefalutInstance().getSend_mail_folder();
 	private List<MailMessageBean> beans = new ArrayList<MailMessageBean>();
 	private MainActivity mainActivity;
 	private Handler handler;
@@ -42,12 +42,15 @@ public class SendBoxService {
 		this.end = end;
 		new RubblishManager().execute();
 	}
+	
+	public boolean deleteMessage(MailMessageBean bean){
+		return MessageManager.deleteMessage(fileDir, bean);
+	}
 
 	private final class RubblishManager extends AsyncTask<Void, Integer, Void>{
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			File fileDir = CacheManager.getDefalutInstance().getSend_mail_folder();
 			List<MailMessageBean> beans = MessageManager.loadLocalMailMessageBean(fileDir);
 			if(handler != null){
 				Message.obtain(handler, BaseFragment.LOCAL_LOAD_SUCCESS, beans).sendToTarget();

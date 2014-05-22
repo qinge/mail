@@ -118,4 +118,19 @@ public class MessageManager {
 		return null;
 	}
 	
+	/**
+	 * 删除邮件消息
+	 * @return
+	 */
+	public static boolean deleteMessage(File dir , MailMessageBean messageBean){
+		if(messageBean == null || dir == null || !dir.exists()){
+			return false;
+		}
+		File file = new File(dir, messageBean.mailHead.uid);
+		if(file.exists()){
+			file.delete();
+		}
+		file = null;
+		return true;
+	}
 }
