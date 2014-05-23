@@ -34,8 +34,6 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback 
 	private RubblishBxoService service ;
 	private LayoutInflater inflater;
 	
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale(System.getProperty("user.language", "en")));
-	
 	private boolean refreshLocal = false; // 编辑模式下局部刷新数据(编辑按钮点击时候改变状态)
 	private int clickedPosition = -1; // 编辑模式下点击的条目位置
 	
@@ -102,8 +100,13 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback 
 	 */
 	@Override
 	public void onDismiss(int dismissPosition) {
-		// TODO Auto-generated method stub
-		
+		if(beans != null && beans.get(dismissPosition) != null){
+			service.deleteMessage(beans.get(dismissPosition));
+			beans.remove(dismissPosition);
+		}
+		if(adapter != null){
+			adapter.notifyDataSetChanged();
+		}
 	}
 	
 	
