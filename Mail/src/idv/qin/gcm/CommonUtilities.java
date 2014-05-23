@@ -32,7 +32,7 @@ public final class CommonUtilities {
     /**
      * Google API project id registered to use GCM. 
      */
-    public static final String SENDER_ID = "231527818620";
+    public static final String SENDER_ID = "527320278030"; // yijianh...@gmail project number 
 
     /**
      * Tag used on log messages.
