@@ -7,5 +7,5 @@ package idv.qin.utils;
  *
  */
 public final class MyBuildConfig {
-    public final static boolean DEBUG = true;
+    public final static boolean DEBUG = false;
 }
