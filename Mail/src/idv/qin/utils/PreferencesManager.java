@@ -31,6 +31,7 @@ import android.util.Base64;
 public class PreferencesManager {
 
     public static final String SHARED_PREFERENCES_NAME = "SWIPE_LIST_VIEW_SAMPLE_PREFERENCES";
+    public static final String IS_LOGIN = "isLogin";
 
     /**
      * Instance

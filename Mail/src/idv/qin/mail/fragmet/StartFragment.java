@@ -4,6 +4,8 @@ import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.login.LoginFragment;
 import idv.qin.utils.MyLog;
+import idv.qin.utils.PreferencesManager;
+import idv.qin.view.ValidateDialogFragment;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 
 public class StartFragment extends BaseFragment {
 	private final String TAG = "StartFragment";
+	
 	private static ScheduledExecutorService service;
 	private Runnable runnable;
 	private Handler handler;
@@ -78,10 +81,18 @@ public class StartFragment extends BaseFragment {
 		@Override
 		public void run() {
 			service.shutdownNow();
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
-			LoginFragment loginFragment = new LoginFragment();
-			transaction.replace(MainActivity.MAIN_AREA, loginFragment);
-			transaction.commit();
+			boolean b = Boolean.parseBoolean(PreferencesManager.getInstance(mainActivity).getValue(PreferencesManager.IS_LOGIN));
+			if(b){
+				FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+				HomeFragment fragment = new HomeFragment();
+				transaction.replace(MainActivity.MAIN_AREA, fragment,HomeFragment.HOME_FRAGMENT_TAG);
+				transaction.commit();
+			}else{
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				LoginFragment loginFragment = new LoginFragment();
+				transaction.replace(MainActivity.MAIN_AREA, loginFragment);
+				transaction.commit();
+			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.mail.fragmet.HomeFragment;
+import idv.qin.utils.PreferencesManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ public class ValidateDialogFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mainActivity = (MainActivity) getActivity();
 	}
 
 	@Override
@@ -43,6 +43,7 @@ public class ValidateDialogFragment extends BaseFragment {
 		@Override
 		public void run() {
 			if(ValidateDialogFragment.this.getFragmentManager() != null){
+				PreferencesManager.getInstance(mainActivity).saveValue(PreferencesManager.IS_LOGIN, "true");
 				FragmentTransaction transaction = ValidateDialogFragment.this.getFragmentManager().beginTransaction();
 				HomeFragment fragment = new HomeFragment();
 				ValidateDialogFragment.this.getFragmentManager().popBackStack();

@@ -5,7 +5,10 @@ import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
 import idv.qin.utils.CacheManager;
+import idv.qin.utils.CommonUtil;
 import idv.qin.utils.InputMethodUtil;
+import idv.qin.utils.MyBuildConfig;
+import idv.qin.utils.PreferencesManager;
 import idv.qin.view.ValidateDialogFragment;
 
 import java.io.File;
@@ -24,6 +27,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +46,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class LoginFragment extends BaseFragment implements OnClickListener,OnFocusChangeListener, OnItemClickListener {
+	private final static String USER_NAME = "userName";
+	private final static String USER_PASS = "userPass";
 
 	private ImageView headImage;
 	private EditText userName;
@@ -55,6 +61,7 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 	private UserInfoAdapter adapter;
 	private LayoutInflater inflater;
 	private final static int SUCCESS = 200;
+	private boolean isNeedLock = true;
 	
 	private Handler handler = new Handler(){
 
@@ -103,12 +110,16 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 		headImage.setImageBitmap(bmp);*/
 		
 		userName = (EditText) rootView.findViewById(R.id.login_username);
+		String uNmae = PreferencesManager.getInstance(mainActivity).getValue(USER_NAME);
+		userName.setText(uNmae);
 		userName.setOnClickListener(this);
 		userName.setOnFocusChangeListener(this);
 		userNameSpinner = (Button) rootView.findViewById(R.id.login_spinner_button);
 		userNameSpinner.setOnClickListener(this);
 		
 		userPassword = (EditText) rootView.findViewById(R.id.login_password);
+		String uPass = PreferencesManager.getInstance(mainActivity).getValue(USER_PASS);
+		userPassword.setText(uPass);
 		userPassword.setOnFocusChangeListener(this);
 		//userPassword.setOnClickListener(this);
 		userPasswordLock = (Button) rootView.findViewById(R.id.login_lock_button);
@@ -128,7 +139,6 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 	}
 	
 	
-private static int lockClickCount = 1;
 	
 	@Override
 	public void onClick(View v) {
@@ -146,12 +156,28 @@ private static int lockClickCount = 1;
 			break;
 			
 		case R.id.login_action:
-			InputMethodUtil.hideInputMethod(v);
-			UserInfo user = new UserInfo();
-			user.name = userName.getText().toString();
-			user.password = userPassword.getText().toString();
-			saveUserInfo(user);
-			resolveLoginRequest();
+			if(MyBuildConfig.DEBUG){
+				InputMethodUtil.hideInputMethod(v);
+				UserInfo user = new UserInfo();
+				user.name = userName.getText().toString();
+				user.password = userPassword.getText().toString();
+				saveUserInfo(user);
+				resolveLoginRequest();
+			}else{
+				if(checkUserInvalidate()){
+					return ;
+				}else{
+					InputMethodUtil.hideInputMethod(v);
+					UserInfo user = new UserInfo();
+					user.name = userName.getText().toString();
+					user.password = userPassword.getText().toString();
+					if(isNeedLock){
+						saveUserInfo(user);
+					}
+					resolveLoginRequest();
+					
+				}
+			}
 			break;
 			
 		case R.id.login_register:
@@ -164,6 +190,23 @@ private static int lockClickCount = 1;
 	
 	
 	
+
+	private boolean checkUserInvalidate() {
+		String u = userName.getText().toString();
+		String p = userPassword.getText().toString();
+		String s = getResources().getString(R.string.login_user_error);
+		CharSequence htmlText = Html.fromHtml("<font color=#808183>"+ s +"</font>");
+		if(CommonUtil.isEmpty(u)){
+			userName.setError(htmlText);
+			return true;
+		}
+		if(CommonUtil.isEmpty(p)){
+			userPassword.setError(htmlText);
+			return true;
+		}
+		return false;
+	}
+
 
 	private void hideOrShowNameListview(View v) {
 		if(userNameListView.isShown()){
@@ -188,10 +231,11 @@ private static int lockClickCount = 1;
 	 * if lock is lock state remember user  
 	 */
 	private void processIsRememberUser() {
-		if(++lockClickCount % 2 == 0 ){
+		if(isNeedLock){
+			isNeedLock = false;
 			userPasswordLock.setBackgroundResource(R.drawable.login_password_nor);
-			lockClickCount = 0;
 		}else{
+			isNeedLock = true;
 			userPasswordLock.setBackgroundResource(R.drawable.login_password_sel);
 		}
 	}
@@ -214,18 +258,17 @@ private static int lockClickCount = 1;
 		switch (v.getId()) {
 		case R.id.login_username:
 			if(v.isFocused()){
-				//userName.setHint("");
-				if(userPassword.getText().toString().trim().equals(""))
-					userPassword.setHint(getResources().getString(R.string.user_password));
+				if(userName.getText().toString().trim().equals(""))
+					userName.setHint(getResources().getString(R.string.user_name));
+				userName.setError(null);
 				hideNameListView();
 			}
 			break;
 		case R.id.login_password:
 			if(v.isFocused()){
-				//userPassword.setHint("");
-				if(userName.getText().toString().trim().equals(""))
-					userName.setHint(getResources().getString(R.string.user_name));
-				hideNameListView();
+				if(userPassword.getText().toString().trim().equals(""))
+					userPassword.setHint(getResources().getString(R.string.user_password));
+					userPassword.setError(null);
 			}
 			break;
 		}
@@ -273,6 +316,8 @@ private static int lockClickCount = 1;
 	 * @param userInfo
 	 */
 	private void saveUserInfo(UserInfo userInfo){
+		PreferencesManager.getInstance(mainActivity).saveValue(USER_NAME, userName.getText().toString());	
+		PreferencesManager.getInstance(mainActivity).saveValue(USER_PASS, userPassword.getText().toString());	
 		File userInfoDir = CacheManager.getDefalutInstance().getUser_info_dir();
 		OutputStream stream = null;
 		ObjectOutputStream objectOutputStream = null;
