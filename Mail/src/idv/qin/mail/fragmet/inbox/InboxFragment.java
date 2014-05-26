@@ -2,8 +2,13 @@ package idv.qin.mail.fragmet.inbox;
 
 import idv.qin.core.ReceiveMailService;
 import idv.qin.domain.MailMessageBean;
+import idv.qin.mail.MainActivity;
+import idv.qin.mail.MessageActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
+import idv.qin.mail.fragmet.GenericMessageFragment;
+import idv.qin.mail.fragmet.rubbish.RubblishFragment;
+import idv.qin.mail.fragmet.weather.WeatherFragment;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
 import idv.qin.utils.CommonUtil;
 import idv.qin.utils.MyBuildConfig;
@@ -17,6 +22,8 @@ import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -505,10 +512,22 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 				refreshLocal = false; // 该次的点击事件界面刷新完成后一定要设置 refreshLocal = false; 否则滚动时候数据错乱
 			}else{
 				// 跳转到邮件详细界面
+				openGenericMessageFragment(beans.get(position));
 			}
 		}
-		
+
 	}
 	
+	private void openGenericMessageFragment(MailMessageBean bean) {
+		// TODO Auto-generated method stub
+		/*FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		GenericMessageFragment fragment = new GenericMessageFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.replace(MainActivity.MAIN_AREA, fragment,GenericMessageFragment.GENERIC_MESSAGE_FRAGMENT);
+		transaction.addToBackStack(GenericMessageFragment.GENERIC_MESSAGE_FRAGMENT);
+		transaction.commit();*/
+		Intent intent = new Intent(mainActivity, MessageActivity.class);
+		startActivity(intent);
+	}
 	
 }
