@@ -75,5 +75,10 @@
     <string name="options_unregister">Unregister</string>
     <string name="options_clear">Clear</string>
     <string name="options_exit">Exit</string>
+    
+    <!-- \\ **********************************   登陆界面    **************************\\  -->
+    <string name="login_user_name_error">用户名错误</string>
+    <string name="login_user_pass_error">密码错误</string>
+    <string name="login_user_error">请正确输入</string>
  	
 </resources>
