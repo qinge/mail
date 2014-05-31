@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/extras_box_main_area"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/send_box_main_area"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical" >
 
         <include layout="@layout/general_head_bar" />
 
         <idv.qin.view.SwipeDismissListView
-            android:id="@+id/send_box_swip_dismiss_list_view"
+            android:id="@+id/extras_box_swip_dismiss_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@android:color/transparent"

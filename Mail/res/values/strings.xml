@@ -81,4 +81,7 @@
     <string name="login_user_pass_error">密码错误</string>
     <string name="login_user_error">请正确输入</string>
  	
+    <!-- \\ **********************************   附件界面    **************************\\  -->
+    <string name="extras_format_error">格式不支持</string>
+    
 </resources>

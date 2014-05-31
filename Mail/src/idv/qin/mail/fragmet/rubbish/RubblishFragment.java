@@ -9,8 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import idv.qin.core.RubblishBxoService;
@@ -26,13 +28,15 @@ import idv.qin.view.SwipeDismissListView.OnDismissCallback;
  * @author qinge
  *
  */
-public class RubblishFragment extends BaseFragment implements OnDismissCallback {
+public class RubblishFragment extends BaseFragment implements OnDismissCallback,OnClickListener {
 
 	public static String RUBBLISH_FRAGMENT_FLAG = "RubblishFragment";
 	private List<MailMessageBean> beans;
 	private SwipeDismissListView dismissListView;
 	private RubblishBxoService service ;
 	private LayoutInflater inflater;
+	private Button button_back;
+	private Button button_ok;
 	
 	private boolean refreshLocal = false; // 编辑模式下局部刷新数据(编辑按钮点击时候改变状态)
 	private int clickedPosition = -1; // 编辑模式下点击的条目位置
@@ -83,6 +87,10 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback 
 	private void initComponent() {
 		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.rubblish_fragment_swip_dismiss_listview);
 		dismissListView.setOnDismissCallback(this);
+		button_ok = (Button) rootView.findViewById(R.id.head_bar_ok);
+		button_ok.setVisibility(View.INVISIBLE);
+		button_back = (Button) rootView.findViewById(R.id.head_bar_back);
+		button_back.setOnClickListener(this);
 	}
 
 	@Override
@@ -187,6 +195,19 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback 
 			
 		}
 		
+	}
+
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.head_bar_back:
+			backPrevPage(R.id.rubblish_main_area);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

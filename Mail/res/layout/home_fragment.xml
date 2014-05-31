@@ -49,7 +49,7 @@
                     android:visibility="visible" >
 
                     <Button
-                        android:id="@+id/menubtn_syncronize"
+                        android:id="@+id/home_fragment_exit"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_alignParentTop="true"
@@ -147,7 +147,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="12.0dip"
-                            android:src="@drawable/radiu_diselect" />
+                            android:src="@drawable/radiu_selected" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -225,7 +225,7 @@
                     android:background="@drawable/sliding_menu_bg"
                     android:orientation="vertical" >
 
-                    <RelativeLayout
+<!--                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0" >
@@ -251,8 +251,42 @@
                             android:text="设置"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
-                    </RelativeLayout>
+                    </RelativeLayout> -->
+<!-- 
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/menu_divider" />
+ -->
+                    <RelativeLayout
+                        android:id="@+id/app_wall_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0" >
 
+                        <ImageView
+                            android:layout_width="20.0dip"
+                            android:layout_height="20.0dip"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10.0dip"
+                            android:src="@drawable/app_store" />
+
+                        <Button
+                            android:id="@+id/home_fragment_app_store"
+                            android:layout_width="fill_parent"
+                            android:layout_height="47.0dip"
+                            android:layout_marginLeft="1.0dip"
+                            android:layout_marginRight="1.0dip"
+                            android:background="@drawable/selector_chooser_btn"
+                            android:freezesText="false"
+                            android:gravity="left|center"
+                            android:paddingLeft="40.0dip"
+                            android:text="应用商店"
+                            android:textColor="@color/white"
+                            android:textSize="17.0sp" />
+                    </RelativeLayout>
+                    
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -270,10 +304,10 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10.0dip"
-                            android:src="@drawable/app_store" />
+                            android:src="@drawable/menu_setting" />
 
                         <Button
-                            android:id="@+id/app_wall"
+                            android:id="@+id/home_fragment_logout"
                             android:layout_width="fill_parent"
                             android:layout_height="47.0dip"
                             android:layout_marginLeft="1.0dip"
@@ -282,7 +316,7 @@
                             android:freezesText="false"
                             android:gravity="left|center"
                             android:paddingLeft="40.0dip"
-                            android:text="应用商店"
+                            android:text="注销登录"
                             android:textColor="@color/white"
                             android:textSize="17.0sp" />
                     </RelativeLayout>
@@ -303,7 +337,8 @@
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="vertical"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        android:visibility="visible" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -627,14 +662,6 @@
             android:layout_height="1dp"
             android:background="#CCCCCC" />
 
-        <!--
-         <View 
-         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#CCCCCC"
-         android:layout_marginTop="10dp"/>
-        -->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="125dp"
@@ -695,15 +722,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
-
-                <!--
-                 <ImageView 
-                android:id="@+id/inbox_icon"
-               android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_centerInParent="true"
-        		/>
-                -->
 
                 <TextView
                     android:layout_width="wrap_content"

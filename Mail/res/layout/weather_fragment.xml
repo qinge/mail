@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weather_main_area"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,7 +19,8 @@
     	 android:orientation="vertical"
    		 android:background="@drawable/weather_fragment_top" 
    		 >
-        <TextView  
+        <TextView 
+            android:id="@+id/weather_fragment_date_text" 
              android:layout_width="match_parent"
    		 	android:layout_height="0dp"
    		 	 android:textColor="#FFFFFF"
@@ -49,7 +51,7 @@
                 android:src="@drawable/weather_fragment_weather_flag" />
 
             <TextView
-                android:id="@+id/weather_fragment_t"
+                 android:id="@+id/weather_fragment_temperature_text" 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/weather_flag"
@@ -84,7 +86,8 @@
     	 android:orientation="vertical"
    		 android:background="@drawable/weather_fragment_bottom" >
         
-         <TextView  
+         <TextView
+               android:id="@+id/weather_fragment_location_text"   
              android:layout_width="match_parent"
    		 	android:layout_height="0dp"
    		 	android:layout_weight="1"

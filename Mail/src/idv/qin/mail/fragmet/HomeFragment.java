@@ -3,22 +3,28 @@ package idv.qin.mail.fragmet;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.contacts.ContactsFragment;
+import idv.qin.mail.fragmet.extras.ExtrasFragment;
 import idv.qin.mail.fragmet.inbox.InboxFragment;
+import idv.qin.mail.fragmet.login.LoginFragment;
 import idv.qin.mail.fragmet.rubbish.RubblishFragment;
 import idv.qin.mail.fragmet.sendbox.SendBoxFragment;
 import idv.qin.mail.fragmet.weather.WeatherFragment;
 import idv.qin.mail.fragmet.write.WriteMailFragment;
 import idv.qin.utils.FlickerAnimatorUtil;
+import idv.qin.utils.PreferencesManager;
 import idv.qin.utils.RoundBitmapUtil;
 import idv.qin.widget.SlideHolder;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -37,6 +43,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 	private ImageView rubbish_icon; // 垃圾箱
 	private ImageView extras_icon; // 附件
 	private ImageView black_list_icon; // 黑名单
+	
+	// 侧边栏按钮
+	private Button app_store;
+	private Button logout_button;
+	private Button exit_button;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +71,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 				.findViewById(R.id.user_head_ican);
 		Bitmap bm = RoundBitmapUtil.toRoundBitmap(BitmapFactory.decodeResource(
 				getResources(), R.drawable.aa));
-		user_head_ican.setImageBitmap(bm);
+//		user_head_ican.setImageBitmap(bm);
 		openMenuButton = (ImageButton) rootView
 				.findViewById(R.id.open_menu_ican);
 		openMenuButton.setOnClickListener(this);
@@ -87,6 +98,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		black_list_icon = (ImageView) rootView
 				.findViewById(R.id.black_list_icon);
 		black_list_icon.setOnClickListener(this);
+		
+		// 侧边栏
+		app_store = (Button) rootView.findViewById(R.id.home_fragment_app_store);
+		app_store.setOnClickListener(this);
+		logout_button = (Button) rootView.findViewById(R.id.home_fragment_logout);
+		logout_button.setOnClickListener(this);
+		exit_button = (Button) rootView.findViewById(R.id.home_fragment_exit);
+		exit_button.setOnClickListener(this);
 	}
 	
 	@Override
@@ -142,10 +161,28 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			turn2RubblishFragment();
 			break;
 		case R.id.extras_icon:
-
+			turn2ExtrasFragment();
 			break;
 		case R.id.black_list_icon:
 
+			break;
+		case R.id.home_fragment_app_store:
+			Uri uri =  Uri.parse("market://details?id="+mainActivity.getPackageName());
+			Intent sendIntent = new Intent(Intent.ACTION_VIEW, uri); 
+//			Intent sendIntent = new Intent();
+//			sendIntent.setType("text/plain");
+			startActivity(sendIntent);
+			break;
+		case R.id.home_fragment_logout:
+			PreferencesManager.getInstance(mainActivity).saveValue(PreferencesManager.IS_LOGIN, "false");
+			
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			LoginFragment loginFragment = new LoginFragment();
+			transaction.replace(MainActivity.MAIN_AREA, loginFragment);
+			transaction.commit();
+			break;
+		case R.id.home_fragment_exit:
+			mainActivity.finish();
 			break;
 		}
 	}
@@ -157,7 +194,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
 		WeatherFragment fragment = new WeatherFragment();
 		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
-		transaction.replace(MainActivity.MAIN_AREA, fragment,WeatherFragment.WEATHER_FRAGMENT_FLAG);
+		transaction.add(MainActivity.MAIN_AREA, fragment,WeatherFragment.WEATHER_FRAGMENT_FLAG);
 		transaction.addToBackStack(WeatherFragment.WEATHER_FRAGMENT_FLAG);
 		transaction.commit();
 	}
@@ -210,8 +247,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
 		RubblishFragment fragment = new RubblishFragment();
 		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
-		transaction.replace(MainActivity.MAIN_AREA, fragment,WeatherFragment.WEATHER_FRAGMENT_FLAG);
+		transaction.add(MainActivity.MAIN_AREA, fragment,RubblishFragment.RUBBLISH_FRAGMENT_FLAG);
 		transaction.addToBackStack(RubblishFragment.RUBBLISH_FRAGMENT_FLAG);
+		transaction.commit();
+	}
+	
+	private void turn2ExtrasFragment() {
+		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		ExtrasFragment fragment = new ExtrasFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.add(MainActivity.MAIN_AREA, fragment,ExtrasFragment.EXTRAS_FRAGMENT_FLAG);
+		transaction.addToBackStack(ExtrasFragment.EXTRAS_FRAGMENT_FLAG);
 		transaction.commit();
 	}
 

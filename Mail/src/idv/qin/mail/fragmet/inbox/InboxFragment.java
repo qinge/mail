@@ -1,6 +1,6 @@
 package idv.qin.mail.fragmet.inbox;
 
-import idv.qin.core.ReceiveMailService;
+import idv.qin.core.InboxService;
 import idv.qin.domain.MailMessageBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.MessageActivity;
@@ -62,7 +62,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	private List<MailMessageBean> beans;
 	private BaseAdapter adapter;
 	
-	private ReceiveMailService service;
+	private InboxService service;
 	/** 模式字段 代表是否编辑 */
 	private boolean isEditMode = false; 
 	private boolean isRefreshing = false;
@@ -127,7 +127,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		inflater = mainActivity.getLayoutInflater();
-		service = new ReceiveMailService(mainActivity, handler);
+		service = new InboxService(mainActivity, handler);
 	}
 
 	@Override
