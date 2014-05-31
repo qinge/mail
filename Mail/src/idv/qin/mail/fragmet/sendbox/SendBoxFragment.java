@@ -30,7 +30,9 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
     private SwipeDismissListView dismissListView;
     private Button button_ok;
 	private Button button_back;
+	private ViewGroup emptyContainer ; 
 	private SendBoxService service;
+	
 	
 	private List<MailMessageBean> beans;
 	private LayoutInflater inflater;
@@ -46,9 +48,13 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 			switch (msg.what) {
 			case LOCAL_LOAD_SUCCESS:
 				beans = (List<MailMessageBean>) msg.obj;
-				if(adapter == null){
-					adapter = new SendBoxAdapter();
-					dismissListView.setAdapter(adapter);
+				if(beans != null && beans.size() > 0){
+					if(adapter == null){
+						adapter = new SendBoxAdapter();
+						dismissListView.setAdapter(adapter);
+					}
+				}else{
+					SendBoxFragment.super.addEmptyView(emptyContainer);
 				}
 				break;
 
@@ -70,6 +76,7 @@ public class SendBoxFragment extends BaseFragment implements View.OnClickListene
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.send_box_fragment, container, false);
+		emptyContainer = (ViewGroup) rootView.findViewById(R.id.send_box_empty_area_container);
 		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.send_box_swip_dismiss_list_view);
 		dismissListView.setOnDismissCallback(this);
 		button_ok = (Button) rootView.findViewById(R.id.head_bar_ok);

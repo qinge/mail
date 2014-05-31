@@ -41,6 +41,7 @@ public class ExtrasFragment extends BaseFragment implements OnClickListener, OnD
 	private ExtrasService service;
 	private List<AttachBean> attachBeans;
 	private LayoutInflater inflater;
+	private ViewGroup emptyContainer;
 	
 	private Handler handler = new Handler(){
 
@@ -49,8 +50,13 @@ public class ExtrasFragment extends BaseFragment implements OnClickListener, OnD
 		public void handleMessage(Message msg) {
 			if(msg.what == REMOTE_LOAD_SUCCESS){
 				attachBeans = (List<AttachBean>) msg.obj;
-				adapter = new MyAdapter();
-				dismissListView.setAdapter(adapter);
+				if(attachBeans != null && attachBeans.size() > 0){
+					adapter = new MyAdapter();
+					dismissListView.setAdapter(adapter);
+				}else{
+					ExtrasFragment.super.addEmptyView(emptyContainer);
+				}
+				
 			}
 		}
 		
@@ -78,6 +84,7 @@ public class ExtrasFragment extends BaseFragment implements OnClickListener, OnD
 	}
 
 	private void initComponent() {
+		emptyContainer = (ViewGroup) rootView.findViewById(R.id.extras_empty_container);
 		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.extras_box_swip_dismiss_list_view);
 		dismissListView.setOnDismissCallback(this);
 		dismissListView.setOnItemClickListener(this);

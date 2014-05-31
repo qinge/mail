@@ -20,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
@@ -142,5 +143,16 @@ public class BaseFragment extends Fragment {
 			return true;
 		}
 		
+	}
+	
+	/**
+	 * 界面中没有数据时候显示一个默认的无数据的界面
+	 */
+	protected void addEmptyView(ViewGroup container){
+		View view = mainActivity.getLayoutInflater().inflate(R.layout.empty_layout, null);
+		ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		container.addView(view, layoutParams);
 	}
 }

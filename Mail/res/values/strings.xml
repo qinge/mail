@@ -84,4 +84,8 @@
     <!-- \\ **********************************   附件界面    **************************\\  -->
     <string name="extras_format_error">格式不支持</string>
     
+    
+    <string name="empty_layout_text">暂无内容</string>
+    
+    
 </resources>

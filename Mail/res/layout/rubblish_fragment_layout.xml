@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rubblish_main_area"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <include layout="@layout/general_head_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rubblish_empty_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" 
-        android:background="#FFFFFF">
-
-        <include layout="@layout/general_head_bar" />
+        android:layout_height="match_parent" >
 
         <idv.qin.view.SwipeDismissListView
             android:id="@+id/rubblish_fragment_swip_dismiss_listview"
@@ -22,6 +23,6 @@
             android:footerDividersEnabled="true"
             android:listSelector="@android:color/transparent" >
         </idv.qin.view.SwipeDismissListView>
-    </LinearLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

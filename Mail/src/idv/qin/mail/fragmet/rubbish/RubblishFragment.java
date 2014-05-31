@@ -37,6 +37,7 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback,
 	private LayoutInflater inflater;
 	private Button button_back;
 	private Button button_ok;
+	private ViewGroup emptyContainer;
 	
 	private boolean refreshLocal = false; // 编辑模式下局部刷新数据(编辑按钮点击时候改变状态)
 	private int clickedPosition = -1; // 编辑模式下点击的条目位置
@@ -54,10 +55,16 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback,
 			switch (msg.what) {
 			case LOCAL_LOAD_SUCCESS:
 				beans = (List<MailMessageBean>) msg.obj;
-				if(adapter == null){
-					adapter = new RubblishAdapter();
-					dismissListView.setAdapter(adapter);
+				if(beans != null && beans.size() > 0){
+					if(adapter == null){
+						adapter = new RubblishAdapter();
+						dismissListView.setAdapter(adapter);
+					}
+					
+				}else{
+					RubblishFragment.super.addEmptyView(emptyContainer);
 				}
+				
 				break;
 
 			default:
@@ -85,6 +92,7 @@ public class RubblishFragment extends BaseFragment implements OnDismissCallback,
 	}
 
 	private void initComponent() {
+		emptyContainer = (ViewGroup) rootView.findViewById(R.id.rubblish_empty_container);
 		dismissListView = (SwipeDismissListView) rootView.findViewById(R.id.rubblish_fragment_swip_dismiss_listview);
 		dismissListView.setOnDismissCallback(this);
 		button_ok = (Button) rootView.findViewById(R.id.head_bar_ok);
