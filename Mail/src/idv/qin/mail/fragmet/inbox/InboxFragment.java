@@ -61,6 +61,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	
 	private List<MailMessageBean> beans;
 	private BaseAdapter adapter;
+	private ViewGroup emptyContainer;
 	
 	private InboxService service;
 	/** 模式字段 代表是否编辑 */
@@ -97,6 +98,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 					@SuppressWarnings("unchecked")
 					List<MailMessageBean> messageBeans = (ArrayList<MailMessageBean>) msg.obj;
 					if(messageBeans == null || messageBeans.size() <= 0){
+						InboxFragment.super.addEmptyView(emptyContainer);
 						return ;
 					}else{
 						if(beans == null || beans.size() <= 0 && adapter== null){
@@ -114,7 +116,11 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 					break;
 				case LOCAL_LOAD_SUCCESS:
 					progressDialog.cancel();
-					bindListViewAdapter();
+					if(beans != null && beans.size() > 0){
+						bindListViewAdapter();
+					}else{
+						InboxFragment.super.addEmptyView(emptyContainer);
+					}
 					break;
 	
 				default:
@@ -170,6 +176,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	}
 	
 	private void initComponent() {
+		emptyContainer = (ViewGroup) rootView.findViewById(R.id.inbox_empty_area);
 		mPullRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.pull_refresh_list);
 		listView = (ListView) mPullRefreshListView.getRefreshableView();
 		listView.setOnItemClickListener(new MyItemClickListener());
@@ -339,6 +346,9 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 	}
 	
 	private void resetIds() {
+		if(ids == null || ids.length <= 0){
+			return ;
+		}
 		for(int i =0 ; i < ids.length ;i++){
 			if(ids[i])
 				ids[i] = false;

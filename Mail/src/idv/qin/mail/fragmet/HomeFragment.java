@@ -2,7 +2,9 @@ package idv.qin.mail.fragmet;
 
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.R;
+import idv.qin.mail.fragmet.blacklist.BlackListFragment;
 import idv.qin.mail.fragmet.contacts.ContactsFragment;
+import idv.qin.mail.fragmet.draft.DraftFragment;
 import idv.qin.mail.fragmet.extras.ExtrasFragment;
 import idv.qin.mail.fragmet.inbox.InboxFragment;
 import idv.qin.mail.fragmet.login.LoginFragment;
@@ -10,7 +12,6 @@ import idv.qin.mail.fragmet.rubbish.RubblishFragment;
 import idv.qin.mail.fragmet.sendbox.SendBoxFragment;
 import idv.qin.mail.fragmet.weather.WeatherFragment;
 import idv.qin.mail.fragmet.write.WriteMailFragment;
-import idv.qin.utils.FlickerAnimatorUtil;
 import idv.qin.utils.PreferencesManager;
 import idv.qin.utils.RoundBitmapUtil;
 import idv.qin.widget.SlideHolder;
@@ -148,10 +149,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			turn2SendBoxFragment();
 			break;
 		case R.id.draft_box_icon: //草稿箱
-			FlickerAnimatorUtil.flickerView(draft_box_icon, null);
+//			FlickerAnimatorUtil.flickerView(draft_box_icon, null);
+			startDraftFragment();
 			break;
 		case R.id.contacts_icon:  // 联系人
-			FlickerAnimatorUtil.flickerView(contacts_icon, null);
+//			FlickerAnimatorUtil.flickerView(contacts_icon, null);
 			startContactsFragment();
 			break;
 		case R.id.weather_icon:
@@ -164,7 +166,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 			turn2ExtrasFragment();
 			break;
 		case R.id.black_list_icon:
-
+			turn2BlacUserFragment();
 			break;
 		case R.id.home_fragment_app_store:
 			Uri uri =  Uri.parse("market://details?id="+mainActivity.getPackageName());
@@ -243,6 +245,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		transaction.commit();
 	}
 	
+	private void startDraftFragment() {
+		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		Fragment fragment = new DraftFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.add(MainActivity.MAIN_AREA, fragment,DraftFragment.DRAFT_FRAGMENT_FLAG);
+		transaction.addToBackStack(DraftFragment.DRAFT_FRAGMENT_FLAG);
+		transaction.commit();
+	}
+	
 	private void turn2RubblishFragment() {
 		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
 		RubblishFragment fragment = new RubblishFragment();
@@ -258,6 +269,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
 		transaction.add(MainActivity.MAIN_AREA, fragment,ExtrasFragment.EXTRAS_FRAGMENT_FLAG);
 		transaction.addToBackStack(ExtrasFragment.EXTRAS_FRAGMENT_FLAG);
+		transaction.commit();
+	}
+	
+	private void turn2BlacUserFragment() {
+		FragmentTransaction transaction = mainActivity.getFragmentManager().beginTransaction();
+		BlackListFragment fragment = new BlackListFragment();
+		transaction.setCustomAnimations(R.anim.fade_in , R.anim.fade_out);
+		transaction.add(MainActivity.MAIN_AREA, fragment,BlackListFragment.BLACK_LIST_FRAGMENT_TAG);
+		transaction.addToBackStack(BlackListFragment.BLACK_LIST_FRAGMENT_TAG);
 		transaction.commit();
 	}
 

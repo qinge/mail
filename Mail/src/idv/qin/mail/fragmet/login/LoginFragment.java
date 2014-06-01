@@ -379,10 +379,16 @@ public class LoginFragment extends BaseFragment implements OnClickListener,OnFoc
 						userName.setText(null);
 						userPassword.setText(null);
 					}
-					
+					File userInfoDir = CacheManager.getDefalutInstance().getUser_info_dir();
+					File file = new File(userInfoDir, userInfos.get(position).name);
+					if(file.exists()){
+						file.delete();
+					}
+					file = null;
 					// 删除指定条目 和 文件
 					userInfos.remove(position);
 					adapter.notifyDataSetChanged();
+					
 				}
 			});
 			return convertView;

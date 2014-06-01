@@ -160,9 +160,6 @@ public class InboxService {
 	public List<MailMessageBean> loadLocalMailMessageBeans(){
 		File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
 		List<MailMessageBean> mailMessageBeans = MessageManager.loadLocalMailMessageBean(fileDir);
-		if(mailMessageBeans != null){
-			Collections.sort(mailMessageBeans, new CustomComparator());
-		}
 		return mailMessageBeans;
 	}
 	

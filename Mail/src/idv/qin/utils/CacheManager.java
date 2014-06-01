@@ -23,6 +23,9 @@ public class CacheManager {
 	/** 用户信息缓存目录 */
 	private File user_info_dir = null;
 	
+	/** 黑名单缓存目录 */
+	private File black_user_dir = null;
+	
 	/** 草稿箱缓存目录 */
 	private File temp_folder = null;
 	
@@ -97,6 +100,15 @@ public class CacheManager {
 		this.rubblish_folder = rubblish_folder;
 	}
 
+	public File getBlack_user_dir() {
+		return black_user_dir;
+	}
+
+	public void setBlack_user_dir(File black_user_dir) {
+		this.black_user_dir = black_user_dir;
+	}
+
+	
 	
 	
 }

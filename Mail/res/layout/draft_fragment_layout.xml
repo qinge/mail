@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/draft_box_main_area"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <include layout="@layout/general_head_bar" />
+
+    <RelativeLayout
+        android:id="@+id/draft_empty_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <idv.qin.view.SwipeDismissListView
+            android:id="@+id/draft_box_swip_dismiss_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true"
+            android:listSelector="#00000000" />
+    </RelativeLayout>
+
+</LinearLayout>

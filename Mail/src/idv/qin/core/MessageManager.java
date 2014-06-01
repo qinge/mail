@@ -133,4 +133,16 @@ public class MessageManager {
 		file = null;
 		return true;
 	}
+	
+	
+	public static boolean deleteFile(File dir , String fileName){
+		File file = new File(dir, fileName);
+		if(file.exists()){
+			file.delete();
+			file = null;
+			return true;
+		}
+		return false;
+
+	}
 }

@@ -124,6 +124,12 @@ public class MyApplication extends Application {
 		}
 		cacheManager.setUser_info_dir(user_info_folder);
 		
+		File black_user_folder = new File(StorageUtils.getCacheDirectory(getApplicationContext()), "/black_user_info");
+		if(!black_user_folder.exists()){
+			black_user_folder.mkdirs();
+		}
+		cacheManager.setBlack_user_dir(black_user_folder);
+		
 		cacheManager.setCache_dir(StorageUtils.getCacheDirectory(getApplicationContext()));
 	}
 	

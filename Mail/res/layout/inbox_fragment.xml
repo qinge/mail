@@ -3,63 +3,61 @@
     android:id="@+id/inbox_main_area"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
     android:background="@drawable/bg_s_2"
-    >
- 
-    <include layout="@layout/general_head_bar" />
-    
-   <!--   <idv.qin.view.RefreshableView 
-        android:id="@+id/refreshable_view"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"
-        > 
-         
-    <ListView
-        android:id="@+id/inbox_refresh_listview"   
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent" 
-        android:layout_gravity="top" 
-        android:fadingEdge="none" />  
-     </idv.qin.view.RefreshableView>  -->
-     
-     <idv.qin.view.PullToRefreshListView
-        android:id="@+id/pull_refresh_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:footerDividersEnabled="true"
-        android:divider="#CCCCCC"  
-        android:cacheColorHint="@android:color/transparent"
-    	android:dividerHeight="1dp"
-         />
+    android:orientation="vertical" >
 
-     <LinearLayout 
-         android:id="@+id/inbox_edit_container"
+    <include layout="@layout/general_head_bar" />
+
+    <RelativeLayout
+        android:id="@+id/inbox_empty_area"
         android:layout_width="match_parent"
-         android:layout_height="50dp"
-         android:orientation="horizontal"
-         android:gravity="center"
-         android:background="#CCCCCC"
-         android:padding="5dp"
-         android:visibility="gone">
-         <Button 
-             android:id="@+id/inbox_edit_select_all_button"
-	         android:layout_width="0dp"
-	         android:layout_height="match_parent"
-	         android:text="@string/inbox_edit_selectall"
-	          android:background="@drawable/select_item_selector"
-	          android:layout_marginRight="5dp"
-	         android:layout_weight="1"/>
-         <Button 
-             android:id="@+id/inbox_edit_delete_button"
-	         android:layout_width="0dp"
-	         android:layout_height="match_parent"
-	         android:text="@string/inbox_edit_delete"
-	         android:background="@drawable/delete_button_selector"
-	         android:layout_marginLeft="5dp"
-	         android:textColor="#FFFFFF"
-	         android:layout_weight="1"/>
-     </LinearLayout>
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <idv.qin.view.PullToRefreshListView
+                android:id="@+id/pull_refresh_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:footerDividersEnabled="true" />
+
+            <LinearLayout
+                android:id="@+id/inbox_edit_container"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#CCCCCC"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:visibility="gone" >
+
+                <Button
+                    android:id="@+id/inbox_edit_select_all_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_item_selector"
+                    android:text="@string/inbox_edit_selectall" />
+
+                <Button
+                    android:id="@+id/inbox_edit_delete_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/delete_button_selector"
+                    android:text="@string/inbox_edit_delete"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
