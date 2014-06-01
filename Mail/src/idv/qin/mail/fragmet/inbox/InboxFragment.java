@@ -2,13 +2,9 @@ package idv.qin.mail.fragmet.inbox;
 
 import idv.qin.core.InboxService;
 import idv.qin.domain.MailMessageBean;
-import idv.qin.mail.MainActivity;
 import idv.qin.mail.MessageActivity;
 import idv.qin.mail.R;
 import idv.qin.mail.fragmet.BaseFragment;
-import idv.qin.mail.fragmet.GenericMessageFragment;
-import idv.qin.mail.fragmet.rubbish.RubblishFragment;
-import idv.qin.mail.fragmet.weather.WeatherFragment;
 import idv.qin.refresh.PullToRefreshBase.OnRefreshListener;
 import idv.qin.utils.CommonUtil;
 import idv.qin.utils.MyBuildConfig;
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -537,6 +532,7 @@ public class InboxFragment extends BaseFragment implements View.OnClickListener{
 		transaction.addToBackStack(GenericMessageFragment.GENERIC_MESSAGE_FRAGMENT);
 		transaction.commit();*/
 		Intent intent = new Intent(mainActivity, MessageActivity.class);
+		intent.putExtra("MailMessageBean", bean);
 		startActivity(intent);
 	}
 	

@@ -1,30 +1,30 @@
 package idv.qin.core;
 
+import idv.qin.domain.AttachBean;
 import idv.qin.domain.MailMessageBean;
+import idv.qin.domain.MailMessageBean.MailContentBean;
 import idv.qin.domain.MailMessageBean.MailHeadBean;
 import idv.qin.mail.MainActivity;
 import idv.qin.mail.fragmet.inbox.InboxFragment;
 import idv.qin.utils.CacheManager;
 import idv.qin.utils.CustomComparator;
+import idv.qin.utils.ExtraTypeUtil;
 import idv.qin.utils.MyBuildConfig;
 import idv.qin.utils.MyLog;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
@@ -98,10 +98,13 @@ public class InboxService {
 					return null;
 				}
 				pop3Folder= (com.sun.mail.pop3.POP3Folder)store.getFolder("inbox");
-				pop3Folder.open(Folder.READ_ONLY);
 				for(int i= 0; i< messages.length ;i++){
+					if(!pop3Folder.isOpen()){
+						pop3Folder.open(Folder.READ_ONLY);
+					}
 					MailMessageBean bean = new MailMessageBean();
 					bean.mailHead = parseMessageHead(pop3Folder, (MimeMessage)messages[i]);
+					bean.mailContent = parseMessageContent((MimeMessage)messages[i]);
 					beans.add(bean);
 				}
 				Collections.sort(beans, new CustomComparator());
@@ -128,34 +131,85 @@ public class InboxService {
 			
 			return null;
 		}
-
-
-
-		/**
-		 * 
-		 * @param message
-		 * @return
-		 * @throws MessagingException 
-		 * @throws UnsupportedEncodingException 
-		 */
-		private MailHeadBean parseMessageHead( POP3Folder pop3Folder, MimeMessage message) 
-				throws MessagingException, UnsupportedEncodingException {
-			if(pop3Folder== null || message == null){
-				return null;
-			}
-			if(!pop3Folder.isOpen()){
-				pop3Folder.open(Folder.READ_ONLY);
-			}
-			MailMessageBean.MailHeadBean headBean = new MailMessageBean.MailHeadBean();
-			headBean.from = MimeUtility.decodeText(message.getFrom()[0].toString());
-			headBean.sendDate = message.getSentDate();
-			headBean.sendDate.toLocaleString();
-			headBean.subject = message.getSubject()+"";
-			headBean.uid = pop3Folder.getUID(message);
-			return headBean;
-		}
-		
 	}
+	
+	/**
+	 * 
+	 * @param message
+	 * @return
+	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	private MailHeadBean parseMessageHead( POP3Folder pop3Folder, MimeMessage message) 
+			throws MessagingException, UnsupportedEncodingException {
+		if(pop3Folder== null || message == null){
+			return null;
+		}
+		if(!pop3Folder.isOpen()){
+			pop3Folder.open(Folder.READ_ONLY);
+		}
+		MailMessageBean.MailHeadBean headBean = new MailMessageBean.MailHeadBean();
+		headBean.from = MimeUtility.decodeText(message.getFrom()[0].toString());
+		headBean.sendDate = message.getSentDate();
+		headBean.sendDate.toLocaleString();
+		headBean.subject = message.getSubject()+"";
+		headBean.uid = pop3Folder.getUID(message);
+		return headBean;
+	}
+	
+	
+	private MailContentBean parseMessageContent(MimeMessage mimeMessage) {
+		MailContentBean contentBean = new MailContentBean();
+		try {
+			contentBean.content = getContent(mimeMessage);
+			System.out.println(contentBean.content);
+			System.out.println("-----++++++++++------ \n");
+			contentBean.attachmentBeans = parseMailAttachment(mimeMessage);
+		} catch (Exception e) {
+		}
+		return contentBean;
+	}
+	
+	private static String getContent(Part part)throws Exception{
+		if(part.isMimeType("text/html")){
+			 return part.getContent().toString();
+		 }else if(part.getContent() instanceof Multipart){
+			 Multipart multipart = (Multipart) part.getContent();
+			 for(int i=0; i<multipart.getCount(); i++){       	 
+				 String content = getContent(multipart.getBodyPart(i));
+				 if(content != null) 
+					 return content;
+			 }
+		 }
+		 return null;
+	 }
+	
+	  private static List<AttachBean> parseMailAttachment(Part part) throws Exception {
+	    	List<AttachBean> attachmentBeans = new ArrayList<AttachBean>();
+	    	AttachBean attachmentBean ;
+	        if (part.isMimeType("multipart/*")) {   
+	            Multipart mp = (Multipart) part.getContent();   
+	            for (int i = 0; i < mp.getCount(); i++) {   
+	                BodyPart mpart = mp.getBodyPart(i);   
+	                String disposition = mpart.getDisposition();   
+	                if ((disposition != null)&& ((disposition.equalsIgnoreCase(Part.ATTACHMENT)) 
+	                		/*||(disposition.equalsIgnoreCase(Part.INLINE))*/)){
+	                	attachmentBean = new AttachBean();
+	                	attachmentBean.name = MimeUtility.decodeText(mpart.getFileName());
+	                	attachmentBean.extraType = ExtraTypeUtil.parseExtraType(mpart.getContentType());
+//	                	attachmentBean.path = saveAttachment2Disk(mpart);
+	                	attachmentBeans.add(attachmentBean);
+	                	attachmentBean = null;
+	                }else if (mpart.isMimeType("multipart/*")) {   
+	                	parseMailAttachment((Part) mpart);   
+	                } 
+	            }   
+	        } else if (part.isMimeType("message/rfc822")) {   
+	        	 parseMailAttachment((Part) part.getContent());   
+	        }   
+	        return attachmentBeans;   
+	    }
+	 
 	
 	public List<MailMessageBean> loadLocalMailMessageBeans(){
 		File fileDir = CacheManager.getDefalutInstance().getReceiver_mail_folder();
